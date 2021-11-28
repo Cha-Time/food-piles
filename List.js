@@ -13,7 +13,7 @@ import { allDonors } from "./Seed";
 import * as geolib from "geolib";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-export const List = () => {
+export const List = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [distance, setDistance] = useState(5);
@@ -74,7 +74,22 @@ export const List = () => {
   }
 
   if (location !== null) {
-    return <ScrollView style={styles.container}>{findList()}</ScrollView>;
+    return (
+      <ScrollView style={styles.container}>
+        <View style={styles.topBar}>
+          <Text style={styles.headerText}>Browse</Text>
+          <Ionicons
+            name="globe-outline"
+            size={35}
+            color="black"
+            onPress={() => {
+              navigation.navigate("Home");
+            }}
+          />
+        </View>
+        {findList()}
+      </ScrollView>
+    );
   } else {
     return (
       <View>
@@ -93,6 +108,15 @@ const styles = StyleSheet.create({
     padding: "5%",
     borderColor: "gray",
     borderWidth: 0.5,
+  },
+  topBar: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  headerText: {
+    fontSize: 30,
+    fontWeight: "bold",
   },
 });
 

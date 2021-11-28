@@ -44,7 +44,7 @@ const MainContainer = () => {
       <Tab.Screen name="Home" component={Map} />
       <Tab.Screen name="Favorites" component={Favorites} />
       <Tab.Screen name="Chat" component={Chat} />
-      <Tab.Screen name="Profile" component={List} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 };

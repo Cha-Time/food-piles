@@ -70,10 +70,10 @@ export const Map = ({ navigation }) => {
     return (
       <View style={styles.container}>
         <View style={styles.topBar}>
-          <Text>Browse</Text>
+          <Text style={styles.headerText}>Browse</Text>
           <Ionicons
             name="list"
-            size={25}
+            size={35}
             color="black"
             onPress={() => {
               navigation.navigate("List");
@@ -121,10 +121,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  listItem: {
-    padding: "5%",
-    borderColor: "gray",
-    borderWidth: 0.5,
+  headerText: {
+    fontSize: 30,
+    fontWeight: "bold",
   },
 });
 
