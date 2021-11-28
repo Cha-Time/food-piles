@@ -6,14 +6,14 @@ import {
   View,
   TouchableOpacity,
   StatusBar,
+  ScrollView,
 } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { allDonors } from "./Seed";
 import * as geolib from "geolib";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-export const Map = ({ navigation }) => {
+export const List = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [distance, setDistance] = useState(5);
@@ -31,8 +31,9 @@ export const Map = ({ navigation }) => {
     })();
   }, []);
 
-  function findMarkers() {
+  function findList() {
     const donors = allDonors();
+    //filter db by donors within 5 miles (There are 1609 meters per mile)
     const nearbyDonors = donors.filter((donor) => {
       const currentLocation = {
         latitude: location.coords.latitude,
@@ -48,15 +49,23 @@ export const Map = ({ navigation }) => {
         distance * 1609.34
       );
     });
-    return nearbyDonors.map((donor) => (
-      <Marker
-        key={donor.id}
-        coordinate={{
-          latitude: Number(donor.latitude),
-          longitude: Number(donor.longitude),
-        }}
-        onPress={handleOnPress}
-      />
+    return nearbyDonors.map((donor, index) => (
+      <View style={styles.listItem} key={donor.id}>
+        <Text>{donor.label}</Text>
+        <Text>
+          {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
+          {(
+            geolib.getDistance(
+              { latitude: donor.latitude, longitude: donor.longitude },
+              {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+              }
+            ) / 1609.34
+          ).toFixed(1)}
+          mi away
+        </Text>
+      </View>
     ));
   }
 
@@ -64,37 +73,8 @@ export const Map = ({ navigation }) => {
     console.log("Hello New York");
   }
 
-  function changeView(event) {}
-
   if (location !== null) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.topBar}>
-          <Text>Browse</Text>
-          <Ionicons
-            name="list"
-            size={25}
-            color="black"
-            onPress={() => {
-              navigation.navigate("List");
-            }}
-          />
-        </View>
-        <MapView
-          style={styles.map}
-          provider={PROVIDER_GOOGLE}
-          showsUserLocation
-          initialRegion={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          {findMarkers()}
-        </MapView>
-      </View>
-    );
+    return <ScrollView style={styles.container}>{findList()}</ScrollView>;
   } else {
     return (
       <View>
@@ -109,18 +89,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: StatusBar.currentHeight,
   },
-  map: {
-    flex: 1,
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    marginTop: StatusBar.currentHeight,
-  },
-  topBar: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
   listItem: {
     padding: "5%",
     borderColor: "gray",
@@ -128,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Map;
+export default List;
