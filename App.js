@@ -16,6 +16,8 @@ import MainContainer from "./MainContainer";
 
 function App() {
   enableScreens();
+  //This navigator holds all pages not included on the tab bar.
+  //The main map page with the tab bar is nested as a tab navigator within this stack navigator
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -32,10 +34,6 @@ function App() {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
-
-{
-  /* <MainContainer style={styles.container} />; */
 }
 
 const styles = StyleSheet.create({

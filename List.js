@@ -33,7 +33,7 @@ export const List = ({ navigation }) => {
 
   function findList() {
     const donors = allDonors();
-    //filter db by donors within 5 miles (There are 1609 meters per mile)
+    //filters only by donors within search distance
     const nearbyDonors = donors.filter((donor) => {
       const currentLocation = {
         latitude: location.coords.latitude,
@@ -47,6 +47,7 @@ export const List = ({ navigation }) => {
         donorLocation,
         currentLocation,
         distance * 1609.34
+        //1609.34 converts meters to miles
       );
     });
     return nearbyDonors.map((donor, index) => (

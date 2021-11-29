@@ -27,7 +27,9 @@ const MainContainer = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           let rn = route.name;
-
+          {
+            /*This assigns icons to each page on the tab. The icon is filled in or outlined depending on if its selected */
+          }
           if (rn === homeName) {
             iconName = focused ? "home" : "home-outline";
           } else if (rn == profileName) {
@@ -41,6 +43,7 @@ const MainContainer = () => {
         },
       })}
     >
+      {/*These are all of the tabs on the homepage navbar */}
       <Tab.Screen name="Home" component={Map} />
       <Tab.Screen name="Favorites" component={Favorites} />
       <Tab.Screen name="Chat" component={Chat} />

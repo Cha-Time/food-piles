@@ -20,12 +20,13 @@ export const Map = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
+      //gets permissions for app location use
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
+      //sets your current position
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     })();
@@ -33,6 +34,7 @@ export const Map = ({ navigation }) => {
 
   function findMarkers() {
     const donors = allDonors();
+    //filters only by donors within search distance
     const nearbyDonors = donors.filter((donor) => {
       const currentLocation = {
         latitude: location.coords.latitude,
@@ -46,9 +48,11 @@ export const Map = ({ navigation }) => {
         donorLocation,
         currentLocation,
         distance * 1609.34
+        //1609.34 converts meters to miles
       );
     });
     return nearbyDonors.map((donor) => (
+      //creates map markers for nearby donors only
       <Marker
         key={donor.id}
         coordinate={{
