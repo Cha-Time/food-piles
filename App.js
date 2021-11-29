@@ -7,12 +7,12 @@ import { NavigationContainer } from "@react-navigation/native";
 const Stack = createNativeStackNavigator();
 
 //Screens
-import Map from "./Map";
-import Chat from "./Chat";
-import Profile from "./Profile";
-import Favorites from "./Favorites";
-import List from "./List";
-import MainContainer from "./MainContainer";
+import Map from "./components/Map";
+import Chat from "./components/Chat";
+import Profile from "./components/Profile";
+import Favorites from "./Components/Favorites";
+import List from "./components/List";
+import MainContainer from "./components/MainContainer";
 
 function App() {
   enableScreens();
