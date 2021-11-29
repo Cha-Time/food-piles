@@ -34,8 +34,8 @@ async function seed() {
   });
 
   //Make the associations
-  const creation1 = await tom.setOrganization(kfc);
-  const creation2 = await tom.addFollows(jerry);
+  const orgTest = await tom.setOrganization(kfc);
+  const favoriteTest = await tom.addFollows(jerry);
 
   console.log("seeded successfully");
 }

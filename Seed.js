@@ -1,30 +1,4 @@
 export function allDonors() {
-  //   const donors = [
-  //     {
-  //       id: 1,
-  //       name: "Donor",
-  //       latitude: 40.7487128,
-  //       longitude: -73.9859724,
-  //     },
-  //     {
-  //       id: 2,
-  //       name: "Donor",
-  //       latitude: 40.75901,
-  //       longitude: -73.984474,
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "Donor",
-  //       latitude: 40.760503,
-  //       longitude: -74.588886,
-  //     },
-  //     {
-  //       id: 4,
-  //       name: "Donor",
-  //       latitude: 40.61786,
-  //       longitude: -73.972579,
-  //     },
-  //   ];
   const donorsround2 = [
     {
       id: "7e3563b3-aca1-ea11-a812-000d3a111c98",
@@ -1470,7 +1444,18 @@ export function allDonors() {
       },
     },
   ];
-  return donorsround2;
+  const updatedDonors = donorsround2.map((donor) => {
+    return {
+      name: donor.label,
+      address: donor.sublabel.split(",")[0],
+      city: donor.sublabel.split(",")[1],
+      state: "NY",
+      zipCode: 10000,
+      phoneNumber: 7777777777,
+      accType: "donor",
+      latitude: donor.latitude,
+      longitude: donor.longitude,
+    };
+  });
+  return updatedDonors;
 }
-
-
