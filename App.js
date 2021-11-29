@@ -10,7 +10,7 @@ const Stack = createNativeStackNavigator();
 import Map from "./components/Map";
 import Chat from "./components/Chat";
 import Profile from "./components/Profile";
-import Favorites from "./Components/Favorites";
+import Favorites from "./components/Favorites";
 import List from "./components/List";
 import MainContainer from "./components/MainContainer";
 
