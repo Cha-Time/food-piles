@@ -5,33 +5,32 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { allDonors } from "./Seed";
 import * as geolib from "geolib";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-export const Map = ({ navigation }) => {
+export const List = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [distance, setDistance] = useState(5);
 
   useEffect(() => {
     (async () => {
-      //gets permissions for app location use
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-      //sets your current position
+
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     })();
   }, []);
 
-  function findMarkers() {
+  function findList() {
     const donors = allDonors();
     //filters only by donors within search distance
     const nearbyDonors = donors.filter((donor) => {
@@ -50,16 +49,23 @@ export const Map = ({ navigation }) => {
         //1609.34 converts meters to miles
       );
     });
-    return nearbyDonors.map((donor) => (
-      //creates map markers for nearby donors only
-      <Marker
-        key={donor.id}
-        coordinate={{
-          latitude: Number(donor.latitude),
-          longitude: Number(donor.longitude),
-        }}
-        onPress={handleOnPress}
-      />
+    return nearbyDonors.map((donor, index) => (
+      <View style={styles.listItem} key={donor.id}>
+        <Text>{donor.label}</Text>
+        <Text>
+          {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
+          {(
+            geolib.getDistance(
+              { latitude: donor.latitude, longitude: donor.longitude },
+              {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+              }
+            ) / 1609.34
+          ).toFixed(1)}
+          mi away
+        </Text>
+      </View>
     ));
   }
 
@@ -67,36 +73,22 @@ export const Map = ({ navigation }) => {
     console.log("Hello New York");
   }
 
-  function changeView(event) {}
-
   if (location !== null) {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.topBar}>
           <Text style={styles.headerText}>Browse</Text>
           <Ionicons
-            name="list"
+            name="globe-outline"
             size={35}
             color="black"
             onPress={() => {
-              navigation.navigate("List");
+              navigation.navigate("Home");
             }}
           />
         </View>
-        <MapView
-          style={styles.map}
-          provider={PROVIDER_GOOGLE}
-          showsUserLocation
-          initialRegion={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          {findMarkers()}
-        </MapView>
-      </View>
+        {findList()}
+      </ScrollView>
     );
   } else {
     return (
@@ -112,12 +104,10 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 50,
   },
-  map: {
-    flex: 1,
-    position: "absolute",
-    height: "90%",
-    width: "100%",
-    marginTop: 50,
+  listItem: {
+    padding: "5%",
+    borderColor: "gray",
+    borderWidth: 0.5,
   },
   topBar: {
     flex: 1,
@@ -130,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Map;
+export default List;
