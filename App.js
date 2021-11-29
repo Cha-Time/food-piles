@@ -7,6 +7,10 @@ import { NavigationContainer } from "@react-navigation/native";
 const Stack = createNativeStackNavigator();
 
 //Screens
+import Start from './components/Start';
+import Login from "./components/Login";
+import SignUpPartOne from "./components/SignUpPartOne";
+import SignUpPartTwo from "./components/SignUpPartTwo";
 import Map from "./components/Map";
 import Chat from "./components/Chat";
 import Profile from "./components/Profile";
@@ -21,16 +25,12 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={MainContainer}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="List"
-          component={List}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="Start" component={Start} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUpPartOne" component={SignUpPartOne} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUpPartTwo" component={SignUpPartTwo} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={MainContainer} options={{ headerShown: false }} />
+        <Stack.Screen name="List" component={List} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
