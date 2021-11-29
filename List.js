@@ -5,7 +5,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  StatusBar,
   ScrollView,
 } from "react-native";
 import * as Location from "expo-location";
@@ -103,7 +102,7 @@ export const List = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight,
+    marginTop: 50,
   },
   listItem: {
     padding: "5%",

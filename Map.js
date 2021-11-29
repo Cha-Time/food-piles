@@ -5,7 +5,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  StatusBar,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -111,14 +110,14 @@ export const Map = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight,
+    marginTop: 50,
   },
   map: {
     flex: 1,
     position: "absolute",
-    height: "100%",
+    height: "90%",
     width: "100%",
-    marginTop: StatusBar.currentHeight,
+    marginTop: 50,
   },
   topBar: {
     flex: 1,

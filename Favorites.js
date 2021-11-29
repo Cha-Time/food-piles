@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  StatusBar,
-} from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 
 export const Favorites = () => {
   return (
@@ -18,7 +12,7 @@ export const Favorites = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight,
+    marginTop: 50,
   },
 });
 
