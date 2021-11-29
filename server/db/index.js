@@ -1,27 +1,30 @@
 const db = require("./db");
 
 const Chat = require("./models/Chat");
-const Favorite = require("./models/Favorite");
 const Message = require("./models/Message");
 const Organization = require("./models/Organization");
-const User_Chat = require("./models/User_Chat");
+// const UserChat = require("./models/User_Chat");
 const User = require("./models/User");
 
 //associations could go here!
-// User.hasMany(Order)
-// Order.belongsTo(User)
 
-// Order.belongsToMany(Plant, {through: OrderPlant})
-// Plant.belongsToMany(Order, {through: OrderPlant })
+User.hasMany(Message);
+Message.belongsTo(User);
+
+User.hasOne(Organization);
+Organization.belongsTo(User);
+
+User.belongsToMany(Chat, { through: "userchat" });
+Chat.belongsToMany(User, { through: "userchat" });
+
+User.belongsToMany(User, { through: "favorites", as: "follows" });
 
 module.exports = {
   db,
   models: {
     User,
-    User_Chat,
     Organization,
     Message,
-    Favorite,
     Chat,
   },
 };
