@@ -11,6 +11,7 @@
     "seed": "node script/seed.js"
   },
   "dependencies": {
+    "@react-native-picker/picker": "^2.2.1",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/native-stack": "^5.0.4",
