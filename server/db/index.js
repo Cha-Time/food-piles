@@ -3,7 +3,6 @@ const db = require("./db");
 const Chat = require("./models/Chat");
 const Message = require("./models/Message");
 const Organization = require("./models/Organization");
-// const UserChat = require("./models/User_Chat");
 const User = require("./models/User");
 
 //associations could go here!
