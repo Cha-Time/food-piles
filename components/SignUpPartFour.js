@@ -12,7 +12,6 @@ export const SignUpPartFour = ({ navigation }) => {
     const [description, setDescription] = useState(null);
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container} >
                 <Text style={{ textAlign: 'center', fontSize: 20 }}>Prove it.</Text>
                 <View style={{ width: '100%', minHeight: '10%', alignItems: 'center', justifyContent: 'space-between' }} >
@@ -23,7 +22,6 @@ export const SignUpPartFour = ({ navigation }) => {
                     <Button title='Next >' name='next' onPress={() => navigation.navigate('Welcome')}></Button>
                 </View>
             </View>
-        </TouchableWithoutFeedback>
     )
 }
 
