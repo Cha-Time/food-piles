@@ -27,6 +27,7 @@ import List from "./components/List";
 import MainContainer from "./components/MainContainer";
 
 // import the store
+import { Provider } from "react-redux";
 import store from "./store";
 
 function HomeToggle() {}
@@ -39,79 +40,81 @@ function App() {
   //This navigator holds all pages not included on the tab bar.
   //The main map page with the tab bar is nested as a tab navigator within this stack navigator
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Start"
-          component={Start}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUpPartOne"
-          component={SignUpPartOne}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUpPartTwo"
-          component={SignUpPartTwo}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUpPartThree"
-          component={SignUpPartThree}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUpPartFour"
-          component={SignUpPartFour}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Welcome"
-          component={Welcome}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Home"
-          initialParams={{ toggleHomeView }}
-          component={MainContainer}
-          options={({ route }) => {
-            let routeTitle = getFocusedRouteNameFromRoute(route) || "Home";
-            let routeIsHome = routeTitle === "Home";
-            return routeIsHome
-              ? {
-                  headerTitle: routeTitle,
-                  headerRight: () => {
-                    const handleToggleHomeViewClick = () => {
-                      if (toggleHomeView === "map") {
-                        setToggleHomeView("list");
-                      } else if (toggleHomeView === "list") {
-                        setToggleHomeView("map");
-                      }
-                      Alert.alert(toggleHomeView);
-                    };
-                    return (
-                      <Ionicons
-                        name={toggleHomeView === "map" ? "globe" : "list"}
-                        size={25}
-                        color="black"
-                        onPress={() => handleToggleHomeViewClick()}
-                      />
-                    );
-                  },
-                }
-              : {
-                  headerTitle: routeTitle,
-                };
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Start"
+            component={Start}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpPartOne"
+            component={SignUpPartOne}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpPartTwo"
+            component={SignUpPartTwo}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpPartThree"
+            component={SignUpPartThree}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SignUpPartFour"
+            component={SignUpPartFour}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Welcome"
+            component={Welcome}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            initialParams={{ toggleHomeView }}
+            component={MainContainer}
+            options={({ route }) => {
+              let routeTitle = getFocusedRouteNameFromRoute(route) || "Home";
+              let routeIsHome = routeTitle === "Home";
+              return routeIsHome
+                ? {
+                    headerTitle: routeTitle,
+                    headerRight: () => {
+                      const handleToggleHomeViewClick = () => {
+                        if (toggleHomeView === "map") {
+                          setToggleHomeView("list");
+                        } else if (toggleHomeView === "list") {
+                          setToggleHomeView("map");
+                        }
+                        Alert.alert(toggleHomeView);
+                      };
+                      return (
+                        <Ionicons
+                          name={toggleHomeView === "map" ? "globe" : "list"}
+                          size={25}
+                          color="black"
+                          onPress={() => handleToggleHomeViewClick()}
+                        />
+                      );
+                    },
+                  }
+                : {
+                    headerTitle: routeTitle,
+                  };
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
