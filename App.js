@@ -16,7 +16,10 @@ import Start from "./components/Start";
 import Login from "./components/Login";
 import SignUpPartOne from "./components/SignUpPartOne";
 import SignUpPartTwo from "./components/SignUpPartTwo";
-/* import Map from "./components/Map";
+import SignUpPartThree from "./components/SignUpPartThree";
+import SignUpPartFour from "./components/SignUpPartFour";
+import Welcome from "./components/Welcome";
+import Map from "./components/Map";
 import Chat from "./components/Chat";
 import Profile from "./components/Profile";
 import Favorites from "./components/Favorites";
@@ -35,28 +38,14 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Start"
-          component={Start}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUpPartOne"
-          component={SignUpPartOne}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SignUpPartTwo"
-          component={SignUpPartTwo}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Home"
+        <Stack.Screen name="Start" component={Start} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUpPartOne" component={SignUpPartOne} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUpPartTwo" component={SignUpPartTwo} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUpPartThree" component={SignUpPartThree} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUpPartFour" component={SignUpPartFour} options={{ headerShown: false }} />
+        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+        <Stack.Screen name="Home"
           initialParams={{ toggleHomeView }}
           component={MainContainer}
           options={({ route }) => {
