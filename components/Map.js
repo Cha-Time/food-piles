@@ -12,6 +12,8 @@ import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { allDonors } from "../Seed";
 import * as geolib from "geolib";
+import { useDispatch, useSelector } from "react-redux";
+import { createselector } from "reselect";
 
 export const Map = ({ route, navigation }) => {
   console.log("hey");

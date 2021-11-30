@@ -10,12 +10,11 @@ export const setHomeView = (newView) => {
   };
 };
 
-/* export const getHomeView = (view) => {
+export const getHomeView = () => {
   return {
     type: GET_HOME_VIEW,
-    view,
   };
-}; */
+};
 
 // Thunks
 
@@ -27,7 +26,7 @@ export default function homepageViewReducer(state = initialState, action) {
     case SET_HOME_VIEW:
       return { ...state, homepageView: action.newView };
     case GET_HOME_VIEW:
-      return state;
+      return "shit on me";
     default:
       return state;
   }
