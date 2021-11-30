@@ -8,6 +8,7 @@ import {
   getFocusedRouteNameFromRoute,
 } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useDispatch, useSelector } from "react-redux";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,12 +27,9 @@ import Favorites from "./components/Favorites";
 import List from "./components/List";
 import MainContainer from "./components/MainContainer";
 
-// import the store
+// import the storer
 import { Provider } from "react-redux";
 import store from "./store";
-
-function HomeToggle() {}
-
 function App() {
   enableScreens();
 
