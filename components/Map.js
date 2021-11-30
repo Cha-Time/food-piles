@@ -14,7 +14,7 @@ import * as geolib from "geolib";
 
 export const Map = ({ navigation }) => {
   const [location, setLocation] = useState({
-    coords: { latitude: 0, longitude: 0 },
+    coords: { latitude: null, longitude: null },
   });
   const [errorMsg, setErrorMsg] = useState(null);
   const [distance, setDistance] = useState(5);
@@ -54,6 +54,9 @@ export const Map = ({ navigation }) => {
   });
 
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
+  function handleOnPressMap(event) {
+    console.log("Hello New York from our map view");
+  }
   function findMarkers() {
     return nearbyDonors.map((donor) => (
       //creates map markers for nearby donors only
@@ -67,9 +70,7 @@ export const Map = ({ navigation }) => {
       />
     ));
   }
-  function handleOnPressMap(event) {
-    console.log("Hello New York from our map view");
-  }
+
   // now that we have the nearby donors, render them also in list form -- we choose which to render further down
 
   function findList() {
@@ -95,7 +96,7 @@ export const Map = ({ navigation }) => {
 
   function changeView(event) {}
   // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
-  if (location !== null) {
+  if (location.coords.latitude !== null && location.coords.longitude !== null) {
     // is our toggle view state set to map? show us the map
     const toggleView = "map";
     if (toggleView === "map") {
@@ -114,7 +115,9 @@ export const Map = ({ navigation }) => {
           >
             {findMarkers()}
           </MapView>
-          <Text>hello</Text>
+          {/* i was using this to "console log" our location variable: <Text>
+            X {location.coords.latitude} Y {location.coords.longitude}
+          </Text> */}
         </View>
       );
       // is our toggle view state set to list? show us the list instead
