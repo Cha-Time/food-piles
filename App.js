@@ -35,10 +35,26 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen name="Start" component={Start} options={{ headerShown: false }} />
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="SignUpPartOne" component={SignUpPartOne} options={{ headerShown: false }} />
-  <Stack.Screen name="SignUpPartTwo" component={SignUpPartTwo} options={{ headerShown: false }} /> */}
+        <Stack.Screen
+          name="Start"
+          component={Start}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignUpPartOne"
+          component={SignUpPartOne}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SignUpPartTwo"
+          component={SignUpPartTwo}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Home"
           initialParams={{ toggleHomeView }}
@@ -56,6 +72,7 @@ function App() {
                       } else if (toggleHomeView === "list") {
                         setToggleHomeView("map");
                       }
+                      Alert.alert(toggleHomeView);
                     };
                     return (
                       <Ionicons
