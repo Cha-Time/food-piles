@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "seed": "node script/seed.js"
   },
   "dependencies": {
     "@react-native-picker/picker": "^2.2.1",
@@ -17,12 +18,14 @@
     "expo": "^43.0.3",
     "expo-location": "^13.0.4",
     "geolib": "^3.3.3",
+    "pg": "^8.7.1",
     "react": "^17.0.2",
     "react-native": "^0.66.3",
     "react-native-maps": "^0.29.4",
     "react-native-safe-area-context": "^3.3.2",
-    "react-native-screens": "^2.18.1",
-    "react-native-vector-icons": "^9.0.0"
+    "react-native-screens": "^3.9.0",
+    "react-native-vector-icons": "^9.0.0",
+    "sequelize": "^6.12.0-alpha.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

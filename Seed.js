@@ -1,30 +1,4 @@
-export function allDonors() {
-  //   const donors = [
-  //     {
-  //       id: 1,
-  //       name: "Donor",
-  //       latitude: 40.7487128,
-  //       longitude: -73.9859724,
-  //     },
-  //     {
-  //       id: 2,
-  //       name: "Donor",
-  //       latitude: 40.75901,
-  //       longitude: -73.984474,
-  //     },
-  //     {
-  //       id: 3,
-  //       name: "Donor",
-  //       latitude: 40.760503,
-  //       longitude: -74.588886,
-  //     },
-  //     {
-  //       id: 4,
-  //       name: "Donor",
-  //       latitude: 40.61786,
-  //       longitude: -73.972579,
-  //     },
-  //   ];
+function allDonors() {
   const donorsround2 = [
     {
       id: "7e3563b3-aca1-ea11-a812-000d3a111c98",
@@ -220,21 +194,6 @@ export function allDonors() {
         sitetype: "Food Provider",
         phonenumber: "2126652504",
         features: ["Food Pantry"],
-      },
-    },
-    {
-      id: "9109e50a-c7d6-e811-a974-000d3a14431b",
-      label: "Advent Lutheran Church Soup Kitchen",
-      sublabel: "2504 BROADWAY, MANHATTAN (NEW YORK)",
-      latitude: "40.7926887500",
-      longitude: "-73.9727153200",
-      data: {
-        addressid: "ed69929f-c8d6-e811-a975-000d3a144347",
-        addressname: "2504 BROADWAY, MANHATTAN (NEW YORK)",
-        addressentityname: "n311_address",
-        sitetype: "Food Provider",
-        phonenumber: "2126652504",
-        features: ["Soup Kitchen"],
       },
     },
     {
@@ -1470,7 +1429,20 @@ export function allDonors() {
       },
     },
   ];
-  return donorsround2;
+  const updatedDonors = donorsround2.map((donor) => {
+    return {
+      name: donor.label,
+      address: donor.sublabel.split(",")[0],
+      city: donor.sublabel.split(",")[1],
+      state: "NY",
+      zipCode: 10000,
+      phoneNumber: 7777777777,
+      accType: "donor",
+      latitude: donor.latitude,
+      longitude: donor.longitude,
+    };
+  });
+  return updatedDonors;
 }
 
-
+module.exports = allDonors;
