@@ -13,7 +13,9 @@ import { allDonors } from "../Seed";
 import * as geolib from "geolib";
 
 export const Map = ({ navigation }) => {
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState({
+    coords: { latitude: 0, longitude: 0 },
+  });
   const [errorMsg, setErrorMsg] = useState(null);
   const [distance, setDistance] = useState(5);
 
@@ -35,8 +37,8 @@ export const Map = ({ navigation }) => {
   const donors = allDonors();
   const nearbyDonors = donors.filter((donor) => {
     const currentLocation = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
+      latitude: location.coords.latitude || 0,
+      longitude: location.coords.longitude || 0,
     };
 
     const donorLocation = {

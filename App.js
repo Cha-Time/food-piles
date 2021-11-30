@@ -51,7 +51,6 @@ function HomeToggle({ currentRoute }) {
 
 function App() {
   enableScreens();
-  const [toggleView, setToggleView] = useState("map");
   //This navigator holds all pages not included on the tab bar.
   //The main map page with the tab bar is nested as a tab navigator within this stack navigator
   return (
