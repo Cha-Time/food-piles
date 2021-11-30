@@ -2,10 +2,26 @@ const {
   db,
   models: { User, Organization },
 } = require("../server/db");
+const allDonors = require("../Seed");
 
 async function seed() {
   await db.sync({ force: true });
   console.log("db synced");
+
+  console.log(allDonors());
+
+  //batch create users, orgs and their associations
+  allDonors().forEach(async (donor) => {
+    const uniquename = donor.name.slice(0, 2) + donor.latitude.slice(4);
+    let newUser = await User.create({
+      username: uniquename,
+      password: "123456",
+      email: uniquename + "@test.com",
+    });
+    let newOrg = await Organization.create(donor);
+
+    newUser.setOrganization(newOrg);
+  });
 
   //Create some Users
   const tom = await User.create({
