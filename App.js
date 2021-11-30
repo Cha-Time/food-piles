@@ -23,34 +23,13 @@ import Favorites from "./components/Favorites";
 import List from "./components/List"; */
 import MainContainer from "./components/MainContainer";
 
-function HomeToggle({ currentRoute }) {
-  let MyRoute = currentRoute || "Home";
-  const createTwoButtonAlert = () =>
-    Alert.alert("Alert Title", "My Alert Msg", [
-      {
-        text: "Cancel",
-        onPress: () => console.log("Cancel Pressed"),
-        style: "cancel",
-      },
-      { text: "OK", onPress: () => console.log("OK Pressed") },
-    ]);
-
-  if (MyRoute === "Home") {
-    return (
-      <Ionicons
-        name="list"
-        size={25}
-        color="black"
-        onPress={() => createTwoButtonAlert()}
-      />
-    );
-  } else {
-    return <View></View>;
-  }
-}
+function HomeToggle() {}
 
 function App() {
   enableScreens();
+
+  const [toggleHomeView, setToggleHomeView] = useState("map");
+
   //This navigator holds all pages not included on the tab bar.
   //The main map page with the tab bar is nested as a tab navigator within this stack navigator
   return (
@@ -63,12 +42,34 @@ function App() {
         <Stack.Screen
           name="Home"
           component={MainContainer}
-          options={({ route }) => ({
-            headerTitle: getFocusedRouteNameFromRoute(route),
-            headerRight: () => (
-              <HomeToggle currentRoute={getFocusedRouteNameFromRoute(route)} />
-            ),
-          })}
+          options={({ route }) => {
+            let routeTitle = getFocusedRouteNameFromRoute(route) || "Home";
+            let routeIsHome = routeTitle === "Home";
+            return routeIsHome
+              ? {
+                  headerTitle: routeTitle,
+                  headerRight: () => {
+                    const handleToggleHomeViewClick = () => {
+                      if (toggleHomeView === "map") {
+                        setToggleHomeView("list");
+                      } else if (toggleHomeView === "list") {
+                        setToggleHomeView("map");
+                      }
+                    };
+                    return (
+                      <Ionicons
+                        name={toggleHomeView === "map" ? "globe" : "list"}
+                        size={25}
+                        color="black"
+                        onPress={() => handleToggleHomeViewClick()}
+                      />
+                    );
+                  },
+                }
+              : {
+                  headerTitle: routeTitle,
+                };
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
