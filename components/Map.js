@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -13,6 +14,7 @@ import { allDonors } from "../Seed";
 import * as geolib from "geolib";
 
 export const Map = ({ route, navigation }) => {
+  console.log("hey");
   const [location, setLocation] = useState({
     coords: { latitude: null, longitude: null },
   });
@@ -99,6 +101,7 @@ export const Map = ({ route, navigation }) => {
   if (location.coords.latitude !== null && location.coords.longitude !== null) {
     // is our toggle view state set to map? show us the map
     const toggleView = route.params.toggleHomeView;
+
     if (toggleView === "map") {
       return (
         <View style={styles.container}>

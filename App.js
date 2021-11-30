@@ -26,6 +26,9 @@ import Favorites from "./components/Favorites";
 import List from "./components/List";
 import MainContainer from "./components/MainContainer";
 
+// import the store
+import store from "./store";
+
 function HomeToggle() {}
 
 function App() {
