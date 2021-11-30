@@ -12,7 +12,7 @@ import * as Location from "expo-location";
 import { allDonors } from "../Seed";
 import * as geolib from "geolib";
 
-export const Map = ({ navigation }) => {
+export const Map = ({ route, navigation }) => {
   const [location, setLocation] = useState({
     coords: { latitude: null, longitude: null },
   });
@@ -98,7 +98,7 @@ export const Map = ({ navigation }) => {
   // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
   if (location.coords.latitude !== null && location.coords.longitude !== null) {
     // is our toggle view state set to map? show us the map
-    const toggleView = "map";
+    const toggleView = route.params.toggleHomeView;
     if (toggleView === "map") {
       return (
         <View style={styles.container}>
@@ -123,6 +123,12 @@ export const Map = ({ navigation }) => {
       // is our toggle view state set to list? show us the list instead
     } else if (toggleView === "list") {
       return <ScrollView style={styles.container}>{findList()}</ScrollView>;
+    } else {
+      return (
+        <View>
+          <Text>Receiving list view choice...</Text>
+        </View>
+      );
     }
     // no location from phone yet? just show loading....
   } else {

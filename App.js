@@ -41,6 +41,7 @@ function App() {
   <Stack.Screen name="SignUpPartTwo" component={SignUpPartTwo} options={{ headerShown: false }} /> */}
         <Stack.Screen
           name="Home"
+          initialParams={{ toggleHomeView }}
           component={MainContainer}
           options={({ route }) => {
             let routeTitle = getFocusedRouteNameFromRoute(route) || "Home";
