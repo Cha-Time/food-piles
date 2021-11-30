@@ -11,6 +11,7 @@ import Start from './components/Start';
 import Login from "./components/Login";
 import SignUpPartOne from "./components/SignUpPartOne";
 import SignUpPartTwo from "./components/SignUpPartTwo";
+import SignUpPartThree from "./components/SignUpPartThree";
 import Map from "./components/Map";
 import Chat from "./components/Chat";
 import Profile from "./components/Profile";
@@ -29,6 +30,7 @@ function App() {
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="SignUpPartOne" component={SignUpPartOne} options={{ headerShown: false }} />
         <Stack.Screen name="SignUpPartTwo" component={SignUpPartTwo} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUpPartThree" component={SignUpPartThree} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={MainContainer} options={{ headerShown: false }} />
         <Stack.Screen name="List" component={List} options={{ headerShown: false }} />
       </Stack.Navigator>
