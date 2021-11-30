@@ -1,9 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
+// import thunkMiddleware from "redux-thunk";
+// import { composeWithDevTools } from "redux-devtools-extension";
 // import { createLogger } from "redux-logger";
 // ^^ StackOverFlow: Avoid to use this logger it causes lots of issues, like performance. Use react-native debugger for logging redux. –
-
-import thunkMiddleware from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
 
 // import auth from "./auth";
 // import users from "./users";

@@ -20,12 +20,15 @@ export const setHomeView = (newView) => {
 // Thunks
 
 //Reducer
-const intialState = "";
-export default function pageViewsReducer(state = initialState, action) {
+const initialState = { homepageView: "" };
+
+export default function homepageViewReducer(state = initialState, action) {
   switch (action.type) {
     case SET_HOME_VIEW:
-      return action.newView;
+      return { ...state, homepageView: action.newView };
     case GET_HOME_VIEW:
+      return state;
+    default:
       return state;
   }
 }
