@@ -67,8 +67,6 @@ export const Map = ({ navigation }) => {
     console.log("Hello New York");
   }
 
-  function changeView(event) {}
-
   if (location !== null) {
     return (
       <View style={styles.container}>
