@@ -1,1 +1,1 @@
-web: npx serve web-build
+web: npm run start:heroku

@@ -13,6 +13,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "seed": "node script/seed.js",
+    "start:heroku": "node server",
     "build": "expo build:web"
   },
   "dependencies": {
