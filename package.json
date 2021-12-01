@@ -13,8 +13,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "seed": "node script/seed.js",
-    "build": "expo build:web",
-    "start:heroku": "node server"
+    "build": "expo build:web"
   },
   "dependencies": {
     "@react-native-picker/picker": "^2.2.1",
