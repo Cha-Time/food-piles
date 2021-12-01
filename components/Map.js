@@ -5,15 +5,17 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import { allDonors } from "../Seed";
+import allDonors from "../Seed";
 import * as geolib from "geolib";
-import Ionicons from "react-native-vector-icons/Ionicons";
 
-export const Map = ({ navigation }) => {
-  const [location, setLocation] = useState(null);
+export const Map = ({ route, navigation }) => {
+  const [location, setLocation] = useState({
+    coords: { latitude: null, longitude: null },
+  });
   const [errorMsg, setErrorMsg] = useState(null);
   const [distance, setDistance] = useState(5);
 
@@ -31,25 +33,31 @@ export const Map = ({ navigation }) => {
     })();
   }, []);
 
+  // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
+  const donors = allDonors();
+  const nearbyDonors = donors.filter((donor) => {
+    const currentLocation = {
+      latitude: location.coords.latitude || 0,
+      longitude: location.coords.longitude || 0,
+    };
+
+    const donorLocation = {
+      latitude: donor.latitude,
+      longitude: donor.longitude,
+    };
+    return geolib.isPointWithinRadius(
+      donorLocation,
+      currentLocation,
+      distance * 1609.34
+      //1609.34 converts meters to miles
+    );
+  });
+
+  // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
+  function handleOnPressMap(event) {
+    console.log("Hello New York from our map view");
+  }
   function findMarkers() {
-    const donors = allDonors();
-    //filters only by donors within search distance
-    const nearbyDonors = donors.filter((donor) => {
-      const currentLocation = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      const donorLocation = {
-        latitude: donor.latitude,
-        longitude: donor.longitude,
-      };
-      return geolib.isPointWithinRadius(
-        donorLocation,
-        currentLocation,
-        distance * 1609.34
-        //1609.34 converts meters to miles
-      );
-    });
     return nearbyDonors.map((donor) => (
       //creates map markers for nearby donors only
       <Marker
@@ -58,44 +66,71 @@ export const Map = ({ navigation }) => {
           latitude: Number(donor.latitude),
           longitude: Number(donor.longitude),
         }}
-        onPress={handleOnPress}
+        onPress={handleOnPressMap}
       />
     ));
   }
 
-  function handleOnPress(event) {
-    console.log("Hello New York");
+  // now that we have the nearby donors, render them also in list form -- we choose which to render further down
+
+  function findList() {
+    return nearbyDonors.map((donor, index) => (
+      <View style={styles.listItem} key={donor.id}>
+        <Text>{donor.label}</Text>
+        <Text>
+          {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
+          {(
+            geolib.getDistance(
+              { latitude: donor.latitude, longitude: donor.longitude },
+              {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+              }
+            ) / 1609.34
+          ).toFixed(1)}
+          mi away
+        </Text>
+      </View>
+    ));
   }
 
-  if (location !== null) {
-    return (
-      <View style={styles.container}>
-        <View style={styles.topBar}>
-          <Text style={styles.headerText}>Browse</Text>
-          <Ionicons
-            name="list"
-            size={35}
-            color="black"
-            onPress={() => {
-              navigation.navigate("List");
+  function changeView(event) {}
+  // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
+  if (location.coords.latitude !== null && location.coords.longitude !== null) {
+    // is our toggle view state set to map? show us the map
+    const toggleView = route.params.toggleHomeView;
+    if (toggleView === "map") {
+      return (
+        <View style={styles.container}>
+          <MapView
+            style={styles.map}
+            provider={PROVIDER_GOOGLE}
+            showsUserLocation
+            initialRegion={{
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
             }}
-          />
+          >
+            {findMarkers()}
+          </MapView>
+          {/* i was using this to "console log" our location variable: <Text>
+            X {location.coords.latitude} Y {location.coords.longitude}
+          </Text> */}
         </View>
-        <MapView
-          style={styles.map}
-          provider={PROVIDER_GOOGLE}
-          showsUserLocation
-          initialRegion={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          {findMarkers()}
-        </MapView>
-      </View>
-    );
+      );
+      // is our toggle view state set to list? show us the list instead
+    } else if (toggleView === "list") {
+      return <ScrollView style={styles.container}>{findList()}</ScrollView>;
+    } else {
+      return (
+        <View>
+          <Text>Receiving list view choice...</Text>
+        </View>
+      );
+    }
+    // no location from phone yet? just show loading....
   } else {
     return (
       <View>
@@ -108,23 +143,19 @@ export const Map = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 0,
   },
   map: {
     flex: 1,
     position: "absolute",
-    height: "90%",
+    height: "100%",
     width: "100%",
-    marginTop: 50,
+    marginTop: 0,
   },
-  topBar: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  headerText: {
-    fontSize: 30,
-    fontWeight: "bold",
+  listItem: {
+    padding: "5%",
+    borderColor: "gray",
+    borderWidth: 0.5,
   },
 });
 
