@@ -44,11 +44,7 @@ const MainContainer = ({ route, navigation }) => {
       })}
     >
       {/*These are all of the tabs on the homepage navbar */}
-      <Tab.Screen
-        name={"Home"}
-        component={Map}
-        initialParams={{ toggleHomeView: route.params.toggleHomeView }}
-      />
+      <Tab.Screen name={"Home"} component={Map} />
       <Tab.Screen name="Favorites" component={Favorites} />
       <Tab.Screen name="Chat" component={Chat} />
       <Tab.Screen name="Profile" component={Profile} />

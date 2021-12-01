@@ -30,6 +30,8 @@ import MainContainer from "./components/MainContainer";
 // import the storer
 import { Provider } from "react-redux";
 import store from "./store";
+import { setHomeView } from "./store/homepageView";
+
 function App() {
   enableScreens();
 
@@ -78,7 +80,6 @@ function App() {
           />
           <Stack.Screen
             name="Home"
-            initialParams={{ toggleHomeView }}
             component={MainContainer}
             options={({ route }) => {
               let routeTitle = getFocusedRouteNameFromRoute(route) || "Home";
@@ -87,17 +88,24 @@ function App() {
                 ? {
                     headerTitle: routeTitle,
                     headerRight: () => {
+                      const dispatch = useDispatch();
+                      const pageViewStore = useSelector(
+                        (state) => state.homepageView
+                      );
                       const handleToggleHomeViewClick = () => {
-                        if (toggleHomeView === "map") {
-                          setToggleHomeView("list");
-                        } else if (toggleHomeView === "list") {
-                          setToggleHomeView("map");
+                        if (pageViewStore.toggleView === "map") {
+                          dispatch(setHomeView("list"));
+                        } else if (pageViewStore.toggleView === "list") {
+                          dispatch(setHomeView("map"));
                         }
-                        Alert.alert(toggleHomeView);
                       };
                       return (
                         <Ionicons
-                          name={toggleHomeView === "map" ? "globe" : "list"}
+                          name={
+                            pageViewStore.toggleView === "map"
+                              ? "list"
+                              : "globe"
+                          }
                           size={25}
                           color="black"
                           onPress={() => handleToggleHomeViewClick()}
