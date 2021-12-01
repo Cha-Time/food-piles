@@ -10,14 +10,15 @@ import {
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import allDonors from "../Seed";
 import * as geolib from "geolib";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { fetchOrganizations } from "../store/MapData";
 
 export const Map = ({ route, navigation }) => {
-  /* const fromTheState = useSelector(
-    (store) => store.homepageView.state.homepageView
-  ); */
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.mapData);
+
   const [location, setLocation] = useState({
     coords: { latitude: null, longitude: null },
   });
@@ -39,30 +40,31 @@ export const Map = ({ route, navigation }) => {
   }, []);
 
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
-  const donors = allDonors();
-  const nearbyDonors = donors.filter((donor) => {
-    const currentLocation = {
-      latitude: location.coords.latitude || 0,
-      longitude: location.coords.longitude || 0,
-    };
-
-    const donorLocation = {
-      latitude: donor.latitude,
-      longitude: donor.longitude,
-    };
-    return geolib.isPointWithinRadius(
-      donorLocation,
-      currentLocation,
-      distance * 1609.34
-      //1609.34 converts meters to miles
-    );
-  });
-
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
   function handleOnPressMap(event) {
     console.log("Hello New York from our map view");
   }
   function findMarkers() {
+    dispatch(fetchOrganizations());
+    const newDonors = useSelector((state) => state);
+    console.log(newDonors);
+    const nearbyDonors = newDonors.filter((donor) => {
+      const currentLocation = {
+        latitude: location.coords.latitude || 0,
+        longitude: location.coords.longitude || 0,
+      };
+
+      const donorLocation = {
+        latitude: donor.latitude,
+        longitude: donor.longitude,
+      };
+      return geolib.isPointWithinRadius(
+        donorLocation,
+        currentLocation,
+        distance * 1609.34
+        //1609.34 converts meters to miles
+      );
+    });
     return nearbyDonors.map((donor) => (
       //creates map markers for nearby donors only
       <Marker
@@ -120,7 +122,7 @@ export const Map = ({ route, navigation }) => {
               longitudeDelta: 0.0421,
             }}
           >
-            {findMarkers()}
+            {/* {findMarkers()} */}
           </MapView>
           {/* i was using this to "console log" our location variable: <Text>
             X {location.coords.latitude} Y {location.coords.longitude}
