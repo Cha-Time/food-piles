@@ -1,4 +1,6 @@
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import axios from 'axios'
+import thunkMiddleware from 'redux-thunk'
 
 import homepageViewReducer from "./homepageView";
 import mapDataReducer from "./MapData";
@@ -8,6 +10,8 @@ const reducer = combineReducers({
   mapData: mapDataReducer,
 });
 
-const store = createStore(reducer);
+const middleware = applyMiddleware(thunkMiddleware.withExtraArgument({ axios }))
+
+const store = createStore(reducer, middleware);
 
 export default store;

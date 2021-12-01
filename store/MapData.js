@@ -12,10 +12,10 @@ export const setOrganizations = (organizations) => ({
 ////// Async Creators
 export const fetchOrganizations = () => {
   return async (dispatch) => {
-    const { data: orgs } = await Axios.get(
+    const res = await Axios.get(
       "https://foodpiles.herokuapp.com/api/organizations"
     );
-    return setOrganizations(orgs);
+    dispatch(setOrganizations(res.data));
   };
 };
 

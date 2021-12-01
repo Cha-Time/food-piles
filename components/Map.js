@@ -14,19 +14,20 @@ import * as geolib from "geolib";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { fetchOrganizations } from "../store/MapData";
+import { connect } from "react-redux"
 
-export const Map = ({ route, navigation }) => {
-  const dispatch = useDispatch();
-  const state = useSelector((state) => state.mapData);
+export const Map = (props) => {
 
   const [location, setLocation] = useState({
     coords: { latitude: null, longitude: null },
   });
   const [errorMsg, setErrorMsg] = useState(null);
   const [distance, setDistance] = useState(5);
+  const [donorsss, setDonors] = useState([]);
 
   useEffect(() => {
     (async () => {
+      
       //gets permissions for app location use
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -36,6 +37,7 @@ export const Map = ({ route, navigation }) => {
       //sets your current position
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+      setDonors(await props.fetchOrgs()) 
     })();
   }, []);
 
@@ -45,9 +47,7 @@ export const Map = ({ route, navigation }) => {
     console.log("Hello New York from our map view");
   }
   function findMarkers() {
-    dispatch(fetchOrganizations());
-    const newDonors = useSelector((state) => state);
-    console.log(newDonors);
+    const newDonors = props.mapData
     const nearbyDonors = newDonors.filter((donor) => {
       const currentLocation = {
         latitude: location.coords.latitude || 0,
@@ -105,7 +105,7 @@ export const Map = ({ route, navigation }) => {
   // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
   if (location.coords.latitude !== null && location.coords.longitude !== null) {
     // is our toggle view state set to map? show us the map
-    const toggleView = route.params.toggleHomeView;
+    const toggleView = 'map';
 
     if (toggleView === "map") {
       /* const outputtest = useSelector((state) => state.homepageView); */
@@ -122,7 +122,7 @@ export const Map = ({ route, navigation }) => {
               longitudeDelta: 0.0421,
             }}
           >
-            {/* {findMarkers()} */}
+            {findMarkers()}
           </MapView>
           {/* i was using this to "console log" our location variable: <Text>
             X {location.coords.latitude} Y {location.coords.longitude}
@@ -150,6 +150,20 @@ export const Map = ({ route, navigation }) => {
   }
 };
 
+const mapState = (state) => {
+  return {
+    mapData: state.mapData
+  }
+}
+
+const mapDispatch = (dispatch) => {
+  return {
+    fetchOrgs: () => dispatch(fetchOrganizations())
+  }
+}
+
+export default connect(mapState, mapDispatch)(Map)
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -168,5 +182,3 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
   },
 });
-
-export default Map;
