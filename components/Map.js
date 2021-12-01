@@ -15,9 +15,9 @@ import * as geolib from "geolib";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Map = ({ route, navigation }) => {
-  const fromTheState = useSelector(
+  /* const fromTheState = useSelector(
     (store) => store.homepageView.state.homepageView
-  );
+  ); */
   const [location, setLocation] = useState({
     coords: { latitude: null, longitude: null },
   });
@@ -124,8 +124,8 @@ export const Map = ({ route, navigation }) => {
           </MapView>
           {/* i was using this to "console log" our location variable: <Text>
             X {location.coords.latitude} Y {location.coords.longitude}
-          </Text>  */}
-          <Text>{fromTheState}</Text>
+          </Text>  
+          <Text>{fromTheState}</Text>*/}
         </View>
       );
       // is our toggle view state set to list? show us the list instead
