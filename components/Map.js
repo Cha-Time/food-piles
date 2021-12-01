@@ -14,9 +14,10 @@ import * as geolib from "geolib";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { fetchOrganizations } from "../store/MapData";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
 
 export const Map = (props) => {
+  const pageViewStore = useSelector((state) => state.homepageView);
 
   const [location, setLocation] = useState({
     coords: { latitude: null, longitude: null },
@@ -27,7 +28,6 @@ export const Map = (props) => {
 
   useEffect(() => {
     (async () => {
-      
       //gets permissions for app location use
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -37,7 +37,7 @@ export const Map = (props) => {
       //sets your current position
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      setDonors(await props.fetchOrgs()) 
+      setDonors(await props.fetchOrgs());
     })();
   }, []);
 
@@ -46,25 +46,27 @@ export const Map = (props) => {
   function handleOnPressMap(event) {
     console.log("Hello New York from our map view");
   }
-  function findMarkers() {
-    const newDonors = props.mapData
-    const nearbyDonors = newDonors.filter((donor) => {
-      const currentLocation = {
-        latitude: location.coords.latitude || 0,
-        longitude: location.coords.longitude || 0,
-      };
 
-      const donorLocation = {
-        latitude: donor.latitude,
-        longitude: donor.longitude,
-      };
-      return geolib.isPointWithinRadius(
-        donorLocation,
-        currentLocation,
-        distance * 1609.34
-        //1609.34 converts meters to miles
-      );
-    });
+  const newDonors = props.mapData;
+  const nearbyDonors = newDonors.filter((donor) => {
+    const currentLocation = {
+      latitude: location.coords.latitude || 0,
+      longitude: location.coords.longitude || 0,
+    };
+
+    const donorLocation = {
+      latitude: donor.latitude,
+      longitude: donor.longitude,
+    };
+    return geolib.isPointWithinRadius(
+      donorLocation,
+      currentLocation,
+      distance * 1609.34
+      //1609.34 converts meters to miles
+    );
+  });
+
+  function findMarkers() {
     return nearbyDonors.map((donor) => (
       //creates map markers for nearby donors only
       <Marker
@@ -83,7 +85,7 @@ export const Map = (props) => {
   function findList() {
     return nearbyDonors.map((donor, index) => (
       <View style={styles.listItem} key={donor.id}>
-        <Text>{donor.label}</Text>
+        <Text>{donor.name}</Text>
         <Text>
           {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
           {(
@@ -105,10 +107,8 @@ export const Map = (props) => {
   // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
   if (location.coords.latitude !== null && location.coords.longitude !== null) {
     // is our toggle view state set to map? show us the map
-    const toggleView = 'map';
 
-    if (toggleView === "map") {
-      /* const outputtest = useSelector((state) => state.homepageView); */
+    if (pageViewStore.toggleView === "map") {
       return (
         <View style={styles.container}>
           <MapView
@@ -124,14 +124,10 @@ export const Map = (props) => {
           >
             {findMarkers()}
           </MapView>
-          {/* i was using this to "console log" our location variable: <Text>
-            X {location.coords.latitude} Y {location.coords.longitude}
-          </Text>  
-          <Text>{fromTheState}</Text>*/}
         </View>
       );
       // is our toggle view state set to list? show us the list instead
-    } else if (toggleView === "list") {
+    } else if (pageViewStore.toggleView === "list") {
       return <ScrollView style={styles.container}>{findList()}</ScrollView>;
     } else {
       return (
@@ -152,17 +148,17 @@ export const Map = (props) => {
 
 const mapState = (state) => {
   return {
-    mapData: state.mapData
-  }
-}
+    mapData: state.mapData,
+  };
+};
 
 const mapDispatch = (dispatch) => {
   return {
-    fetchOrgs: () => dispatch(fetchOrganizations())
-  }
-}
+    fetchOrgs: () => dispatch(fetchOrganizations()),
+  };
+};
 
-export default connect(mapState, mapDispatch)(Map)
+export default connect(mapState, mapDispatch)(Map);
 
 const styles = StyleSheet.create({
   container: {
