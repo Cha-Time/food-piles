@@ -29,9 +29,9 @@ export const me = () => async (dispatch) => {
 };
 
 export const authenticate =
-  (username, password) => async (dispatch) => {
+  (username, password, method) => async (dispatch) => {
     try {
-      const res = await axios.post(`https://foodpiles.herokuapp.com/auth/login`, {
+      const res = await axios.post(`https://foodpiles.herokuapp.com/auth/${method}`, {
         username,
         password
       });
