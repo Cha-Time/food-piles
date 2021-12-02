@@ -16,8 +16,12 @@ import axios from "axios";
 import { fetchOrganizations } from "../store/MapData";
 import { connect } from "react-redux";
 
-export const Map = (props) => {
+export const Map = ({ navigation }) => {
+  console.log("poopoo");
   const pageViewStore = useSelector((state) => state.homepageView);
+
+  // dispatch time?
+  const dispatch = useDispatch();
 
   const [location, setLocation] = useState({
     coords: { latitude: null, longitude: null },
@@ -37,17 +41,18 @@ export const Map = (props) => {
       //sets your current position
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      setDonors(await props.fetchOrgs());
+      setDonors(await dispatch(fetchOrganizations()));
     })();
   }, []);
 
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
-  function handleOnPressMap(event) {
+  function handleOnPressMap(markerOrgId) {
     console.log("Hello New York from our map view");
+    navigation.navigate("OrgView", { orgId: markerOrgId });
   }
 
-  const newDonors = props.mapData;
+  const newDonors = useSelector((state) => state.mapData);
   const nearbyDonors = newDonors.filter((donor) => {
     const currentLocation = {
       latitude: location.coords.latitude || 0,
@@ -75,7 +80,7 @@ export const Map = (props) => {
           latitude: Number(donor.latitude),
           longitude: Number(donor.longitude),
         }}
-        onPress={handleOnPressMap}
+        onPress={() => handleOnPressMap(donor.id)}
       />
     ));
   }
@@ -145,20 +150,7 @@ export const Map = (props) => {
     );
   }
 };
-
-const mapState = (state) => {
-  return {
-    mapData: state.mapData,
-  };
-};
-
-const mapDispatch = (dispatch) => {
-  return {
-    fetchOrgs: () => dispatch(fetchOrganizations()),
-  };
-};
-
-export default connect(mapState, mapDispatch)(Map);
+export default Map;
 
 const styles = StyleSheet.create({
   container: {
