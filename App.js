@@ -26,6 +26,7 @@ import Profile from "./components/Profile";
 import Favorites from "./components/Favorites";
 import List from "./components/List";
 import MainContainer from "./components/MainContainer";
+import OrganizationView from "./components/OrganizationView";
 
 // import the storer
 import { Provider } from "react-redux";
@@ -34,8 +35,6 @@ import { setHomeView } from "./store/homepageView";
 
 function App() {
   enableScreens();
-
-  const [toggleHomeView, setToggleHomeView] = useState("map");
 
   //This navigator holds all pages not included on the tab bar.
   //The main map page with the tab bar is nested as a tab navigator within this stack navigator
@@ -118,6 +117,7 @@ function App() {
                   };
             }}
           />
+          <Stack.Screen name="OrgView" component={OrganizationView} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
