@@ -2,10 +2,6 @@
   "name": "foodpiles",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
-  "engines": {
-    "node": "16.x",
-    "npm": "8.x"
-  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
