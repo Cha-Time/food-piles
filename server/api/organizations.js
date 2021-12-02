@@ -15,3 +15,17 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.get("/:orgId", async (req, res, next) => {
+  try {
+    const organizations = await Organization.findOne({
+      where: {
+        id: req.params.orgId,
+      },
+      include: User,
+    });
+    res.json(organizations);
+  } catch (error) {
+    next(error);
+  }
+});
