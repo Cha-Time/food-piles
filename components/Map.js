@@ -17,7 +17,6 @@ import { fetchOrganizations } from "../store/MapData";
 import { connect } from "react-redux";
 
 export const Map = ({ navigation }) => {
-  console.log("poopoo");
   const pageViewStore = useSelector((state) => state.homepageView);
 
   // dispatch time?
@@ -47,9 +46,8 @@ export const Map = ({ navigation }) => {
 
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
-  function handleOnPressMap(markerOrgId) {
-    console.log("Hello New York from our map view");
-    navigation.navigate("OrgView", { orgId: markerOrgId });
+  function handlePressToOrg(orgId) {
+    navigation.navigate("OrgView", { orgId });
   }
 
   const newDonors = useSelector((state) => state.mapData);
@@ -80,7 +78,7 @@ export const Map = ({ navigation }) => {
           latitude: Number(donor.latitude),
           longitude: Number(donor.longitude),
         }}
-        onPress={() => handleOnPressMap(donor.id)}
+        onPress={() => handlePressToOrg(donor.id)}
       />
     ));
   }
@@ -90,7 +88,9 @@ export const Map = ({ navigation }) => {
   function findList() {
     return nearbyDonors.map((donor, index) => (
       <View style={styles.listItem} key={donor.id}>
-        <Text>{donor.name}</Text>
+        <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
+          {donor.name}
+        </Text>
         <Text>
           {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
           {(
@@ -156,6 +156,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 0,
+  },
+  title: {
+    fontWeight: "bold",
   },
   map: {
     flex: 1,
