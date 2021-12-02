@@ -11,7 +11,7 @@ export const Login = ({ navigation }) => {
     const [password, setPassword] = useState(null);
 
     async function handleSubmit() {
-        await dispatch(authenticate(username, password, 'login'))
+        await dispatch(authenticate({username, password}, 'login'))
         navigation.navigate('Welcome')
     }
 
