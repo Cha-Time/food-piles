@@ -31,7 +31,7 @@ const Organization = db.define("organization", {
     },
   },
   zipCode: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
