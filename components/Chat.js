@@ -10,7 +10,7 @@ export const Chat = props => {
       await props.getMessages();
     })();
   }, []);
-  // console.log('----->', props);
+  console.log('----->', props);
   console.log('----->', props.messages);
 
   return (
