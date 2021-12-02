@@ -29,13 +29,14 @@ export const me = () => async (dispatch) => {
 };
 
 export const authenticate =
-  (username, password, method, email) => async (dispatch) => {
+  (username, password) => async (dispatch) => {
     try {
-      const res = await axios.post(`/auth/${method}`, {
+      console.log(username, password)
+      const res = await axios.post(`https://foodpiles.herokuapp.com/auth/login`, {
         username,
-        password,
-        email,
+        password
       });
+      console.log(res)
       await AsyncStorage.setItem(TOKEN, res.data.token);
       dispatch(me());
     } catch (authError) {

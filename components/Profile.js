@@ -1,13 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { me } from '../store/auth';
+import { connect, useDispatch, useSelector } from "react-redux";
 
-export const Profile = () => {
+export const Profile = (props) => {
+
+  const [user, setUser] = useState(props.user)
+  // console.log(props)
+
   return (
     <View style={styles.container}>
-      <Text>Profile component is a work in progress!</Text>
+      <Text>{user.username}</Text>
     </View>
   );
 };
+
+const mapState = (state) => {
+  return {
+    user: state.auth
+  }
+}
+
+export default connect(mapState)(Profile)
 
 const styles = StyleSheet.create({
   container: {
@@ -16,4 +30,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+
