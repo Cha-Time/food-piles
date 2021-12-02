@@ -18,18 +18,3 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
-
-router.get("/:orgId", async (req, res, next) => {
-  try {
-    const targetCharity = await Organization.findOne({
-      where: {
-        accType: "charity",
-        id: req.params.orgId,
-      },
-      include: User,
-    });
-    res.json(targetCharity);
-  } catch (error) {
-    next(error);
-  }
-});
