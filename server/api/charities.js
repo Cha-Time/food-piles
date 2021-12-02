@@ -7,10 +7,13 @@ module.exports = router;
 
 router.get("/", async (req, res, next) => {
   try {
-    const organizations = await Organization.findAll({
+    const charities = await Organization.findAll({
+      where: {
+        accType: "charity",
+      },
       include: User,
     });
-    res.json(organizations);
+    res.json(charities);
   } catch (error) {
     next(error);
   }
@@ -18,13 +21,14 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:orgId", async (req, res, next) => {
   try {
-    const targetOrg = await Organization.findOne({
+    const targetCharity = await Organization.findOne({
       where: {
+        accType: "charity",
         id: req.params.orgId,
       },
       include: User,
     });
-    res.json(targetOrg);
+    res.json(targetCharity);
   } catch (error) {
     next(error);
   }
