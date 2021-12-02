@@ -8,16 +8,18 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
+
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import * as geolib from "geolib";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { fetchOrganizations } from "../store/MapData";
-import { connect } from "react-redux";
 
-export const Map = (props) => {
+export const Map = ({ navigation }) => {
   const pageViewStore = useSelector((state) => state.homepageView);
+
+  // dispatch time?
+  const dispatch = useDispatch();
 
   const [location, setLocation] = useState({
     coords: { latitude: null, longitude: null },
@@ -37,17 +39,17 @@ export const Map = (props) => {
       //sets your current position
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      setDonors(await props.fetchOrgs());
+      setDonors(await dispatch(fetchOrganizations()));
     })();
   }, []);
 
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
-  function handleOnPressMap(event) {
-    console.log("Hello New York from our map view");
+  function handlePressToOrg(orgId) {
+    navigation.navigate("OrgView", { orgId });
   }
 
-  const newDonors = props.mapData;
+  const newDonors = useSelector((state) => state.mapData);
   const nearbyDonors = newDonors.filter((donor) => {
     const currentLocation = {
       latitude: location.coords.latitude || 0,
@@ -75,7 +77,7 @@ export const Map = (props) => {
           latitude: Number(donor.latitude),
           longitude: Number(donor.longitude),
         }}
-        onPress={handleOnPressMap}
+        onPress={() => handlePressToOrg(donor.id)}
       />
     ));
   }
@@ -85,7 +87,9 @@ export const Map = (props) => {
   function findList() {
     return nearbyDonors.map((donor, index) => (
       <View style={styles.listItem} key={donor.id}>
-        <Text>{donor.name}</Text>
+        <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
+          {donor.name}
+        </Text>
         <Text>
           {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
           {(
@@ -103,7 +107,6 @@ export const Map = (props) => {
     ));
   }
 
-  function changeView(event) {}
   // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
   if (location.coords.latitude !== null && location.coords.longitude !== null) {
     // is our toggle view state set to map? show us the map
@@ -145,25 +148,15 @@ export const Map = (props) => {
     );
   }
 };
-
-const mapState = (state) => {
-  return {
-    mapData: state.mapData,
-  };
-};
-
-const mapDispatch = (dispatch) => {
-  return {
-    fetchOrgs: () => dispatch(fetchOrganizations()),
-  };
-};
-
-export default connect(mapState, mapDispatch)(Map);
+export default Map;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 0,
+  },
+  title: {
+    fontWeight: "bold",
   },
   map: {
     flex: 1,

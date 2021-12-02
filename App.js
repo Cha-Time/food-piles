@@ -15,10 +15,7 @@ const Stack = createNativeStackNavigator();
 //Screens
 import Start from "./components/Start";
 import Login from "./components/Login";
-import SignUpPartOne from "./components/SignUpPartOne";
-import SignUpPartTwo from "./components/SignUpPartTwo";
-import SignUpPartThree from "./components/SignUpPartThree";
-import SignUpPartFour from "./components/SignUpPartFour";
+import SignUp from "./components/SignUp";
 import Welcome from "./components/Welcome";
 import Map from "./components/Map";
 import Chat from "./components/Chat";
@@ -26,6 +23,7 @@ import Profile from "./components/Profile";
 import Favorites from "./components/Favorites";
 import List from "./components/List";
 import MainContainer from "./components/MainContainer";
+import OrganizationView from "./components/OrganizationView";
 
 // import the storer
 import { Provider } from "react-redux";
@@ -34,8 +32,6 @@ import { setHomeView } from "./store/homepageView";
 
 function App() {
   enableScreens();
-
-  const [toggleHomeView, setToggleHomeView] = useState("map");
 
   //This navigator holds all pages not included on the tab bar.
   //The main map page with the tab bar is nested as a tab navigator within this stack navigator
@@ -54,23 +50,8 @@ function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="SignUpPartOne"
-            component={SignUpPartOne}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SignUpPartTwo"
-            component={SignUpPartTwo}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SignUpPartThree"
-            component={SignUpPartThree}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SignUpPartFour"
-            component={SignUpPartFour}
+            name="SignUp"
+            component={SignUp}
             options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -116,6 +97,33 @@ function App() {
                 : {
                     headerTitle: routeTitle,
                   };
+            }}
+          />
+          <Stack.Screen
+            name="OrgView"
+            component={OrganizationView}
+            options={({ route }) => {
+              return {
+                headerTitle: "More Info",
+                headerRight: () => {
+                  const dispatch = useDispatch();
+                  const pageViewStore = useSelector(
+                    (state) => state.homepageView
+                  );
+                  const handleToggleFavorite = () => {
+                    // dispatch(setHomeView("list"));
+                    console.log("toggle");
+                  };
+                  return (
+                    <Ionicons
+                      name="heart"
+                      size={25}
+                      color="red"
+                      onPress={() => handleToggleFavorite()}
+                    />
+                  );
+                },
+              };
             }}
           />
         </Stack.Navigator>
