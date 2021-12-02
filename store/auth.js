@@ -19,7 +19,7 @@ const setAuth = (auth) => ({ type: SET_AUTH, auth });
 export const me = () => async (dispatch) => {
   const token = await AsyncStorage.getItem(TOKEN);
   if (token) {
-    const res = await axios.get("/auth/me", {
+    const res = await axios.get("https://foodpiles.herokuapp.com/auth/me", {
       headers: {
         authorization: token,
       },
@@ -29,15 +29,14 @@ export const me = () => async (dispatch) => {
 };
 
 export const authenticate =
-  (username, password, method, email) => async (dispatch) => {
+  (username, password, method) => async (dispatch) => {
     try {
-      const res = await axios.post(`/auth/${method}`, {
+      const res = await axios.post(`https://foodpiles.herokuapp.com/auth/${method}`, {
         username,
-        password,
-        email,
+        password
       });
       await AsyncStorage.setItem(TOKEN, res.data.token);
-      dispatch(me());
+      await dispatch(me());
     } catch (authError) {
       return dispatch(setAuth({ error: authError }));
     }
