@@ -1,4 +1,4 @@
-function allDonors() {
+function allOrgs() {
   const donors = [
     {
       location_id: "502662",
@@ -25115,4 +25115,4 @@ function allDonors() {
   return updatedCharities.concat(updatedDonors);
 }
 
-module.exports = allDonors;
+module.exports = allOrgs;
