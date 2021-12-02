@@ -8,13 +8,12 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
+
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import * as geolib from "geolib";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { fetchOrganizations } from "../store/MapData";
-import { connect } from "react-redux";
 
 export const Map = ({ navigation }) => {
   const pageViewStore = useSelector((state) => state.homepageView);
@@ -108,7 +107,6 @@ export const Map = ({ navigation }) => {
     ));
   }
 
-  function changeView(event) {}
   // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
   if (location.coords.latitude !== null && location.coords.longitude !== null) {
     // is our toggle view state set to map? show us the map

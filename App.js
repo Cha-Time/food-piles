@@ -117,7 +117,33 @@ function App() {
                   };
             }}
           />
-          <Stack.Screen name="OrgView" component={OrganizationView} />
+          <Stack.Screen
+            name="OrgView"
+            component={OrganizationView}
+            options={({ route }) => {
+              return {
+                headerTitle: "More Info",
+                headerRight: () => {
+                  const dispatch = useDispatch();
+                  const pageViewStore = useSelector(
+                    (state) => state.homepageView
+                  );
+                  const handleToggleFavorite = () => {
+                    // dispatch(setHomeView("list"));
+                    console.log("toggle");
+                  };
+                  return (
+                    <Ionicons
+                      name="heart"
+                      size={25}
+                      color="red"
+                      onPress={() => handleToggleFavorite()}
+                    />
+                  );
+                },
+              };
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
