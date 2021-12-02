@@ -6,7 +6,6 @@ import { connect, useDispatch, useSelector } from "react-redux";
 export const Profile = (props) => {
 
   const [user, setUser] = useState(props.user)
-  // console.log(props)
 
   return (
     <View style={styles.container}>

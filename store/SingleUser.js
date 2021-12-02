@@ -11,7 +11,7 @@ export const setUser = (user) => ({ type: SET_USER, user });
 export const fetchUser = (userId) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
-    const { data: user } = await Axios.get(`/api/users/${userId}`, {
+    const { data: user } = await Axios.get(`https://foodpiles.herokuapp.com/api/users/${userId}`, {
       headers: {
         authorization: token,
       },

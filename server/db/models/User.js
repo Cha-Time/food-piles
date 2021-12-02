@@ -39,7 +39,6 @@ module.exports = User;
 
 User.prototype.correctPassword = function (candidatePwd) {
   //we need to compare the plain version to an encrypted version of the password
-  console.log("correct password")
   return bcrypt.compare(candidatePwd, this.password);
 };
 
@@ -52,9 +51,7 @@ const SALT_ROUNDS = 5;
  * classMethods
  */
 User.authenticate = async function ({ username, password }) {
-  console.log("before user")
   const user = await this.findOne({ where: { username } });
-  console.log('user', user)
   if (!user || !(await user.correctPassword(password))) {
     const error = Error(user, password);
     error.status = 401;
