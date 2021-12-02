@@ -15,10 +15,7 @@ const Stack = createNativeStackNavigator();
 //Screens
 import Start from "./components/Start";
 import Login from "./components/Login";
-import SignUpPartOne from "./components/SignUpPartOne";
-import SignUpPartTwo from "./components/SignUpPartTwo";
-import SignUpPartThree from "./components/SignUpPartThree";
-import SignUpPartFour from "./components/SignUpPartFour";
+import SignUp from "./components/SignUp";
 import Welcome from "./components/Welcome";
 import Map from "./components/Map";
 import Chat from "./components/Chat";
@@ -54,23 +51,8 @@ function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-            name="SignUpPartOne"
-            component={SignUpPartOne}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SignUpPartTwo"
-            component={SignUpPartTwo}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SignUpPartThree"
-            component={SignUpPartThree}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SignUpPartFour"
-            component={SignUpPartFour}
+            name="SignUp"
+            component={SignUp}
             options={{ headerShown: false }}
           />
           <Stack.Screen

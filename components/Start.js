@@ -28,7 +28,7 @@ export const Start = ({ navigation }) => {
         <Button
           title="Sign Up"
           name="signUp"
-          onPress={() => navigation.navigate("SignUpPartOne")}
+          onPress={() => navigation.navigate("SignUp")}
         ></Button>
       </View>
     </View>
