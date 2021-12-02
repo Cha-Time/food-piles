@@ -28,16 +28,16 @@ export const SignUp = ({ navigation }) => {
 
     async function handleSubmit() {
         await dispatch(authenticate({
-            username: 'giraffe',
-            password: '123456',
-            email: 'girf@aol.com',
-            accType: 'donor',
-            name: 'thsean',
-            phoneNumber: '1231234545',
-            address: '123 address rd',
-            city: 'new york',
-            state: 'NY',
-            zipCode: '12345',
+            username,
+            password,
+            email,
+            accType,
+            name,
+            phoneNumber,
+            address,
+            city,
+            state,
+            zipCode,
             latitude: 38.8976763,
             longitude: -77.0365298
         }, 'signup'))
