@@ -23,7 +23,7 @@ export const SignUp = ({ navigation }) => {
     const [description, setDescription] = useState(null);
 
     function handleSubmit() {
-        //create new user here 
+        await dispatch(authenticate(username, password, 'signup'))
         navigation.navigate('Welcome')
     }
 
