@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, StyleSheet, Image, TextInput, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Picker } from '@react-native-picker/picker';
+import { useDispatch, useSelector } from "react-redux";
+import { authenticate } from '../store/auth'
 
 export const SignUp = ({ navigation }) => {
+
+    const dispatch = useDispatch();
 
     ////// Sign Up Part One
     const [part, setPart] = useState('partOne');
@@ -11,19 +15,32 @@ export const SignUp = ({ navigation }) => {
     const [email, setEmail] = useState(null);
 
     ////// Sign Up Part Two
-    const [userType, setUsertype] = useState('Donor');
+    const [accType, setUsertype] = useState('donor');
 
     ////// Sign Up Part Three
     const [name, setName] = useState(null);
-    const [phone, setPhone] = useState(null);
+    const [phoneNumber, setPhone] = useState(null);
     const [address, setAddress] = useState(null);
     const [city, setCity] = useState(null);
-    const [state, setState] = useState(null);
-    const [zip, setZip] = useState(null);
+    const [state, setState] = useState('NY');
+    const [zipCode, setZip] = useState(null);
     const [description, setDescription] = useState(null);
 
-    function handleSubmit() {
-        await dispatch(authenticate(username, password, 'signup'))
+    async function handleSubmit() {
+        await dispatch(authenticate({
+            username: 'giraffe',
+            password: '123456',
+            email: 'girf@aol.com',
+            accType: 'donor',
+            name: 'thsean',
+            phoneNumber: '1231234545',
+            address: '123 address rd',
+            city: 'new york',
+            state: 'NY',
+            zipCode: '12345',
+            latitude: 38.8976763,
+            longitude: -77.0365298
+        }, 'signup'))
         navigation.navigate('Welcome')
     }
 
@@ -49,9 +66,9 @@ export const SignUp = ({ navigation }) => {
             <View style={styles.container} >
                 <Text style={{ textAlign: 'center', fontSize: 20 }}>Who are you?</Text>
                 <View style={{ width: '100%', minHeight: '10%', alignItems: 'center', justifyContent: 'space-between' }} >
-                    <Picker selectedValue={userType} onValueChange={currentSelection => setUsertype(currentSelection)} style={{ backgroundColor: 'whitesmoke', width: '100%' }}>
-                        <Picker.Item label='Donor' value='Donor' style={{}} />
-                        <Picker.Item label='Charity' value='Charity' />
+                    <Picker selectedValue={accType} onValueChange={currentSelection => setUsertype(currentSelection)} style={{ backgroundColor: 'whitesmoke', width: '100%' }}>
+                        <Picker.Item label='Donor' value='donor' style={{}} />
+                        <Picker.Item label='Charity' value='charity' />
                     </Picker>
                 </View>
                 <View style={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
@@ -68,15 +85,16 @@ export const SignUp = ({ navigation }) => {
                     <Text style={{ textAlign: 'center', fontSize: 20 }}>Tell us about yourself.</Text>
                     <View style={{ width: '100%', minHeight: '10%', alignItems: 'center', justifyContent: 'space-between' }} >
                         <TextInput placeholder='Name' value={name} onChangeText={setName} style={[styles.textInput, { marginBottom: '5%' }]} />
-                        <TextInput placeholder='Phone' value={phone} onChangeText={setPhone} style={[styles.textInput, { marginBottom: '5%' }]} />
+                        <TextInput placeholder='Phone' value={phoneNumber} onChangeText={setPhone} style={[styles.textInput, { marginBottom: '5%' }]} />
                         <TextInput placeholder='Address' value={address} onChangeText={setAddress} style={[styles.textInput, { marginBottom: '1%' }]} />
                         <View style={{ display: 'flex', flexDirection: 'row', maxWidth: '75%', minHeight: '10%', maxHeight: '13%', alignItems: 'center', marginBottom: '5%' }}>
                             <TextInput placeholder='City' value={city} onChangeText={setCity} style={[styles.textInput, { marginRight: '1%' }]} />
-                            {/* <Picker selectedValue={state} onValueChange={currentSelection => setState(currentSelection)} style={{ backgroundColor: 'whitesmoke', width: '24%', minHeight: '91%', maxHeight: '13%' }}>
+                            <Picker selectedValue={state} onValueChange={currentSelection => setState(currentSelection)} style={{ backgroundColor: 'whitesmoke', width: '44%', minHeight: '91%', maxHeight: '13%' }}>
+                                <Picker.Item label='NY' value='NY' />
                                 <Picker.Item label='PA' value='PA' />
-                                <Picker.Item label='MD' value='MD' />
-                            </Picker> */}
-
+                                <Picker.Item label='NJ' value='NJ' />
+                            </Picker>
+                            <TextInput placeholder='Zip Code' value={zipCode} onChangeText={setZip} style={[styles.textInput, { marginRight: '1%' }]} />
                         </View>
                         <TextInput placeholder='Description' value={description} onChangeText={setDescription} style={[styles.textInput, { marginBottom: '5%', minHeight: '25%', textAlignVertical: 'top' }]} />
 
