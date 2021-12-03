@@ -21,15 +21,16 @@ router.post("/signup", async (req, res, next) => {
       state: req.body.state,
       zipCode: req.body.zipCode,
       phoneNumber: req.body.phoneNumber,
-      accType: req.body.accType,
       latitude: req.body.latitude,
       longitude: req.body.longitude,
+      accType: req.body.accType,
     });
 
     let newUser = await User.create({
       username: req.body.username,
       password: req.body.password,
       email: req.body.email,
+      accType: req.body.accType,
     });
 
     newUser.setOrganization(newOrg);

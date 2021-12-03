@@ -13,10 +13,11 @@ export const setOrganization = (organization) => ({
 ////// Async Creators
 export const fetchOrganization = (orgId) => {
   return async (dispatch) => {
-    const token = await AsyncStorage.getItem("token");
+    // const token = await AsyncStorage.getItem("token");
     const res = await Axios.get(
       `https://foodpiles.herokuapp.com/api/organizations/${orgId}`
     );
+    console.log(res.data);
     dispatch(setOrganization(res.data));
   };
 };

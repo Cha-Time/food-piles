@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Platform,
   StyleSheet,
@@ -7,16 +7,17 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-} from 'react-native';
+} from "react-native";
 
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
-import * as geolib from 'geolib';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchOrganizations } from '../store/MapData';
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import * as Location from "expo-location";
+import * as geolib from "geolib";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { fetchOrganizations } from "../store/MapData";
+import { fetchOrganization } from "../store/SingleOrg";
 
-export const Map = ({ navigation }) => {
-  const pageViewStore = useSelector(state => state.homepageView);
+export const Map = (props) => {
+  const pageViewStore = useSelector((state) => state.homepageView);
 
   // dispatch time?
   const dispatch = useDispatch();
@@ -25,32 +26,30 @@ export const Map = ({ navigation }) => {
     coords: { latitude: null, longitude: null },
   });
   const [errorMsg, setErrorMsg] = useState(null);
-  const [distance, setDistance] = useState(100);
-  const [donorsss, setDonors] = useState([]);
+  const [distance, setDistance] = useState(5);
 
   useEffect(() => {
     (async () => {
       //gets permissions for app location use
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
       //sets your current position
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      setDonors(await dispatch(fetchOrganizations()));
+      await dispatch(fetchOrganizations(props.user.accType));
     })();
   }, []);
 
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
   function handlePressToOrg(orgId) {
-    navigation.navigate('OrgView', { orgId });
+    props.navigation.navigate("OrgView", { orgId });
   }
-
-  const newDonors = useSelector(state => state.mapData);
-  const nearbyDonors = newDonors.filter(donor => {
+  const newDonors = useSelector((state) => state.mapData);
+  const nearbyDonors = newDonors.filter((donor) => {
     const currentLocation = {
       latitude: location.coords.latitude || 0,
       longitude: location.coords.longitude || 0,
@@ -69,7 +68,7 @@ export const Map = ({ navigation }) => {
   });
 
   function findMarkers() {
-    return nearbyDonors.map(donor => (
+    return nearbyDonors.map((donor) => (
       //creates map markers for nearby donors only
       <Marker
         key={donor.id}
@@ -111,7 +110,7 @@ export const Map = ({ navigation }) => {
   if (location.coords.latitude !== null && location.coords.longitude !== null) {
     // is our toggle view state set to map? show us the map
 
-    if (pageViewStore.toggleView === 'map') {
+    if (pageViewStore.toggleView === "map") {
       return (
         <View style={styles.container}>
           <MapView
@@ -130,7 +129,7 @@ export const Map = ({ navigation }) => {
         </View>
       );
       // is our toggle view state set to list? show us the list instead
-    } else if (pageViewStore.toggleView === 'list') {
+    } else if (pageViewStore.toggleView === "list") {
       return <ScrollView style={styles.container}>{findList()}</ScrollView>;
     } else {
       return (
@@ -148,7 +147,15 @@ export const Map = ({ navigation }) => {
     );
   }
 };
-export default Map;
+
+const mapState = (state) => {
+  return {
+    user: state.auth,
+    singleOrg: state.singleOrg,
+  };
+};
+
+export default connect(mapState)(Map);
 
 const styles = StyleSheet.create({
   container: {
@@ -156,18 +163,18 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   title: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   map: {
     flex: 1,
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
+    position: "absolute",
+    height: "100%",
+    width: "100%",
     marginTop: 0,
   },
   listItem: {
-    padding: '5%',
-    borderColor: 'gray',
+    padding: "5%",
+    borderColor: "gray",
     borderWidth: 0.5,
   },
 });
