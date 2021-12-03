@@ -1,4 +1,5 @@
 import Axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 ////// Action Types
 const SET_ORGANIZATION = "SET_ORGANIZATION";
@@ -12,7 +13,7 @@ export const setOrganization = (organization) => ({
 ////// Async Creators
 export const fetchOrganization = (orgId) => {
   return async (dispatch) => {
-    const token = window.localStorage.getItem("token");
+    const token = await AsyncStorage.getItem("token");
     const res = await Axios.get(
       `https://foodpiles.herokuapp.com/api/organizations/${orgId}`
     );
