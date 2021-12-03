@@ -24,11 +24,14 @@ export const _removeFavorite = (favorite) => ({
 export const fetchFavorites = () => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
-    const res = await Axios.get("http://192.168.1.162:8080/api/favorites", {
-      headers: {
-        authorization: token,
-      },
-    });
+    const res = await Axios.get(
+      "https://foodpiles.herokuapp.com/api/favorites",
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
     dispatch(_setFavorites(res.data));
   };
 };
@@ -37,7 +40,7 @@ export const addFavorite = (orgId) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const res = await Axios.post(
-      "http://192.168.1.162:8080/api/favorites",
+      "https://foodpiles.herokuapp.com/api/favorites",
       {
         orgId,
       },
@@ -54,12 +57,15 @@ export const addFavorite = (orgId) => {
 export const removeFavorite = (orgId) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
-    const res = await Axios.delete("http://192.168.1.162:8080/api/favorites", {
-      data: { orgId },
-      headers: {
-        authorization: token,
-      },
-    });
+    const res = await Axios.delete(
+      "https://foodpiles.herokuapp.com/api/favorites",
+      {
+        data: { orgId },
+        headers: {
+          authorization: token,
+        },
+      }
+    );
     dispatch(_removeFavorite(res.data));
   };
 };
