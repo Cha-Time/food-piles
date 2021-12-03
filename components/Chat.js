@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { fetchMessages } from '../store/messages';
+import React, { useState, useEffect } from "react";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import { fetchMessages } from "../store/messages";
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-export const Chat = props => {
+export const Chat = (props) => {
   useEffect(() => {
     (async () => {
       await props.getMessages();
     })();
   }, []);
-  console.log('----->', props);
-  console.log('----->', props.messages);
 
   return (
     <View style={styles.container}>
@@ -27,13 +25,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     messages: state.messages,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getMessages: () => dispatch(fetchMessages()),
   };
