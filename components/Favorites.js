@@ -50,7 +50,7 @@ export const Favorites = ({ navigation }) => {
   }
 
   const newDonors = useSelector((state) => state.mapData);
-  const nearbyDonors = newDonors.filter((donor) => {
+  const nearbyDonors = newDonors[0].filter((donor) => {
     const currentLocation = {
       latitude: location.coords.latitude || 0,
       longitude: location.coords.longitude || 0,
