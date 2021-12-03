@@ -1,17 +1,21 @@
-const db = require('./db');
+const db = require("./db");
 
-// const Chat = require('./models/Chat');
-const Messages = require('./models/Message');
-const Organization = require('./models/Organization');
-const User = require('./models/User');
+const Messages = require("./models/Message");
+const Organization = require("./models/Organization");
+const User = require("./models/User");
 
 //associations could go here!
 
-User.hasOne(Organization);
-Organization.belongsTo(User);
+User.belongsTo(Organization);
+Organization.hasOne(User);
 
-// User.belongsToMany(User, { through: 'favorites', as: 'follows' });
-User.belongsToMany(User, { through: Messages, as: 'receiver', foreignKey: 'senderId' });
+User.belongsToMany(Organization, { through: "favorites", as: "userId" });
+Organization.belongsToMany(User, { through: "favorites", as: "orgId" });
+User.belongsToMany(User, {
+  through: Messages,
+  as: "receiver",
+  foreignKey: "senderId",
+});
 
 module.exports = {
   db,
