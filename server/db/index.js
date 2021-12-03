@@ -9,8 +9,8 @@ const User = require("./models/User");
 User.belongsTo(Organization);
 Organization.hasOne(User);
 
-User.belongsToMany(Organization, { through: "favorites", as: "userId" });
-Organization.belongsToMany(User, { through: "favorites", as: "orgId" });
+User.belongsToMany(Organization, { through: "favorites" });
+Organization.belongsToMany(User, { through: "favorites" });
 User.belongsToMany(User, {
   through: Messages,
   as: "receiver",

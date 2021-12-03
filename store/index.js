@@ -7,7 +7,8 @@ import mapDataReducer from "./MapData";
 import authReducer from "./auth";
 import singleUserReducer from "./SingleUser";
 import singleOrgReducer from "./SingleOrg";
-import messagesReducer from './messages';
+import messagesReducer from "./messages";
+import favoriteReducer from "./Favorites";
 
 const reducer = combineReducers({
   homepageView: homepageViewReducer,
@@ -16,6 +17,7 @@ const reducer = combineReducers({
   singleUser: singleUserReducer,
   singleOrg: singleOrgReducer,
   messages: messagesReducer,
+  favorites: favoriteReducer,
 });
 
 const middleware = applyMiddleware(
