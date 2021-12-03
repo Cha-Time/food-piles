@@ -5,7 +5,7 @@ const SEND_MESSAGE = "SEND_MESSAGE";
 
 ////// Action Creators
 export const getMessages = (messages) => ({type: GET_MESSAGES, messages})
-export const sendMessage = (newMessage) => ({type: SEND_MESSAGE, newMessage})
+export const _sendMessage = (newMessage) => ({type: SEND_MESSAGE, newMessage})
 
 ////// Async Creators
 export const fetchMessages = () => {
@@ -22,6 +22,7 @@ export const sendMessage = (message, userId, recId) => {
       userId, 
       recId
     })
+    dispatch(_sendMessage(sent))
   }
 }
 
