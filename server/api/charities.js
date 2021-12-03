@@ -11,7 +11,6 @@ router.get("/", async (req, res, next) => {
       where: {
         accType: "charity",
       },
-      include: User,
     });
     res.json(charities);
   } catch (error) {

@@ -49,11 +49,8 @@ async function seed() {
     longitude: '-73.9712484',
   });
 
-  //Make the associations
-  const orgTest = await tom.setOrganization(kfc);
-  // const favoriteTest = await tom.addFollows(jerry);
 
-  console.log('seeded successfully');
+  console.log("seeded successfully");
 }
 
 async function runSeed() {
