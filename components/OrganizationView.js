@@ -9,25 +9,56 @@ import {
   Alert,
   Button,
   Image,
+  Linking,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { fetchOrganization } from "../store/SingleOrg";
 
 export const OrganizationView = ({ route, navigation }) => {
   const orgId = Number(route.params.orgId);
+  const orgInfo = useSelector((state) => state.singleOrg);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      await dispatch(fetchOrganization(orgId));
+    })();
+  }, []);
+
+  function dialCall(digits) {
+    let phoneNumber = "";
+
+    if (Platform.OS === "android") {
+      phoneNumber = "tel:" + digits;
+    } else {
+      phoneNumber = "telprompt:" + digits;
+    }
+
+    Linking.openURL(phoneNumber);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <View>
-          <Text style={styles.title}>Title Of Organization {orgId}</Text>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.title}>{orgInfo.name}</Text>
           <View style={styles.addressContainer}>
-            <Text>105 West 13th Street</Text>
-            <Text>New York, NY 10011</Text>
-            <Text>(212) 741-8157</Text>
+            <Text>{orgInfo.address}</Text>
+            <Text>
+              {orgInfo.city}, {orgInfo.state}
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => dialCall(orgInfo.phoneNumber)}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.phoneLink}>{orgInfo.phoneNumber}</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <Image
-          style={{ width: 100, height: 100 }}
+          style={{ width: 100, height: 100, borderRadius: 50 }}
           source={{
             uri: "https://d1rzxhvrtciqq1.cloudfront.net/images/people/images/dY5xNEt4Wr54ahbagq7ICb/medium/b808a3-schoberlawrenceheadshot.jpg",
           }}
@@ -100,5 +131,9 @@ const styles = StyleSheet.create({
     padding: "5%",
     borderColor: "gray",
     borderWidth: 0.5,
+  },
+  phoneLink: {
+    textDecorationLine: "underline",
+    color: "blue",
   },
 });
