@@ -33,6 +33,13 @@ const User = db.define("user", {
       isEmail: true,
     },
   },
+  accType: {
+    type: Sequelize.ENUM(["donor", "charity"]),
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
 });
 
 module.exports = User;

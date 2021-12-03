@@ -28,16 +28,18 @@ export const me = () => async (dispatch) => {
   }
 };
 
-export const authenticate =
-  (input, method) => async (dispatch) => {
-    try {
-      const res = await axios.post(`https://foodpiles.herokuapp.com/auth/${method}`, input);
-      await AsyncStorage.setItem(TOKEN, res.data.token);
-      await dispatch(me());
-    } catch (authError) {
-      return dispatch(setAuth({ error: authError }));
-    }
-  };
+export const authenticate = (input, method) => async (dispatch) => {
+  try {
+    const res = await axios.post(
+      `https://foodpiles.herokuapp.com/auth/${method}`,
+      input
+    );
+    await AsyncStorage.setItem(TOKEN, res.data.token);
+    await dispatch(me());
+  } catch (authError) {
+    return dispatch(setAuth({ error: authError }));
+  }
+};
 
 export const logout = async () => {
   await AsyncStorage.removeItem(TOKEN);
