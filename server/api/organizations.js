@@ -8,9 +8,7 @@ module.exports = router;
 //make these admin middleware
 router.get("/", async (req, res, next) => {
   try {
-    const organizations = await Organization.findAll({
-      include: User,
-    });
+    const organizations = await Organization.findAll();
     res.json(organizations);
   } catch (error) {
     next(error);
@@ -24,7 +22,6 @@ router.get("/:orgId", async (req, res, next) => {
       where: {
         id: req.params.orgId,
       },
-      include: User,
     });
     res.json(targetOrg);
   } catch (error) {
