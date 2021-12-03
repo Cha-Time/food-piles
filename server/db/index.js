@@ -14,17 +14,13 @@ User.belongsToMany(Chat, { through: 'user_chat' })
 Chat.belongsToMany(User, { through: 'user_chat' })
 
 
-
-
 User.belongsTo(Organization);
 Organization.hasOne(User);
 
 User.belongsToMany(Organization, { through: "favorites", as: "userId" });
 Organization.belongsToMany(User, { through: "favorites", as: "orgId" });
 User.belongsToMany(User, {
-  through: Messages,
-  as: "receiver",
-  foreignKey: "senderId",
+  through: Messages
 });
 
 module.exports = {
