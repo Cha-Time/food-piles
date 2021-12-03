@@ -13,14 +13,8 @@ import {
 import { fetchMessages } from '../store/messages';
 
 import { connect } from 'react-redux';
-import ChatView from './ChatView';
 
 export const Chat = props => {
-  // useEffect(() => {
-  //   (async () => {
-  //     await props.getMessages();
-  //   })();
-  // }, []);
 
   const [chats, setChats] = useState([
     { id: 1, item: 'Chat1' },
@@ -41,9 +35,10 @@ export const Chat = props => {
   ]);
 
   const [visible, setVisible] = useState(false);
+  const [message, setMessage] = useState(null)
 
-  const handleChange = text => {
-    props.getMessages(text);
+  async function handleSend() {
+    // await props.sendMessage()
   };
 
   return (
@@ -77,9 +72,9 @@ export const Chat = props => {
               }}
             ></Button>
           </View>
-          <View style={styles.inputContainer}>
-            <TextInput style={styles.input} onChangeText={handleChange} value={props.message} />
-            <Button title="Send" onPress={() => {}} />
+          <View>
+            <TextInput style={styles.input} onChangeText={setMessage} value={message} />
+            <Button title="Send" onPress={() => {handleSend()}} />
           </View>
         </View>
       </Modal>
@@ -116,12 +111,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     messages: state.messages,
+    user: state.auth
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getMessages: () => dispatch(fetchMessages()),
+    sendMessage: () => dispatch(sendMessage())
   };
 };
 
