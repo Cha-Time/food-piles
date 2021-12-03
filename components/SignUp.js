@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, StyleSheet, Image, TextInput, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Picker } from '@react-native-picker/picker';
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { authenticate } from '../store/auth'
 
-export const SignUp = ({ navigation }) => {
+export const SignUp = (props) => {
 
     const dispatch = useDispatch();
 
@@ -26,6 +26,8 @@ export const SignUp = ({ navigation }) => {
     const [zipCode, setZip] = useState(null);
     const [description, setDescription] = useState(null);
 
+    const { error, isLoggedIn } = props
+
     async function handleSubmit() {
         await dispatch(authenticate({
             username,
@@ -41,7 +43,12 @@ export const SignUp = ({ navigation }) => {
             latitude: 38.8976763,
             longitude: -77.0365298
         }, 'signup'))
-        navigation.navigate('Welcome')
+
+        if (isLoggedIn) {
+            props.navigation.navigate('Welcome')
+        } else {
+            setPart('partOne')
+        }
     }
 
     if (part === 'partOne') {
@@ -50,6 +57,7 @@ export const SignUp = ({ navigation }) => {
                 <View style={styles.container} >
                     <Text style={{ textAlign: 'center', fontSize: 20 }}>Let's get you started.</Text>
                     <View style={{ width: '100%', minHeight: '10%', alignItems: 'center', justifyContent: 'space-between' }} >
+                        {error && error.response && <Text style={{ textAlign: 'center', color: 'red' }}>Oops! Something went wrong.</Text>}
                         <TextInput placeholder='Username' value={username} onChangeText={setUsername} style={[styles.textInput, { marginBottom: '5%' }]} />
                         <TextInput placeholder='Email' value={email} onChangeText={setEmail} style={[styles.textInput, { marginBottom: '5%' }]} />
                         <TextInput placeholder='Password' value={password} onChangeText={setPassword} style={[styles.textInput, { marginBottom: '5%' }]} />
@@ -140,4 +148,11 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SignUp
+const mapState = state => {
+    return {
+        error: state.auth.error,
+        isLoggedIn: !!state.auth.id
+    }
+}
+
+export default connect(mapState)(SignUp);
