@@ -22,6 +22,11 @@ import OrganizationView from "./OrganizationView";
 import ChatView from "./ChatView";
 
 import { setHomeView } from "../store/homepageView";
+import {
+  addFavorite,
+  fetchFavorites,
+  removeFavorite,
+} from "../store/Favorites";
 
 const Screens = (props) => {
   enableScreens();
@@ -102,16 +107,35 @@ const Screens = (props) => {
               return {
                 headerTitle: "More Info",
                 headerRight: () => {
-                  const orgInfo = useSelector((state) => state.singleOrg);
-
-                  const isFavorited = 1;
+                  const currentOrgInfo = useSelector(
+                    (state) => state.singleOrg
+                  );
 
                   const dispatch = useDispatch();
+
+                  useEffect(() => {
+                    (async () => {
+                      await dispatch(fetchFavorites());
+                    })();
+                  }, []);
+
+                  const userFavorites = useSelector((state) => state.favorites);
+
+                  const isFavorited = userFavorites.filter(
+                    (favoriteOrg) => favoriteOrg.id === currentOrgInfo.id
+                  ).length;
+
+                  console.log(isFavorited);
+
                   const handleToggleFavorite = () => {
-                    // dispatch(setHomeView("list"));
-                    console.log(orgInfo.id);
+                    if (isFavorited) {
+                      dispatch(removeFavorite(currentOrgInfo.id));
+                      console.log("unfavoriting " + currentOrgInfo.id);
+                    } else {
+                      dispatch(addFavorite(currentOrgInfo.id));
+                      console.log("favoriting " + currentOrgInfo.id);
+                    }
                   };
-                  // if there's no user ID associated with this organization, do NOT display this heart
                   return (
                     <Ionicons
                       name={isFavorited ? "heart" : "heart-outline"}

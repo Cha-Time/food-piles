@@ -38,9 +38,7 @@ const isAdminOrCurrentUser = async (req, res, next) => {
   if (parseInt(req.params.userId) === id || req.user.isAdmin) {
     next();
   } else {
-    return res
-      .status(403)
-      .send("Bad request. User verification error."); //user is allowed to move forward
+    return res.status(403).send("Bad request. User verification error."); //user is allowed to move forward
   }
 };
 

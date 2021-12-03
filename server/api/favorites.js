@@ -7,12 +7,12 @@ module.exports = router;
 
 const { requireToken } = require("./authMiddleware");
 
-// GET for all organizatoins that this user follows// check to see if the current logged in user follows the ID specified here (user ID, connected to an organizatoin)
+// GET for all organizattions that the logged in user follows
 router.get("/", requireToken, async (req, res, next) => {
   try {
     const myUser = await User.findByPk(Number(req.user.id));
 
-    const myFavorites = await myUser.getOrganizations();
+    const myFavorites = await myUser.getOrganizations({ attributes: ["id"] });
     res.json(myFavorites);
   } catch (error) {
     next();
@@ -41,6 +41,7 @@ router.get("/", requireToken, async (req, res, next) => {
 router.post("/", requireToken, async (req, res, next) => {
   try {
     const favoriteOrgId = req.body.orgId;
+    console.log(req.body);
 
     const myUser = await User.findByPk(Number(req.user.id));
 
@@ -55,9 +56,8 @@ router.post("/", requireToken, async (req, res, next) => {
 router.delete("/", requireToken, async (req, res, next) => {
   try {
     const favoriteOrgId = req.body.orgId;
-
+    console.log(req.body);
     const myUser = await User.findByPk(Number(req.user.id));
-
     const makeFavorite = await myUser.removeOrganization(favoriteOrgId);
     res.json(makeFavorite);
   } catch (error) {

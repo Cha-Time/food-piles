@@ -1,4 +1,5 @@
 import Axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 ////// Action Types
 const SET_FAVORITES = "SET_FAVORITES";
@@ -22,28 +23,43 @@ export const _removeFavorite = (favorite) => ({
 ////// Async Creators
 export const fetchFavorites = () => {
   return async (dispatch) => {
-    const res = await Axios.get("https://localhost:8080/api/favorites");
+    const token = await AsyncStorage.getItem("token");
+    const res = await Axios.get("http://192.168.1.162:8080/api/favorites", {
+      headers: {
+        authorization: token,
+      },
+    });
     dispatch(_setFavorites(res.data));
   };
 };
 
 export const addFavorite = (orgId) => {
   return async (dispatch) => {
-    const res = await Axios.post("https://localhost:8080/api/favorites", {
-      orgId,
-    });
+    const token = await AsyncStorage.getItem("token");
+    const res = await Axios.post(
+      "http://192.168.1.162:8080/api/favorites",
+      {
+        orgId,
+      },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
     dispatch(_addFavorite(res.data));
   };
 };
 
 export const removeFavorite = (orgId) => {
   return async (dispatch) => {
-    const res = await Axios.delete(
-      "https://localhost:8080/api/organizations/favorites",
-      {
-        orgId,
-      }
-    );
+    const token = await AsyncStorage.getItem("token");
+    const res = await Axios.delete("http://192.168.1.162:8080/api/favorites", {
+      data: { orgId },
+      headers: {
+        authorization: token,
+      },
+    });
     dispatch(_removeFavorite(res.data));
   };
 };
