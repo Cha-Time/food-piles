@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Button, StyleSheet, Image, TextInput, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Picker } from '@react-native-picker/picker';
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { authenticate } from '../store/auth'
 
-export const SignUp = ({ navigation }) => {
+export const SignUp = (props) => {
 
     const dispatch = useDispatch();
 
@@ -26,6 +26,8 @@ export const SignUp = ({ navigation }) => {
     const [zipCode, setZip] = useState(null);
     const [description, setDescription] = useState(null);
 
+    const { error, isLoggedIn } = props
+
     async function handleSubmit() {
         await dispatch(authenticate({
             username,
@@ -41,7 +43,10 @@ export const SignUp = ({ navigation }) => {
             latitude: 38.8976763,
             longitude: -77.0365298
         }, 'signup'))
-        navigation.navigate('Welcome')
+        
+        if(isLoggedIn) {
+            props.navigation.navigate('Welcome')
+        }
     }
 
     if (part === 'partOne') {
@@ -140,4 +145,11 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SignUp
+const mapState = state => {
+    return {
+        error: state.auth.error,
+        isLoggedIn: !!state.auth.id
+    }
+}
+
+export default connect(mapState)(SignUp);
