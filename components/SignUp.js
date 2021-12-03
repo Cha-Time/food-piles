@@ -43,9 +43,11 @@ export const SignUp = (props) => {
             latitude: 38.8976763,
             longitude: -77.0365298
         }, 'signup'))
-        
-        if(isLoggedIn) {
+
+        if (isLoggedIn) {
             props.navigation.navigate('Welcome')
+        } else {
+            setPart('partOne')
         }
     }
 
@@ -55,6 +57,7 @@ export const SignUp = (props) => {
                 <View style={styles.container} >
                     <Text style={{ textAlign: 'center', fontSize: 20 }}>Let's get you started.</Text>
                     <View style={{ width: '100%', minHeight: '10%', alignItems: 'center', justifyContent: 'space-between' }} >
+                        {error && error.response && <Text style={{ textAlign: 'center', color: 'red' }}>Oops! Something went wrong.</Text>}
                         <TextInput placeholder='Username' value={username} onChangeText={setUsername} style={[styles.textInput, { marginBottom: '5%' }]} />
                         <TextInput placeholder='Email' value={email} onChangeText={setEmail} style={[styles.textInput, { marginBottom: '5%' }]} />
                         <TextInput placeholder='Password' value={password} onChangeText={setPassword} style={[styles.textInput, { marginBottom: '5%' }]} />
