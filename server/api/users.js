@@ -1,4 +1,4 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const {
   models: { User },
 } = require("../db");
@@ -19,6 +19,7 @@ router.get("/", requireToken, isAdmin, async (req, res, next) => {
     next(error);
   }
 });
+
 
 router.get(
   "/:userId",
