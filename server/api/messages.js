@@ -1,28 +1,57 @@
-const router = require('express').Router();
-const {
-  models: { Messages },
-} = require('../db');
+const router = require("express").Router();
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
-router.get('/', async (req, res, next) => {
+const {
+  models: { Message },
+} = require("../db");
+const {
+  requireToken,
+  isCurrentUser,
+  isAdminOrCurrentUser,
+} = require("./authMiddleware");
+
+//all messages
+router.get("/", async (req, res, next) => {
   try {
-    const messages = await Messages.findAll();
+    const messages = await Message.findAll();
     res.json(messages);
   } catch (error) {
     next(error);
   }
 });
 
-router.post('/', async (req, res, next) => {
+//all messages bewtween two people
+router.get("/:receiverId", requireToken, async (req, res, next) => {
   try {
-    const message = await Messages.create({
-      messageText: req.body,
+    const messages = await Message.findAll({
+      where: {
+        userId: {
+          [Op.or]: [req.user.id, req.params.receiverId],
+        },
+        receiverId: {
+          [Op.or]: [req.user.id, req.params.receiverId],
+        },
+      },
+    });
+    res.json(messages);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/", requireToken, async (req, res, next) => {
+  try {
+    const message = await Message.create({
+      messageText: req.body.messageText,
       timeStamp: Date.now(),
-      senderId: 1,
-      receiverId: 2,
+      userId: req.user.id,
+      receiverId: req.body.receiverId,
     });
     res.json(message);
   } catch (err) {
     next(err);
   }
 });
+
 module.exports = router;
