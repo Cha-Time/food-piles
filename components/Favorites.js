@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+
 import {
   Platform,
   StyleSheet,
@@ -7,15 +8,15 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-} from "react-native";
+} from 'react-native';
 
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import * as Location from "expo-location";
-import * as geolib from "geolib";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
+import * as geolib from 'geolib';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useDispatch, useSelector } from "react-redux";
-import { fetchOrganizations } from "../store/MapData";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchOrganizations } from '../store/MapData';
 
 export const Favorites = ({ navigation }) => {
   // dispatch time?
@@ -25,19 +26,20 @@ export const Favorites = ({ navigation }) => {
     coords: { latitude: null, longitude: null },
   });
   const [errorMsg, setErrorMsg] = useState(null);
-  const [distance, setDistance] = useState(5);
+  const [distance, setDistance] = useState(50);
   const [donorsss, setDonors] = useState([]);
 
   useEffect(() => {
     (async () => {
       //gets permissions for app location use
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
         return;
       }
       //sets your current position
       let location = await Location.getCurrentPositionAsync({});
+      console.log('this is my location', location);
       setLocation(location);
       setDonors(await dispatch(fetchOrganizations()));
     })();
@@ -46,11 +48,11 @@ export const Favorites = ({ navigation }) => {
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
   function handlePressToOrg(orgId) {
-    navigation.navigate("OrgView", { orgId });
+    navigation.navigate('OrgView', { orgId });
   }
 
-  const newDonors = useSelector((state) => state.mapData);
-  const nearbyDonors = newDonors.filter((donor) => {
+  const newDonors = useSelector(state => state.mapData);
+  const nearbyDonors = newDonors.filter(donor => {
     const currentLocation = {
       latitude: location.coords.latitude || 0,
       longitude: location.coords.longitude || 0,
@@ -69,47 +71,54 @@ export const Favorites = ({ navigation }) => {
   });
 
   function handleToggleFavorite() {
-    console.log("toggle favorite");
+    console.log('toggle favorite');
   }
+
+  const favorites = useSelector(state => state.favorites);
+
   function findList() {
-    return nearbyDonors.map((donor, index) => (
-      <View style={styles.listItem} key={donor.id}>
-        <View>
-          <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
-            {donor.name}
-          </Text>
-          <Text>
-            {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
-            {(
-              geolib.getDistance(
-                { latitude: donor.latitude, longitude: donor.longitude },
-                {
-                  latitude: location.coords.latitude,
-                  longitude: location.coords.longitude,
-                }
-              ) / 1609.34
-            ).toFixed(1)}
-            mi away
-          </Text>
-        </View>
-        <View>
-          <Text>
-            <Ionicons
-              name="ellipse"
-              size={15}
-              color="green"
-              onPress={() => handleToggleFavorite()}
-            />
-          </Text>
-          <Text>
-            <Ionicons
-              name="heart"
-              size={15}
-              color="black"
-              onPress={() => handleToggleFavorite()}
-            />
-          </Text>
-        </View>
+    return favorites.map((favorite, index) => (
+      <View style={styles.listItem} key={index}>
+        {favorite.organizationId}
+        {/* return nearbyDonors.map((donor, index) => (
+        <View style={styles.listItem} key={donor.id}>
+          <View>
+            <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
+              {donor.name}
+            </Text>
+            <Text> */}
+        {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
+        {/* {(
+                geolib.getDistance(
+                  { latitude: donor.latitude, longitude: donor.longitude },
+                  {
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
+                  }
+                ) / 1609.34
+              ).toFixed(1)}
+              mi away
+            </Text>
+          </View>
+          <View>
+            <Text>
+              <Ionicons
+                name="ellipse"
+                size={15}
+                color="green"
+                onPress={() => handleToggleFavorite()}
+              />
+            </Text>
+            <Text>
+              <Ionicons
+                name="heart"
+                size={15}
+                color="black"
+                onPress={() => handleToggleFavorite()}
+              />
+            </Text>
+          </View>
+        </View> */}
       </View>
     ));
   }
@@ -135,22 +144,22 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   title: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   map: {
     flex: 1,
-    position: "absolute",
-    height: "100%",
-    width: "100%",
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
     marginTop: 0,
   },
   listItem: {
-    padding: "5%",
-    borderColor: "gray",
+    padding: '5%',
+    borderColor: 'gray',
     borderWidth: 0.5,
-    display: "flex",
+    display: 'flex',
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
