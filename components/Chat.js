@@ -11,7 +11,7 @@ import {
   TextInput,
 } from 'react-native';
 import { fetchMessages } from '../store/messages';
-
+import ChatView from './ChatView';
 import { connect } from 'react-redux';
 
 export const Chat = props => {
@@ -35,11 +35,10 @@ export const Chat = props => {
   ]);
 
   const [visible, setVisible] = useState(false);
-  const [message, setMessage] = useState(null)
 
-  async function handleSend() {
-    // await props.sendMessage()
-  };
+  function toggleVisibility(status) {
+    setVisible(status)
+  }
 
   return (
     <View style={styles.container}>
@@ -60,24 +59,7 @@ export const Chat = props => {
           </ScrollView>
         )}
       />
-
-      <Modal animationType="fade" transparent={false} visible={visible}>
-        <View style={styles.container}>
-          <View style={styles.btn}>
-            <Button
-              style={styles.btn}
-              title="Back"
-              onPress={() => {
-                setVisible(false);
-              }}
-            ></Button>
-          </View>
-          <View>
-            <TextInput style={styles.input} onChangeText={setMessage} value={message} />
-            <Button title="Send" onPress={() => {handleSend()}} />
-          </View>
-        </View>
-      </Modal>
+      {visible === true ? ( <ChatView visibleStatus={visible} toggleVisibility={toggleVisibility}/>) : (<View></View>)}
     </View>
   );
 };
@@ -111,7 +93,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     messages: state.messages,
-    user: state.auth
+    user: state.auth,
   };
 };
 
