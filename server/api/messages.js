@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 const {
-  models: { Message },
+  models: { User, Message },
 } = require("../db");
 const Organization = require("../db/models/Organization");
 const {
