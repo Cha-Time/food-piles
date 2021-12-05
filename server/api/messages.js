@@ -25,12 +25,15 @@ router.get("/", async (req, res, next) => {
 //all messages bewtween two people
 router.get("/:receiverId", requireToken, async (req, res, next) => {
   try {
-    const myInfo = User.findOne(req.user.id, {
+    const myInfo = await User.findOne({
+      where: {
+        id: req.user.id,
+      },
       include: Organization,
     });
     const messages = await Message.findAll({
       where: {
-        userId: {
+        senderId: {
           [Op.or]: [myInfo.organization.id, req.params.receiverId],
         },
         receiverId: {
@@ -46,13 +49,16 @@ router.get("/:receiverId", requireToken, async (req, res, next) => {
 
 router.post("/", requireToken, async (req, res, next) => {
   try {
-    const myInfo = User.findOne(req.user.id, {
+    const myInfo = await User.findOne({
+      where: {
+        id: req.user.id,
+      },
       include: Organization,
     });
     const message = await Message.create({
       messageText: req.body.messageText,
       timeStamp: Date.now(),
-      userId: myInfo.organization.id,
+      senderId: myInfo.organization.id,
       receiverId: req.body.receiverId,
     });
     res.json(message);
