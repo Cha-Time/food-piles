@@ -1,11 +1,9 @@
 const router = require("express").Router();
 const {
-  models: { User },
+  models: { User, Favorites, Organization },
 } = require("../db");
 const { requireToken } = require("./authMiddleware");
 const geolib = require("geolib");
-const Organization = require("../db/models/Organization");
-
 module.exports = router;
 
 // GET for all organizattions that the logged in user follows
@@ -47,7 +45,13 @@ router.post("/", requireToken, async (req, res, next) => {
       through: { distance: geoDistance },
     });
 
-    res.json(makeFavorite);
+    const addedFavorite = await myUser.getOrganizations({
+      where: {
+        id: favoriteOrgId,
+      },
+    });
+
+    res.json(addedFavorite[0]);
   } catch (error) {
     next();
   }
@@ -58,8 +62,13 @@ router.delete("/", requireToken, async (req, res, next) => {
   try {
     const favoriteOrgId = req.body.orgId;
     const myUser = await User.findByPk(Number(req.user.id));
+    const removedFavorite = await myUser.getOrganizations({
+      where: {
+        id: favoriteOrgId,
+      },
+    });
     const makeFavorite = await myUser.removeOrganization(favoriteOrgId);
-    res.json(makeFavorite);
+    res.json(removedFavorite[0]);
   } catch (error) {
     next();
   }
