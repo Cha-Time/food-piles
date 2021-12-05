@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { fetchOrganization } from "../store/SingleOrg";
+import ChatView from "./ChatView";
 
 export const OrganizationView = ({ route, navigation }) => {
   const orgId = Number(route.params.orgId);
@@ -36,6 +37,12 @@ export const OrganizationView = ({ route, navigation }) => {
     }
 
     Linking.openURL(phoneNumber);
+  }
+
+  const [visible, setVisible] = useState(false);
+
+  function toggleVisibility(status) {
+    setVisible(status)
   }
 
   return (
@@ -77,7 +84,9 @@ export const OrganizationView = ({ route, navigation }) => {
       </Text>
       <Text style={styles.subtitle}>Potential Allgergens:</Text>
       <Text style={styles.subText}>Nuts</Text>
-      <Button title="Message" onPress={() => navigation.navigate("Chat")} />
+      <Button title="Message" onPress={() => setVisible(true)} />
+
+      {visible === true ? ( <ChatView visibleStatus={visible} toggleVisibility={toggleVisibility} org={orgInfo} receiverId={orgInfo.id}/>) : (<View></View>)}
     </View>
   );
 };
