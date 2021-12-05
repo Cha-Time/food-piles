@@ -2,10 +2,9 @@ const router = require("express").Router();
 const {
   models: { User },
 } = require("../db");
+const { requireToken } = require("./authMiddleware");
 
 module.exports = router;
-
-const { requireToken } = require("./authMiddleware");
 
 // GET for all organizattions that the logged in user follows
 router.get("/", requireToken, async (req, res, next) => {

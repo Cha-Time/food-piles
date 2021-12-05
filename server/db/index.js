@@ -13,21 +13,18 @@ Chat.hasMany(Messages);
 User.belongsToMany(Chat, { through: 'user_chat' });
 Chat.belongsToMany(User, { through: 'user_chat' });
 
+
 User.belongsTo(Organization);
 Organization.hasOne(User);
 
 User.belongsToMany(Organization, { through: 'favorites' });
 Organization.belongsToMany(User, { through: 'favorites' });
 
-// User.belongsToMany(User, {
-//   through: Messages,
-// });
-
 module.exports = {
   db,
   models: {
     User,
     Organization,
-    Messages,
+    Message,
   },
 };

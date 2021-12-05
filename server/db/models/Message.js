@@ -1,26 +1,34 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+const Sequelize = require("sequelize");
+const db = require("../db");
 
-const Messages = db.define('message', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-    allowNull: false,
-  },
+const Messages = db.define("message", {
   timeStamp: {
     type: Sequelize.DATE,
-    // allowNull: false,
-    // validate: {
-    //   notEmpty: true,
-    // },
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
   messageText: {
     type: Sequelize.TEXT,
-    // allowNull: false,
-    // validate: {
-    //   notEmpty: true,
-    // },
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  userId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  receiverId: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
 });
 
