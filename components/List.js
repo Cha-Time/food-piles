@@ -69,9 +69,7 @@ export const List = ({ navigation }) => {
     ));
   }
 
-  function handleOnPress(event) {
-    console.log("Hello New York");
-  }
+  function handleOnPress(event) {}
 
   if (location !== null) {
     return (

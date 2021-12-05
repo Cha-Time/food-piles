@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   Platform,
   StyleSheet,
@@ -25,7 +26,7 @@ export const Favorites = ({ navigation }) => {
     coords: { latitude: null, longitude: null },
   });
   const [errorMsg, setErrorMsg] = useState(null);
-  const [distance, setDistance] = useState(5);
+  const [distance, setDistance] = useState(50);
   const [donorsss, setDonors] = useState([]);
 
   useEffect(() => {
@@ -68,48 +69,53 @@ export const Favorites = ({ navigation }) => {
     );
   });
 
-  function handleToggleFavorite() {
-    console.log("toggle favorite");
-  }
+  function handleToggleFavorite() {}
+
+  const favorites = useSelector((state) => state.favorites);
+
   function findList() {
-    return nearbyDonors.map((donor, index) => (
-      <View style={styles.listItem} key={donor.id}>
-        <View>
-          <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
-            {donor.name}
-          </Text>
-          <Text>
-            {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
-            {(
-              geolib.getDistance(
-                { latitude: donor.latitude, longitude: donor.longitude },
-                {
-                  latitude: location.coords.latitude,
-                  longitude: location.coords.longitude,
-                }
-              ) / 1609.34
-            ).toFixed(1)}
-            mi away
-          </Text>
-        </View>
-        <View>
-          <Text>
-            <Ionicons
-              name="ellipse"
-              size={15}
-              color="green"
-              onPress={() => handleToggleFavorite()}
-            />
-          </Text>
-          <Text>
-            <Ionicons
-              name="heart"
-              size={15}
-              color="black"
-              onPress={() => handleToggleFavorite()}
-            />
-          </Text>
-        </View>
+    return favorites.map((favorite, index) => (
+      <View style={styles.listItem} key={index}>
+        {favorite.organizationId}
+        {/* return nearbyDonors.map((donor, index) => (
+        <View style={styles.listItem} key={donor.id}>
+          <View>
+            <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
+              {donor.name}
+            </Text>
+            <Text> */}
+        {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
+        {/* {(
+                geolib.getDistance(
+                  { latitude: donor.latitude, longitude: donor.longitude },
+                  {
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
+                  }
+                ) / 1609.34
+              ).toFixed(1)}
+              mi away
+            </Text>
+          </View>
+          <View>
+            <Text>
+              <Ionicons
+                name="ellipse"
+                size={15}
+                color="green"
+                onPress={() => handleToggleFavorite()}
+              />
+            </Text>
+            <Text>
+              <Ionicons
+                name="heart"
+                size={15}
+                color="black"
+                onPress={() => handleToggleFavorite()}
+              />
+            </Text>
+          </View>
+        </View> */}
       </View>
     ));
   }

@@ -125,15 +125,11 @@ const Screens = (props) => {
                     (favoriteOrg) => favoriteOrg.id === currentOrgInfo.id
                   ).length;
 
-                  console.log(isFavorited);
-
                   const handleToggleFavorite = () => {
                     if (isFavorited) {
                       dispatch(removeFavorite(currentOrgInfo.id));
-                      console.log("unfavoriting " + currentOrgInfo.id);
                     } else {
                       dispatch(addFavorite(currentOrgInfo.id));
-                      console.log("favoriting " + currentOrgInfo.id);
                     }
                   };
                   return (
