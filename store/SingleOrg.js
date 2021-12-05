@@ -17,7 +17,6 @@ export const fetchOrganization = (orgId) => {
     const res = await Axios.get(
       `https://foodpiles.herokuapp.com/api/organizations/${orgId}`
     );
-    console.log(res.data);
     dispatch(setOrganization(res.data));
   };
 };
