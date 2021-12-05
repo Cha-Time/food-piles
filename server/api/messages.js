@@ -5,6 +5,7 @@ const Op = Sequelize.Op;
 const {
   models: { Message },
 } = require("../db");
+const Organization = require("../db/models/Organization");
 const {
   requireToken,
   isCurrentUser,
@@ -24,13 +25,16 @@ router.get("/", async (req, res, next) => {
 //all messages bewtween two people
 router.get("/:receiverId", requireToken, async (req, res, next) => {
   try {
+    const myInfo = User.findOne(req.user.id, {
+      include: Organization,
+    });
     const messages = await Message.findAll({
       where: {
         userId: {
-          [Op.or]: [req.user.id, req.params.receiverId],
+          [Op.or]: [myInfo.organization.id, req.params.receiverId],
         },
         receiverId: {
-          [Op.or]: [req.user.id, req.params.receiverId],
+          [Op.or]: [myInfo.organization.id, req.params.receiverId],
         },
       },
     });
@@ -42,10 +46,13 @@ router.get("/:receiverId", requireToken, async (req, res, next) => {
 
 router.post("/", requireToken, async (req, res, next) => {
   try {
+    const myInfo = User.findOne(req.user.id, {
+      include: Organization,
+    });
     const message = await Message.create({
       messageText: req.body.messageText,
       timeStamp: Date.now(),
-      userId: req.user.id,
+      userId: myInfo.organization.id,
       receiverId: req.body.receiverId,
     });
     res.json(message);
