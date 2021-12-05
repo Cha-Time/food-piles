@@ -3,6 +3,8 @@ const {
   models: { User },
 } = require("../db");
 const { requireToken } = require("./authMiddleware");
+const geolib = require("geolib");
+const Organization = require("../db/models/Organization");
 
 module.exports = router;
 
@@ -22,10 +24,29 @@ router.get("/", requireToken, async (req, res, next) => {
 router.post("/", requireToken, async (req, res, next) => {
   try {
     const favoriteOrgId = req.body.orgId;
+    const favoriteOrg = await Organization.findByPk(favoriteOrgId);
 
-    const myUser = await User.findByPk(Number(req.user.id));
+    const myUser = await User.findOne({
+      where: {
+        id: Number(req.user.id),
+      },
+      include: Organization,
+    });
 
-    const makeFavorite = await myUser.addOrganization(favoriteOrgId);
+    const geoDistance = (
+      geolib.getDistance(
+        { latitude: favoriteOrg.latitude, longitude: favoriteOrg.longitude },
+        {
+          latitude: myUser.organization.latitude,
+          longitude: myUser.organization.longitude,
+        }
+      ) / 1609.34
+    ).toFixed(1);
+
+    const makeFavorite = await myUser.addOrganization(favoriteOrgId, {
+      through: { distance: geoDistance },
+    });
+
     res.json(makeFavorite);
   } catch (error) {
     next();

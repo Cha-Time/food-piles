@@ -4,6 +4,7 @@ const Message = require("./models/Message");
 const Organization = require("./models/Organization");
 const Chat = require("./models/Chat");
 const User = require("./models/User");
+const Favorites = require("./models/Favorites");
 
 //associations could go here!
 
@@ -16,8 +17,8 @@ Chat.belongsToMany(User, { through: "user_chat" });
 User.belongsTo(Organization);
 Organization.hasOne(User);
 
-User.belongsToMany(Organization, { through: "favorites" });
-Organization.belongsToMany(User, { through: "favorites" });
+User.belongsToMany(Organization, { through: Favorites });
+Organization.belongsToMany(User, { through: Favorites });
 
 module.exports = {
   db,
@@ -25,5 +26,6 @@ module.exports = {
     User,
     Organization,
     Message,
+    Favorites,
   },
 };

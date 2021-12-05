@@ -15,10 +15,10 @@ import * as Location from "expo-location";
 import * as geolib from "geolib";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-import { useDispatch, useSelector } from "react-redux";
-import { fetchOrganizations } from "../store/MapData";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { fetchFavorites } from "../store/Favorites";
 
-export const Favorites = ({ navigation }) => {
+export const Favorites = (props) => {
   // dispatch time?
   const dispatch = useDispatch();
 
@@ -27,7 +27,6 @@ export const Favorites = ({ navigation }) => {
   });
   const [errorMsg, setErrorMsg] = useState(null);
   const [distance, setDistance] = useState(50);
-  const [donorsss, setDonors] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -40,82 +39,48 @@ export const Favorites = ({ navigation }) => {
       //sets your current position
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      setDonors(await dispatch(fetchOrganizations()));
+      await dispatch(fetchFavorites());
     })();
   }, []);
 
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
   function handlePressToOrg(orgId) {
-    navigation.navigate("OrgView", { orgId });
+    props.navigation.navigate("OrgView", { orgId });
   }
-
-  const newDonors = useSelector((state) => state.mapData);
-  const nearbyDonors = newDonors.filter((donor) => {
-    const currentLocation = {
-      latitude: location.coords.latitude || 0,
-      longitude: location.coords.longitude || 0,
-    };
-
-    const donorLocation = {
-      latitude: donor.latitude,
-      longitude: donor.longitude,
-    };
-    return geolib.isPointWithinRadius(
-      donorLocation,
-      currentLocation,
-      distance * 1609.34
-      //1609.34 converts meters to miles
-    );
-  });
 
   function handleToggleFavorite() {}
 
-  const favorites = useSelector((state) => state.favorites);
-
   function findList() {
-    return favorites.map((favorite, index) => (
-      <View style={styles.listItem} key={index}>
-        {favorite.organizationId}
-        {/* return nearbyDonors.map((donor, index) => (
-        <View style={styles.listItem} key={donor.id}>
-          <View>
-            <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
-              {donor.name}
-            </Text>
-            <Text> */}
-        {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
-        {/* {(
-                geolib.getDistance(
-                  { latitude: donor.latitude, longitude: donor.longitude },
-                  {
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude,
-                  }
-                ) / 1609.34
-              ).toFixed(1)}
-              mi away
-            </Text>
-          </View>
-          <View>
-            <Text>
-              <Ionicons
-                name="ellipse"
-                size={15}
-                color="green"
-                onPress={() => handleToggleFavorite()}
-              />
-            </Text>
-            <Text>
-              <Ionicons
-                name="heart"
-                size={15}
-                color="black"
-                onPress={() => handleToggleFavorite()}
-              />
-            </Text>
-          </View>
-        </View> */}
+    return props.favorites.map((org) => (
+      <View style={styles.listItem} key={org.id}>
+        <View>
+          <Text onPress={() => handlePressToOrg(org.id)} style={styles.title}>
+            {org.name}
+          </Text>
+          <Text>
+            {/*This gets the distance in meters between your location and the org. Then we convert it to miles */}
+            {org.favorites.distance}mi away
+          </Text>
+        </View>
+        <View>
+          <Text>
+            <Ionicons
+              name="ellipse"
+              size={15}
+              color="green"
+              onPress={() => handleToggleFavorite()}
+            />
+          </Text>
+          <Text>
+            <Ionicons
+              name="heart"
+              size={15}
+              color="black"
+              onPress={() => handleToggleFavorite()}
+            />
+          </Text>
+        </View>
       </View>
     ));
   }
@@ -133,7 +98,15 @@ export const Favorites = ({ navigation }) => {
     );
   }
 };
-export default Favorites;
+
+const mapState = (state) => {
+  return {
+    user: state.auth,
+    favorites: state.favorites,
+  };
+};
+
+export default connect(mapState)(Favorites);
 
 const styles = StyleSheet.create({
   container: {
