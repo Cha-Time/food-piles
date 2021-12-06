@@ -9,8 +9,9 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
+import { connect } from "react-redux";
 
-export const Welcome = ({ navigation }) => {
+export const Welcome = (props) => {
   const [name, setName] = useState(null);
   const [phone, setPhone] = useState(null);
   const [address, setAddress] = useState(null);
@@ -21,7 +22,7 @@ export const Welcome = ({ navigation }) => {
 
   function moveOn() {
     setTimeout(() => {
-      navigation.reset({ index: 0, routes: [{ name: "Home" }] });
+      props.navigation.reset({ index: 0, routes: [{ name: "Home" }] });
     }, 2000);
   }
 
@@ -29,7 +30,7 @@ export const Welcome = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
-          Welcome, "Username Here"
+          {`Welcome, ${props.user.username}`}
         </Text>
         {moveOn()}
       </View>
@@ -55,4 +56,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Welcome;
+const mapState = (state) => {
+  return {
+    user: state.auth
+  }
+}
+
+export default connect(mapState)(Welcome);
