@@ -11,10 +11,13 @@ const ChatView = (props) => {
   const [allMessages, setAllMessages] = useState([])
 
   useEffect(() => {
-    (async () => {
+    let isMounted = true
+    const func = async () => {
       await props.fetchMessages(props.receiverId)
       setAllMessages(props.messages)
-    })();
+    };
+    func()
+    return () => {isMounted = false}
   }, [allMessages]);
 
   function displayMessages() {
