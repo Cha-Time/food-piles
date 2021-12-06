@@ -21,7 +21,7 @@ export const Chat = props => {
 
   const orgInfo = useSelector((state) => state.singleOrg);
   const [chats, setChats] = useState([])
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export const Chat = props => {
     await props.fetchOrganization(Number(orgId))
     setVisible(true)
   }
-  
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -53,13 +53,14 @@ export const Chat = props => {
               }}
             >
               <View style={styles.listItemView}>
-                <Text numberOfLines={1} style={styles.listText}>{item.msg}</Text>
+                <Text numberOfLines={1} style={{ fontSize: 20 }}>{`Org Name`}</Text>
+                <Text numberOfLines={1} style={{ fontSize: 10 }}>{item.msg}</Text>
               </View>
             </TouchableOpacity>
           </ScrollView>
         )}
       />
-      {visible === true ? ( <ChatView visibleStatus={visible} org={props.org} receiverId={props.org.id} toggleVisibility={toggleVisibility}/>) : (<View></View>)}
+      {visible === true ? (<ChatView visibleStatus={visible} org={props.org} receiverId={props.org.id} toggleVisibility={toggleVisibility} />) : (<View></View>)}
     </View>
   );
 };
@@ -76,9 +77,6 @@ const styles = StyleSheet.create({
     borderColor: '#eee',
   },
   listItemView: {},
-  listText: {
-    fontSize: 40,
-  },
   btn: {
     marginRight: 315,
   },
