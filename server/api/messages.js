@@ -23,7 +23,7 @@ router.get("/", async (req, res, next) => {
 });
 
 //all messages bewtween two people
-router.get("chat/:receiverId", requireToken, async (req, res, next) => {
+router.get("/chat/:receiverId", requireToken, async (req, res, next) => {
   try {
     const myInfo = await User.findOne({
       where: {
