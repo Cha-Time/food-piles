@@ -12,54 +12,50 @@ import {
 } from 'react-native';
 import { fetchMessages } from '../store/messages';
 import ChatView from './ChatView';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import { fetchChats } from '../store/chats';
+import { fetchOrganization } from '../store/SingleOrg';
 
 export const Chat = props => {
 
-  const [chats, setChats] = useState([
-    { id: 1, item: 'Chat1' },
-    { id: 2, item: 'Chat2' },
-    { id: 3, item: 'Chat3' },
-    { id: 4, item: 'Chat4' },
-    { id: 5, item: 'Chat5' },
-    { id: 6, item: 'Chat6' },
-    { id: 7, item: 'Chat7' },
-    { id: 8, item: 'Chat9' },
-    { id: 9, item: 'Chat9' },
-    { id: 10, item: 'Chat10' },
-    { id: 11, item: 'Chat11' },
-    { id: 12, item: 'Chat12' },
-    { id: 13, item: 'Chat13' },
-    { id: 14, item: 'Chat14' },
-    { id: 15, item: 'Chat15' },
-  ]);
-
   const [visible, setVisible] = useState(false);
+
+  async function loadData() {
+    await props.fetchChats()
+  }
 
   function toggleVisibility(status) {
     setVisible(status)
   }
 
+  async function handleOnPress(orgId) {
+    await props.fetchOrganization(Number(orgId))
+    console.log(props.org)
+    setVisible(true)
+  }
+
+  loadData()
   return (
     <View style={styles.container}>
       <FlatList
-        data={chats}
+        data={props.chats}
         renderItem={({ item }) => (
           <ScrollView>
             <TouchableOpacity
               style={styles.listItem}
               onPress={() => {
-                setVisible(true);
+                
+                handleOnPress(item.id)
               }}
             >
               <View style={styles.listItemView}>
-                <Text style={styles.listText}>{item.item}</Text>
+                <Text numberOfLines={1} style={styles.listText}>{item.msg}</Text>
               </View>
             </TouchableOpacity>
           </ScrollView>
         )}
       />
-      {visible === true ? ( <ChatView visibleStatus={visible} toggleVisibility={toggleVisibility}/>) : (<View></View>)}
+      {visible === true ? ( <ChatView visibleStatus={visible} org={props.org} receiverId={props.org.id} toggleVisibility={toggleVisibility}/>) : (<View></View>)}
     </View>
   );
 };
@@ -94,13 +90,17 @@ const mapStateToProps = state => {
   return {
     messages: state.messages,
     user: state.auth,
+    chats: state.chats,
+    org: state.singleOrg
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     getMessages: () => dispatch(fetchMessages()),
-    sendMessage: () => dispatch(sendMessage())
+    sendMessage: () => dispatch(sendMessage()),
+    fetchChats: () => dispatch(fetchChats()),
+    fetchOrganization: (id) => dispatch(fetchOrganization(id))
   };
 };
 

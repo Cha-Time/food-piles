@@ -14,7 +14,9 @@ const ChatView = (props) => {
     let isMounted = true
     const func = async () => {
       await props.fetchMessages(props.receiverId)
-      setAllMessages(props.messages)
+      if(isMounted) {
+        setAllMessages(props.messages)
+      } 
     };
     func()
     return () => {isMounted = false}
@@ -26,10 +28,12 @@ const ChatView = (props) => {
       <Text key={message.id} style={{ backgroundColor: 'whitesmoke', borderRadius: 25, borderBottomRightRadius: 0, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-end' }}>
         {message.messageText}
       </Text>
-      :
+      : message.senderId === props.user.organizationId ?
       <Text key={message.id} style={{ backgroundColor: 'lightblue', borderRadius: 25, borderBottomLeftRadius: 0, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-start' }}>
         {message.messageText}
       </Text>
+      :
+      <View key={message.id}/>
     ))
   }
 
@@ -40,7 +44,7 @@ const ChatView = (props) => {
 
   async function handleClose() {
     setAllMessages([])
-    props.clearMessages()
+    await props.clearMessages()
     props.toggleVisibility(false)
   }
 
@@ -117,7 +121,8 @@ const styles = StyleSheet.create({
 
 const mapState = (state) => {
   return {
-    messages: state.messages
+    messages: state.messages,
+    user: state.auth
   }
 }
 

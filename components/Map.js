@@ -26,7 +26,7 @@ export const Map = props => {
     coords: { latitude: null, longitude: null },
   });
   const [errorMsg, setErrorMsg] = useState(null);
-  const [distance, setDistance] = useState(5);
+  const [distance, setDistance] = useState(500);
 
   useEffect(() => {
     (async () => {
