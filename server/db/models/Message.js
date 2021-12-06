@@ -16,7 +16,7 @@ const Messages = db.define("message", {
       notEmpty: true,
     },
   },
-  userId: {
+  senderId: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
