@@ -10,19 +10,26 @@ import {
   Button,
   TextInput,
 } from 'react-native';
-import { fetchMessages } from '../store/messages';
 import ChatView from './ChatView';
-import { connect, useDispatch } from 'react-redux';
-import { fetchChats } from '../store/chats';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { fetchChats, setChats } from '../store/chats';
 import { fetchOrganization } from '../store/SingleOrg';
 
 export const Chat = props => {
 
   const [visible, setVisible] = useState(false);
 
-  async function loadData() {
-    await props.fetchChats()
-  }
+  const orgInfo = useSelector((state) => state.singleOrg);
+  const [chats, setChats] = useState([])
+  
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      await dispatch(fetchChats());
+      setChats(props.chats)
+    })();
+  }, [chats]);
 
   function toggleVisibility(status) {
     setVisible(status)
@@ -30,11 +37,9 @@ export const Chat = props => {
 
   async function handleOnPress(orgId) {
     await props.fetchOrganization(Number(orgId))
-    console.log(props.org)
     setVisible(true)
   }
-
-  loadData()
+  
   return (
     <View style={styles.container}>
       <FlatList
@@ -44,7 +49,6 @@ export const Chat = props => {
             <TouchableOpacity
               style={styles.listItem}
               onPress={() => {
-                
                 handleOnPress(item.id)
               }}
             >
@@ -97,8 +101,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getMessages: () => dispatch(fetchMessages()),
-    sendMessage: () => dispatch(sendMessage()),
     fetchChats: () => dispatch(fetchChats()),
     fetchOrganization: (id) => dispatch(fetchOrganization(id))
   };

@@ -28,12 +28,10 @@ const ChatView = (props) => {
       <Text key={message.id} style={{ backgroundColor: 'whitesmoke', borderRadius: 25, borderBottomRightRadius: 0, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-end' }}>
         {message.messageText}
       </Text>
-      : message.senderId === props.user.organizationId ?
+      :
       <Text key={message.id} style={{ backgroundColor: 'lightblue', borderRadius: 25, borderBottomLeftRadius: 0, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-start' }}>
         {message.messageText}
       </Text>
-      :
-      <View key={message.id}/>
     ))
   }
 
@@ -44,7 +42,7 @@ const ChatView = (props) => {
 
   async function handleClose() {
     setAllMessages([])
-    await props.clearMessages()
+    props.clearMessages()
     props.toggleVisibility(false)
   }
 
