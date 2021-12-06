@@ -9,6 +9,7 @@ import singleUserReducer from "./SingleUser";
 import singleOrgReducer from "./SingleOrg";
 import messagesReducer from "./messages";
 import favoriteReducer from "./Favorites";
+import chatsReducer from './chats'
 
 const reducer = combineReducers({
   homepageView: homepageViewReducer,
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   singleOrg: singleOrgReducer,
   messages: messagesReducer,
   favorites: favoriteReducer,
+  chats: chatsReducer
 });
 
 const middleware = applyMiddleware(

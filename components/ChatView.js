@@ -14,7 +14,9 @@ const ChatView = (props) => {
     let isMounted = true
     const func = async () => {
       await props.fetchMessages(props.receiverId)
-      setAllMessages(props.messages)
+      if(isMounted) {
+        setAllMessages(props.messages)
+      } 
     };
     func()
     return () => {isMounted = false}
@@ -117,7 +119,8 @@ const styles = StyleSheet.create({
 
 const mapState = (state) => {
   return {
-    messages: state.messages
+    messages: state.messages,
+    user: state.auth
   }
 }
 
