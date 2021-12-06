@@ -89,11 +89,11 @@ router.get("/all-chats", requireToken, async (req, res, next) => {
       const receiver = message.receiverId;
       const sender = message.senderId;
       if (sender == myInfo.organization.id) {
-        let receiverObj = await Organization.findOne(receiver);
+        let receiverObj = await Organization.findByPk(receiver);
         chats[receiver] = [message.messageText, receiverObj.name];
       }
       if (receiver == myInfo.organization.id) {
-        let senderObj = await Organization.findOne(sender);
+        let senderObj = await Organization.findByPk(sender);
         chats[sender] = [message.messageText, senderObj.name];
       }
     });
