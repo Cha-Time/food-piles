@@ -10,6 +10,7 @@ import singleOrgReducer from "./SingleOrg";
 import messagesReducer from "./messages";
 import favoriteReducer from "./Favorites";
 import chatsReducer from './chats'
+import singleForeignOrgReducer from "./singleForeignOrg";
 
 const reducer = combineReducers({
   homepageView: homepageViewReducer,
@@ -17,6 +18,7 @@ const reducer = combineReducers({
   auth: authReducer,
   singleUser: singleUserReducer,
   singleOrg: singleOrgReducer,
+  singleForeignOrg: singleForeignOrgReducer,
   messages: messagesReducer,
   favorites: favoriteReducer,
   chats: chatsReducer

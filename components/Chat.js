@@ -13,7 +13,7 @@ import {
 import ChatView from './ChatView';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { fetchChats, setChats } from '../store/chats';
-import { fetchOrganization } from '../store/SingleOrg';
+import { fetchForeignOrganization } from '../store/singleForeignOrg';
 
 export const Chat = props => {
 
@@ -93,14 +93,14 @@ const mapStateToProps = state => {
     messages: state.messages,
     user: state.auth,
     chats: state.chats,
-    org: state.singleOrg
+    org: state.singleForeignOrg
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     fetchChats: () => dispatch(fetchChats()),
-    fetchOrganization: (id) => dispatch(fetchOrganization(id))
+    fetchOrganization: (id) => dispatch(fetchForeignOrganization(id))
   };
 };
 
