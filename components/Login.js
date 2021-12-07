@@ -189,8 +189,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    paddingTop: "40%",
-    paddingBottom: "40%",
+    paddingTop: "20%",
+    paddingBottom: "20%",
   },
   headerText: {
     fontSize: 34,
