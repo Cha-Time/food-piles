@@ -90,7 +90,6 @@ export const Map = props => {
     });
 
   function findList() {
-    // console.log(sortedListArray);
     return sortedListArray.map(donor => (
       <View style={styles.listItem} key={donor.id}>
         <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
