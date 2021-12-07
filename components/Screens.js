@@ -1,6 +1,14 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { StatusBar, StyleSheet, Button, Alert, Text, View } from "react-native";
+import {
+  StatusBar,
+  StyleSheet,
+  Button,
+  Alert,
+  Text,
+  View,
+  Switch,
+} from "react-native";
 import { enableScreens } from "react-native-screens";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
@@ -21,7 +29,11 @@ import MainContainer from "./MainContainer";
 import OrganizationView from "./OrganizationView";
 import ChatView from "./ChatView";
 
-import { setHomeView } from "../store/homepageView";
+import {
+  getAvailability,
+  setAvailability,
+  setHomeView,
+} from "../store/homepageView";
 import {
   addFavorite,
   fetchFavorites,
@@ -29,6 +41,8 @@ import {
 } from "../store/Favorites";
 
 const Screens = (props) => {
+  const pageViewStore = useSelector((state) => state.homepageView);
+
   enableScreens();
 
   const { isLoggedIn } = props;
@@ -66,14 +80,19 @@ const Screens = (props) => {
             options={({ route }) => {
               let routeTitle = getFocusedRouteNameFromRoute(route) || "Home";
               let routeIsHome = routeTitle === "Home";
+
               return routeIsHome
                 ? {
-                    headerTitle: routeTitle,
+                    headerTitle: "Home",
                     headerRight: () => {
                       const dispatch = useDispatch();
-                      const pageViewStore = useSelector(
-                        (state) => state.homepageView
-                      );
+
+                      useEffect(() => {
+                        (async () => {
+                          await dispatch(getAvailability());
+                        })();
+                      }, []);
+
                       const handleToggleHomeViewClick = () => {
                         if (pageViewStore.toggleView === "map") {
                           dispatch(setHomeView("list"));
@@ -81,17 +100,39 @@ const Screens = (props) => {
                           dispatch(setHomeView("map"));
                         }
                       };
+
+                      const handleToggleAvailabilityStatus = () => {
+                        if (pageViewStore.availability === false) {
+                          Alert.alert("Your status is now Available");
+                          dispatch(setAvailability(true));
+                        } else {
+                          dispatch(setAvailability(false));
+                          Alert.alert("Your status is now Unavailable");
+                        }
+                      };
+
                       return (
-                        <Ionicons
-                          name={
-                            pageViewStore.toggleView === "map"
-                              ? "list"
-                              : "globe"
-                          }
-                          size={25}
-                          color="black"
-                          onPress={() => handleToggleHomeViewClick()}
-                        />
+                        <View>
+                          <Switch
+                            trackColor={{ false: "#767577", true: "#81b0ff" }}
+                            thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
+                            ios_backgroundColor="gray"
+                            onValueChange={() =>
+                              handleToggleAvailabilityStatus()
+                            }
+                            value={pageViewStore.availability}
+                          />
+                          <Ionicons
+                            name={
+                              pageViewStore.toggleView === "map"
+                                ? "list"
+                                : "globe"
+                            }
+                            size={25}
+                            color="black"
+                            onPress={() => handleToggleHomeViewClick()}
+                          />
+                        </View>
                       );
                     },
                   }
