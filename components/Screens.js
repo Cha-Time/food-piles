@@ -149,7 +149,7 @@ const Screens = (props) => {
                 headerTitle: "More Info",
                 headerRight: () => {
                   const currentOrgInfo = useSelector(
-                    (state) => state.singleOrg
+                    (state) => state.singleForeignOrg
                   );
 
                   const dispatch = useDispatch();

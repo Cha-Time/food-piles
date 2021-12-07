@@ -24,6 +24,7 @@ export const Favorites = (props) => {
 
   useEffect(() => {
     (async () => {
+
       await dispatch(fetchFavorites());
     })();
   }, []);
@@ -61,7 +62,9 @@ export const Favorites = (props) => {
             )}
           </Text>
           <Text>
+
             <Ionicons name="heart" size={15} color="black" />
+
           </Text>
         </View>
       </View>

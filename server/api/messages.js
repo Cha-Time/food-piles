@@ -85,20 +85,27 @@ router.get("/all-chats", requireToken, async (req, res, next) => {
       },
     });
     let chats = {};
-    messages.forEach((message) => {
+    for (let i = 0; i < messages.length; i++) {
+      let message = messages[i];
       const receiver = message.receiverId;
       const sender = message.senderId;
       if (sender == myInfo.organization.id) {
-        // let receiverObj = await Organization.findByPk(receiver);
-        // chats[receiver] = [message.messageText, receiverObj.name];
-        chats[receiver] = message.messageText;
+        let receiverObj = await Organization.findByPk(receiver);
+        chats[receiver] = [
+          message.messageText,
+          message.timeStamp,
+          receiverObj.name,
+        ];
       }
       if (receiver == myInfo.organization.id) {
-        // let senderObj = await Organization.findByPk(sender);
-        // chats[sender] = [message.messageText, senderObj.name];
-        chats[sender] = message.messageText;
+        let senderObj = await Organization.findByPk(sender);
+        chats[sender] = [
+          message.messageText,
+          message.timeStamp,
+          senderObj.name,
+        ];
       }
-    });
+    }
     res.json(chats);
   } catch (error) {
     next(error);
