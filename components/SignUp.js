@@ -13,6 +13,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../store/auth";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export const SignUp = (props) => {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ export const SignUp = (props) => {
   const [email, setEmail] = useState(null);
 
   ////// Sign Up Part Two
-  const [accType, setUsertype] = useState("donor");
+  const [accType, setUsertype] = useState(null);
 
   ////// Sign Up Part Three
   const [name, setName] = useState(null);
@@ -36,6 +37,31 @@ export const SignUp = (props) => {
   const [description, setDescription] = useState(null);
 
   const { error, isLoggedIn } = props;
+
+  const NavButton = (part, direction) => (
+    <TouchableOpacity
+      onPress={() => setPart(part)}
+      style={styles.nextButtonContainer}
+    >
+      <Text style={styles.nextButtonText}>{direction}</Text>
+    </TouchableOpacity>
+  );
+
+  const radio = (value) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setUsertype(value);
+        }}
+      >
+        <Ionicons
+          name={value == accType ? "ellipse" : "ellipse-outline"}
+          size={20}
+          color={value == accType ? "#f5565a" : "gray"}
+        />
+      </TouchableOpacity>
+    );
+  };
 
   async function handleSubmit() {
     await dispatch(
@@ -66,14 +92,6 @@ export const SignUp = (props) => {
   }
 
   if (part === "partOne") {
-    const NextButton = () => (
-      <TouchableOpacity
-        onPress={() => setPart("partTwo")}
-        style={styles.nextButtonContainer}
-      >
-        <Text style={styles.nextButtonText}>Next</Text>
-      </TouchableOpacity>
-    );
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
@@ -106,49 +124,33 @@ export const SignUp = (props) => {
               style={styles.textInput}
             />
           </View>
-          <View style={styles.buttonsContainer}>{NextButton()}</View>
+          <View style={styles.buttonsContainer}>
+            {NavButton("partTwo", "Next")}
+          </View>
         </View>
       </TouchableWithoutFeedback>
     );
   } else if (part === "partTwo") {
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: "center", fontSize: 20 }}>Who are you?</Text>
-        <View
-          style={{
-            width: "100%",
-            minHeight: "10%",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Picker
-            selectedValue={accType}
-            onValueChange={(currentSelection) => setUsertype(currentSelection)}
-            style={{ backgroundColor: "whitesmoke", width: "100%" }}
-          >
-            <Picker.Item label="Donor" value="donor" style={{}} />
-            <Picker.Item label="Charity" value="charity" />
-          </Picker>
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerText}>
+            Which organization type describes yours best?
+          </Text>
         </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-between",
-          }}
-        >
-          <Button
-            title="< Back"
-            name="back"
-            onPress={() => setPart("partOne")}
-          ></Button>
-          <Button
-            title="Next >"
-            name="next"
-            onPress={() => setPart("partThree")}
-          ></Button>
+        <View style={styles.orgTypeContainer}>
+          <View style={styles.inputContainer}>
+            {radio("donor")}
+            <Text style={styles.orgTypeText}>It is a donor.</Text>
+          </View>
+          <View style={styles.inputContainer}>
+            {radio("charity")}
+            <Text style={styles.orgTypeText}>It is a charity.</Text>
+          </View>
+        </View>
+        <View style={styles.navbuttonsContainer}>
+          {NavButton("partOne", "Back")}
+          {NavButton("partThree", "Next")}
         </View>
       </View>
     );
@@ -319,7 +321,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     width: "100%",
     paddingBottom: "5%",
   },
@@ -330,12 +332,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   nextButtonContainer: {
-    width: "15%",
+    display: "flex",
+    width: "18%",
+    alignItems: "center",
     borderBottomColor: "black",
     borderBottomWidth: 2,
+    marginRight: "3%",
   },
   nextButtonText: {
-    fontSize: 20,
+    fontSize: 22,
     color: "black",
   },
   headerTextContainer: {
@@ -355,6 +360,25 @@ const styles = StyleSheet.create({
     display: "flex",
     width: "100%",
     alignItems: "flex-end",
+  },
+  navbuttonsContainer: {
+    paddingTop: "25%",
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+  },
+  orgTypeContainer: {
+    width: "100%",
+    minHeight: "10%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingTop: "10%",
+  },
+  orgTypeText: {
+    fontSize: 20,
+    padding: "5%",
   },
 });
 
