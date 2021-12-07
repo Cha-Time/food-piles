@@ -18,7 +18,7 @@ import ChatView from "./ChatView";
 
 export const OrganizationView = ({ route, navigation }) => {
   const orgId = Number(route.params.orgId);
-  const orgInfo = useSelector((state) => state.singleOrg);
+  const orgInfo = useSelector((state) => state.singleForeignOrg);
   const dispatch = useDispatch();
 
   useEffect(() => {
