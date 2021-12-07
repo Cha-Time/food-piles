@@ -22,29 +22,13 @@ export const Favorites = (props) => {
   // dispatch time?
   const dispatch = useDispatch();
 
-  const [location, setLocation] = useState({
-    coords: { latitude: null, longitude: null },
-  });
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [distance, setDistance] = useState(50);
-
   useEffect(() => {
     (async () => {
-      //gets permissions for app location use
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-      //sets your current position
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+
       await dispatch(fetchFavorites());
     })();
   }, []);
 
-  // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
-  // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
   function handlePressToOrg(orgId) {
     props.navigation.navigate("OrgView", { orgId });
   }
@@ -65,27 +49,22 @@ export const Favorites = (props) => {
             {org.name}
           </Text>
           <Text>
-            {/*This gets the distance in meters between your location and the org. Then we convert it to miles */}
             {org.favorites.distance}
             mi away
           </Text>
         </View>
         <View>
           <Text>
-            <Ionicons
-              name="ellipse"
-              size={15}
-              color="green"
-              onPress={() => handleToggleFavorite()}
-            />
+            {org.availabilityStatus ? (
+              <Ionicons name="ellipse" size={15} color="green" />
+            ) : (
+              <Ionicons name="ellipse" size={15} color="grey" />
+            )}
           </Text>
           <Text>
-            <Ionicons
-              name="heart"
-              size={15}
-              color="black"
-              onPress={() => handleToggleFavorite()}
-            />
+
+            <Ionicons name="heart" size={15} color="black" />
+
           </Text>
         </View>
       </View>
@@ -93,17 +72,18 @@ export const Favorites = (props) => {
   }
 
   // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
-  if (location.coords.latitude !== null && location.coords.longitude !== null) {
-    // is our toggle view state set to map? show us the map
+
+  // is our toggle view state set to map? show us the map
+  if (sortedFavoritesArray.length > 0) {
     return <ScrollView style={styles.container}>{findList()}</ScrollView>;
-    // no location from phone yet? just show loading....
   } else {
     return (
-      <View>
+      <ScrollView style={styles.container}>
         <Text>Loading...</Text>
-      </View>
+      </ScrollView>
     );
   }
+  // no location from phone yet? just show loading....
 };
 
 const mapState = (state) => {
