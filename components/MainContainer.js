@@ -32,6 +32,7 @@ const MainContainer = ({ route, navigation }) => {
           }
           if (rn === homeName) {
             iconName = focused ? "home" : "home-outline";
+            console.log("size", size);
           } else if (rn == profileName) {
             iconName = focused ? "person" : "person-outline";
           } else if (rn == favoriteName) {
