@@ -26,9 +26,15 @@ export default function (state = [], action) {
     case SET_CHATS:
         let chats = []
       for (let key in action.chats) {
-        chats.push({id: key, msg: action.chats[key]})
+        let date = new Date(`${action.chats[key][1]}`)
+        chats.push({id: key, msg: action.chats[key][0], msgTime: date, orgName: action.chats[key][2]})
       }
-      return chats
+      
+      const sortedChats = chats.map(chat => chat)
+      .sort(function (a, b) { 
+        return b.msgTime.valueOf() - a.msgTime.valueOf()
+      })
+      return sortedChats
     default:
       return state;
   }
