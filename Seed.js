@@ -25085,7 +25085,16 @@ function allOrgs() {
 
   console.log(donorsWithAddresses);
 
+  let counter = 0;
+  let status = false;
   const updatedDonors = donorsWithAddresses.map((donor) => {
+    counter++;
+    if (counter % 2) {
+      status = true;
+    } else {
+      status = false;
+    }
+
     return {
       name: donor.name,
       address: donor.address_obj.street1,
@@ -25096,6 +25105,7 @@ function allOrgs() {
       accType: "donor",
       latitude: donor.latitude,
       longitude: donor.longitude,
+      availabilityStatus: status,
     };
   });
 

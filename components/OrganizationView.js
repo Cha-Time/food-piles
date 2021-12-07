@@ -42,7 +42,7 @@ export const OrganizationView = ({ route, navigation }) => {
   const [visible, setVisible] = useState(false);
 
   function toggleVisibility(status) {
-    setVisible(status)
+    setVisible(status);
   }
 
   return (
@@ -67,7 +67,7 @@ export const OrganizationView = ({ route, navigation }) => {
         <Image
           style={{ width: 100, height: 100, borderRadius: 50 }}
           source={{
-            uri: "https://d1rzxhvrtciqq1.cloudfront.net/images/people/images/dY5xNEt4Wr54ahbagq7ICb/medium/b808a3-schoberlawrenceheadshot.jpg",
+            uri: orgInfo.imageUrl,
           }}
         />
       </View>
@@ -86,7 +86,16 @@ export const OrganizationView = ({ route, navigation }) => {
       <Text style={styles.subText}>Nuts</Text>
       <Button title="Message" onPress={() => setVisible(true)} />
 
-      {visible === true ? ( <ChatView visibleStatus={visible} toggleVisibility={toggleVisibility} org={orgInfo} receiverId={orgInfo.id}/>) : (<View></View>)}
+      {visible === true ? (
+        <ChatView
+          visibleStatus={visible}
+          toggleVisibility={toggleVisibility}
+          org={orgInfo}
+          receiverId={orgInfo.id}
+        />
+      ) : (
+        <View></View>
+      )}
     </View>
   );
 };

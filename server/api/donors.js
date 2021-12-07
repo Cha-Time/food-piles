@@ -10,6 +10,7 @@ router.get("/", async (req, res, next) => {
     const donors = await Organization.findAll({
       where: {
         accType: "donor",
+        availabilityStatus: true,
       },
     });
     res.json(donors);
