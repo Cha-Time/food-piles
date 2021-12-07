@@ -1,35 +1,38 @@
 import * as React from "react";
-import { View, Text, Button, StyleSheet, Image, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Image,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
 export const Start = ({ navigation }) => {
+  const LoginButton = () => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate("Login")}
+      style={styles.logInButtonContainer}
+    >
+      <Text style={styles.logInButtonText}>Sign In</Text>
+    </TouchableOpacity>
+  );
+  const SignUpButton = () => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate("SignUp")}
+      style={styles.signUpButtonContainer}
+    >
+      <Text style={styles.signUpButtonText}>Create Account</Text>
+    </TouchableOpacity>
+  );
   return (
     <View style={styles.container}>
-      <Text style={{ textAlign: "center" }}>
-        "Be the change that you want to see in the world" - Bruno Mars{" "}
-      </Text>
-      <Image
-        source={require("../assets/test_logo.png")}
-        style={{ width: 100, height: 100, borderRadius: 50 }}
-      />
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          width: "100%",
-          justifyContent: "space-between",
-        }}
-      >
-        <Button
-          title="Login"
-          style={{ margin: "50px" }}
-          onPress={() => navigation.navigate("Login")}
-        ></Button>
-        <Button
-          title="Sign Up"
-          name="signUp"
-          onPress={() => navigation.navigate("SignUp")}
-        ></Button>
+      <Image source={require("../assets/logo.png")} style={styles.logo} />
+      <View style={styles.appButtonContainer}>
+        {LoginButton()}
+        {SignUpButton()}
       </View>
     </View>
   );
@@ -40,10 +43,49 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 50,
     flexDirection: "column",
-    backgroundColor: "#93c47d",
-    justifyContent: "space-between",
+    backgroundColor: "#ececec",
+    justifyContent: "flex-end",
     alignItems: "center",
     textAlign: "center",
+  },
+  logo: {
+    height: "80%",
+    width: "120%",
+  },
+  appButtonContainer: {
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    height: "25%",
+    justifyContent: "space-evenly",
+  },
+  logInButtonContainer: {
+    backgroundColor: "#f5565a",
+    borderColor: "#f5565a",
+    borderWidth: 3,
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  logInButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+  },
+  signUpButtonContainer: {
+    backgroundColor: "#ececec",
+    borderColor: "#f5565a",
+    borderWidth: 3,
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  signUpButtonText: {
+    fontSize: 18,
+    color: "#f5565a",
+    fontWeight: "bold",
+    alignSelf: "center",
   },
 });
 
