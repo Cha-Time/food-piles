@@ -13,6 +13,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { authenticate } from "../store/auth";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 export const SignUp = (props) => {
   const dispatch = useDispatch();
@@ -24,18 +25,51 @@ export const SignUp = (props) => {
   const [email, setEmail] = useState(null);
 
   ////// Sign Up Part Two
-  const [accType, setUsertype] = useState("donor");
+  const [accType, setUsertype] = useState(null);
 
   ////// Sign Up Part Three
   const [name, setName] = useState(null);
   const [phoneNumber, setPhone] = useState(null);
   const [address, setAddress] = useState(null);
   const [city, setCity] = useState(null);
-  const [state, setState] = useState("NY");
+  const [state, setState] = useState(null);
   const [zipCode, setZip] = useState(null);
   const [description, setDescription] = useState(null);
 
   const { error, isLoggedIn } = props;
+
+  const NavButton = (part, direction) => (
+    <TouchableOpacity
+      onPress={() => setPart(part)}
+      style={styles.nextButtonContainer}
+    >
+      <Text style={styles.nextButtonText}>{direction}</Text>
+    </TouchableOpacity>
+  );
+  const SubmitButton = () => (
+    <TouchableOpacity
+      onPress={() => handleSubmit()}
+      style={styles.submitButtonContainer}
+    >
+      <Text style={styles.nextButtonText}>Submit</Text>
+    </TouchableOpacity>
+  );
+
+  const radio = (value) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setUsertype(value);
+        }}
+      >
+        <Ionicons
+          name={value == accType ? "ellipse" : "ellipse-outline"}
+          size={20}
+          color={value == accType ? "#f5565a" : "gray"}
+        />
+      </TouchableOpacity>
+    );
+  };
 
   async function handleSubmit() {
     await dispatch(
@@ -66,14 +100,6 @@ export const SignUp = (props) => {
   }
 
   if (part === "partOne") {
-    const NextButton = () => (
-      <TouchableOpacity
-        onPress={() => setPart("partTwo")}
-        style={styles.nextButtonContainer}
-      >
-        <Text style={styles.nextButtonText}>Next</Text>
-      </TouchableOpacity>
-    );
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
@@ -106,49 +132,33 @@ export const SignUp = (props) => {
               style={styles.textInput}
             />
           </View>
-          <View style={styles.buttonsContainer}>{NextButton()}</View>
+          <View style={styles.buttonsContainer}>
+            {NavButton("partTwo", "Next")}
+          </View>
         </View>
       </TouchableWithoutFeedback>
     );
   } else if (part === "partTwo") {
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: "center", fontSize: 20 }}>Who are you?</Text>
-        <View
-          style={{
-            width: "100%",
-            minHeight: "10%",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Picker
-            selectedValue={accType}
-            onValueChange={(currentSelection) => setUsertype(currentSelection)}
-            style={{ backgroundColor: "whitesmoke", width: "100%" }}
-          >
-            <Picker.Item label="Donor" value="donor" style={{}} />
-            <Picker.Item label="Charity" value="charity" />
-          </Picker>
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerText}>
+            Which organization type describes yours best?
+          </Text>
         </View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-between",
-          }}
-        >
-          <Button
-            title="< Back"
-            name="back"
-            onPress={() => setPart("partOne")}
-          ></Button>
-          <Button
-            title="Next >"
-            name="next"
-            onPress={() => setPart("partThree")}
-          ></Button>
+        <View style={styles.orgTypeContainer}>
+          <View style={styles.inputContainer}>
+            {radio("donor")}
+            <Text style={styles.orgTypeText}>It is a donor.</Text>
+          </View>
+          <View style={styles.inputContainer}>
+            {radio("charity")}
+            <Text style={styles.orgTypeText}>It is a charity.</Text>
+          </View>
+        </View>
+        <View style={styles.navbuttonsContainer}>
+          {NavButton("partOne", "Back")}
+          {NavButton("partThree", "Next")}
         </View>
       </View>
     );
@@ -156,17 +166,10 @@ export const SignUp = (props) => {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          <Text style={{ textAlign: "center", fontSize: 20 }}>
-            Tell us about yourself.
-          </Text>
-          <View
-            style={{
-              width: "100%",
-              minHeight: "10%",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.headerText}>Tell us about yourself!</Text>
+          </View>
+          <View style={styles.orgFormContainer}>
             <TextInput
               placeholder="Name"
               value={name}
@@ -174,55 +177,48 @@ export const SignUp = (props) => {
               style={styles.textInput}
             />
             <TextInput
-              placeholder="Phone"
-              value={phoneNumber}
-              onChangeText={setPhone}
-              style={styles.textInput}
-            />
-            <TextInput
               placeholder="Address"
               value={address}
               onChangeText={setAddress}
-              style={[styles.textInput, { marginBottom: "1%" }]}
+              style={styles.textInput}
             />
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                maxWidth: "75%",
-                minHeight: "10%",
-                maxHeight: "13%",
-                alignItems: "center",
-                marginBottom: "5%",
-              }}
-            >
-              <TextInput
-                placeholder="City"
-                value={city}
-                onChangeText={setCity}
-                style={[styles.textInput, { marginRight: "1%" }]}
-              />
-              <Picker
-                selectedValue={state}
-                onValueChange={(currentSelection) => setState(currentSelection)}
-                style={{
-                  backgroundColor: "whitesmoke",
-                  width: "44%",
-                  minHeight: "91%",
-                  maxHeight: "13%",
-                }}
-              >
-                <Picker.Item label="NY" value="NY" />
-                <Picker.Item label="PA" value="PA" />
-                <Picker.Item label="NJ" value="NJ" />
-              </Picker>
-              <TextInput
-                placeholder="Zip Code"
-                value={zipCode}
-                onChangeText={setZip}
-                style={[styles.textInput, { marginRight: "1%" }]}
-              />
+            <View style={styles.inputRowContainer}>
+              <View style={{ width: "74%", paddingRight: "3%" }}>
+                <TextInput
+                  placeholder="City"
+                  value={city}
+                  onChangeText={setCity}
+                  style={styles.textInput}
+                />
+              </View>
+              <View style={{ width: "25%" }}>
+                <TextInput
+                  placeholder="State"
+                  value={state}
+                  onChangeText={setState}
+                  style={styles.textInput}
+                />
+              </View>
             </View>
+            <View style={styles.inputRowContainer}>
+              <View style={{ width: "40%", paddingRight: "3%" }}>
+                <TextInput
+                  placeholder="Zip Code"
+                  value={zipCode}
+                  onChangeText={setZip}
+                  style={styles.textInput}
+                />
+              </View>
+              <View style={{ width: "59%" }}>
+                <TextInput
+                  placeholder="Phone"
+                  value={phoneNumber}
+                  onChangeText={setPhone}
+                  style={styles.textInput}
+                />
+              </View>
+            </View>
+
             <TextInput
               placeholder="Description"
               value={description}
@@ -231,68 +227,53 @@ export const SignUp = (props) => {
                 styles.textInput,
                 {
                   marginBottom: "5%",
-                  minHeight: "25%",
+                  minHeight: "15%",
                   textAlignVertical: "top",
                 },
               ]}
             />
           </View>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              width: "100%",
-              justifyContent: "space-between",
-            }}
-          >
-            <Button
-              title="< Back"
-              name="back"
-              onPress={() => setPart("partTwo")}
-            ></Button>
-            <Button
-              title="Next >"
-              name="next"
-              onPress={() => setPart("partFour")}
-            ></Button>
+          <View style={styles.navbuttonsContainer}>
+            {NavButton("partTwo", "Back")}
+            {SubmitButton()}
           </View>
         </View>
       </TouchableWithoutFeedback>
     );
-  } else if (part === "partFour") {
-    return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center", fontSize: 20 }}>Prove it.</Text>
-        <View
-          style={{
-            width: "100%",
-            minHeight: "10%",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        ></View>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-between",
-          }}
-        >
-          <Button
-            title="< Back"
-            name="back"
-            onPress={() => setPart("partThree")}
-          ></Button>
-          <Button
-            title="Next >"
-            name="next"
-            onPress={() => handleSubmit()}
-          ></Button>
-        </View>
-      </View>
-    );
   }
+  // } else if (part === "partFour") {
+  //   return (
+  //     <View style={styles.container}>
+  //       <Text style={{ textAlign: "center", fontSize: 20 }}>Prove it.</Text>
+  //       <View
+  //         style={{
+  //           width: "100%",
+  //           minHeight: "10%",
+  //           alignItems: "center",
+  //           justifyContent: "space-between",
+  //         }}
+  //       ></View>
+  //       <View
+  //         style={{
+  //           display: "flex",
+  //           flexDirection: "row",
+  //           width: "100%",
+  //           justifyContent: "space-between",
+  //         }}
+  //       >
+  //         <Button
+  //           title="< Back"
+  //           name="back"
+  //           onPress={() => setPart("partThree")}
+  //         ></Button>
+  //         <Button
+  //           title="Next >"
+  //           name="next"
+  //           onPress={() => handleSubmit()}
+  //         ></Button>
+  //       </View>
+  //     </View>
+  //   );
 };
 
 const styles = StyleSheet.create({
@@ -319,7 +300,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     width: "100%",
     paddingBottom: "5%",
   },
@@ -330,12 +311,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   nextButtonContainer: {
-    width: "15%",
+    display: "flex",
+    width: "18%",
+    alignItems: "center",
     borderBottomColor: "black",
     borderBottomWidth: 2,
+    marginRight: "3%",
+  },
+  submitButtonContainer: {
+    display: "flex",
+    width: "25%",
+    alignItems: "center",
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
+    marginRight: "3%",
   },
   nextButtonText: {
-    fontSize: 20,
+    fontSize: 22,
     color: "black",
   },
   headerTextContainer: {
@@ -351,10 +343,43 @@ const styles = StyleSheet.create({
     fontSize: 34,
   },
   buttonsContainer: {
-    paddingTop: "5%",
+    paddingTop: "15%",
     display: "flex",
     width: "100%",
     alignItems: "flex-end",
+  },
+  navbuttonsContainer: {
+    paddingTop: "25%",
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+  },
+  orgTypeContainer: {
+    width: "100%",
+    minHeight: "10%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingTop: "10%",
+  },
+  orgTypeText: {
+    fontSize: 20,
+    padding: "5%",
+  },
+  orgFormContainer: {
+    width: "100%",
+    minHeight: "10%",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  inputRowContainer: {
+    display: "flex",
+    flexDirection: "row",
+    maxWidth: "100%",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    marginBottom: "5%",
   },
 });
 
