@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 import {
   Platform,
@@ -8,17 +8,17 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-} from "react-native";
+} from 'react-native';
 
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import * as Location from "expo-location";
-import * as geolib from "geolib";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import * as Location from 'expo-location';
+import * as geolib from 'geolib';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { connect, useDispatch, useSelector } from "react-redux";
-import { fetchFavorites } from "../store/Favorites";
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { fetchFavorites } from '../store/Favorites';
 
-export const Favorites = (props) => {
+export const Favorites = props => {
   // dispatch time?
   const dispatch = useDispatch();
 
@@ -32,8 +32,8 @@ export const Favorites = (props) => {
     (async () => {
       //gets permissions for app location use
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
         return;
       }
       //sets your current position
@@ -46,13 +46,20 @@ export const Favorites = (props) => {
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
   function handlePressToOrg(orgId) {
-    props.navigation.navigate("OrgView", { orgId });
+    props.navigation.navigate('OrgView', { orgId });
   }
 
   function handleToggleFavorite() {}
 
+  let sortedFavoritesArray = props.favorites
+    .map(org => org)
+    .sort(function (a, b) {
+      return a.favorites.distance - b.favorites.distance;
+    });
+
   function findList() {
-    return props.favorites.map((org) => (
+    // console.log('this is my array ----->', sortedFavoritesArray);
+    return sortedFavoritesArray.map(org => (
       <View style={styles.listItem} key={org.id}>
         <View>
           <Text onPress={() => handlePressToOrg(org.id)} style={styles.title}>
@@ -60,7 +67,8 @@ export const Favorites = (props) => {
           </Text>
           <Text>
             {/*This gets the distance in meters between your location and the org. Then we convert it to miles */}
-            {org.favorites.distance}mi away
+            {org.favorites.distance}
+            mi away
           </Text>
         </View>
         <View>
@@ -73,12 +81,7 @@ export const Favorites = (props) => {
             />
           </Text>
           <Text>
-            <Ionicons
-              name="heart"
-              size={15}
-              color="black"
-              onPress={() => handleToggleFavorite()}
-            />
+            <Ionicons name="heart" size={15} color="black" onPress={() => handleToggleFavorite()} />
           </Text>
         </View>
       </View>
@@ -99,7 +102,7 @@ export const Favorites = (props) => {
   }
 };
 
-const mapState = (state) => {
+const mapState = state => {
   return {
     user: state.auth,
     favorites: state.favorites,
@@ -114,22 +117,22 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   title: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   map: {
     flex: 1,
-    position: "absolute",
-    height: "100%",
-    width: "100%",
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
     marginTop: 0,
   },
   listItem: {
-    padding: "5%",
-    borderColor: "gray",
+    padding: '5%',
+    borderColor: 'gray',
     borderWidth: 0.5,
-    display: "flex",
+    display: 'flex',
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
