@@ -20,16 +20,15 @@ export const Chat = props => {
   const [visible, setVisible] = useState(false);
 
   const orgInfo = useSelector((state) => state.singleOrg);
-  const [chats, setChats] = useState([])
 
   const dispatch = useDispatch();
+  let timeAgo = require('node-time-ago')
 
   useEffect(() => {
     (async () => {
       await dispatch(fetchChats());
-      setChats(props.chats)
     })();
-  }, [chats]);
+  }, [props.chats]);
 
   function toggleVisibility(status) {
     setVisible(status)
@@ -53,7 +52,24 @@ export const Chat = props => {
               }}
             >
               <View style={styles.listItemView}>
-                <Text numberOfLines={1} style={{ fontSize: 20 }}>{`Org Name`}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text numberOfLines={1} style={{ fontSize: 20, maxWidth: '50%' }}>{item.orgName}</Text>
+                  <Text numberOfLines={1} style={{ fontSize: 15 }}>
+                    {`${
+                      ((Date.now() - new Date(item.msgTime).valueOf()) / 1000 / 60 / 60 / 24) > 1 
+                      ? 
+                      new Date(item.msgTime).toDateString() 
+                      :
+                      (
+                        ((Date.now() - new Date(item.msgTime).valueOf()) / 1000 / 60) < 1
+                        ?
+                        'just now'
+                        :
+                        timeAgo(item.msgTime)
+                      ) 
+                      }`}
+                  </Text>
+                </View>
                 <Text numberOfLines={1} style={{ fontSize: 10 }}>{item.msg}</Text>
               </View>
             </TouchableOpacity>
