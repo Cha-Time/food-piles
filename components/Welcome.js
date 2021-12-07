@@ -13,7 +13,6 @@ import { connect, useDispatch } from "react-redux";
 import { fetchOrganization } from "../store/SingleOrg";
 
 export const Welcome = (props) => {
-  console.log(props.user)
   const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
@@ -30,8 +29,13 @@ export const Welcome = (props) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <Text style={{ textAlign: "center", fontSize: 20 }}>
-          {`Welcome, ${props.organization.name}`}
+        <Text
+          style={{ textAlign: "center", fontSize: 35, paddingBottom: "5%" }}
+        >
+          Welcome Back,
+        </Text>
+        <Text style={{ textAlign: "center", fontSize: 30, fontWeight: "bold" }}>
+          {props.organization.name}
         </Text>
         {moveOn()}
       </View>
