@@ -17,8 +17,8 @@ import { fetchOrganization } from '../store/SingleOrg';
 
 export const Map = props => {
   const pageViewStore = useSelector(state => state.homepageView);
-  const orgInfo = useSelector((state) => state.singleOrg);
-  
+  const orgInfo = useSelector(state => state.singleOrg);
+
   // dispatch time?
   const dispatch = useDispatch();
 
@@ -72,23 +72,32 @@ export const Map = props => {
 
   // now that we have the nearby donors, render them also in list form -- we choose which to render further down
 
+  let sortedListArray = nearbyDonors
+    .map(donor => {
+      donor.distance = (
+        geolib.getDistance(
+          { latitude: donor.latitude, longitude: donor.longitude },
+          {
+            latitude: Number(orgInfo.latitude),
+            longitude: Number(orgInfo.longitude),
+          }
+        ) / 1609.34
+      ).toFixed(1);
+      return donor;
+    })
+    .sort(function (a, b) {
+      return a.distance - b.distance;
+    });
+
   function findList() {
-    return nearbyDonors.map((donor, index) => (
+    // console.log(sortedListArray);
+    return sortedListArray.map(donor => (
       <View style={styles.listItem} key={donor.id}>
         <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
           {donor.name}
         </Text>
         <Text>
-          {/*This gets the distance in meters between your location and the donor. Then we convert it to miles */}
-          {(
-            geolib.getDistance(
-              { latitude: donor.latitude, longitude: donor.longitude },
-              {
-                latitude: Number(orgInfo.latitude),
-                longitude: Number(orgInfo.longitude),
-              }
-            ) / 1609.34
-          ).toFixed(1)}
+          {donor.distance}
           mi away
         </Text>
       </View>
@@ -96,7 +105,12 @@ export const Map = props => {
   }
 
   // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
-  if (Number(orgInfo.latitude) === Number(orgInfo.latitude) && Number(orgInfo.longitude) === Number(orgInfo.longitude) && Number(orgInfo.latitude) !== undefined && Number(orgInfo.longitude) !== undefined) {
+  if (
+    Number(orgInfo.latitude) === Number(orgInfo.latitude) &&
+    Number(orgInfo.longitude) === Number(orgInfo.longitude) &&
+    Number(orgInfo.latitude) !== undefined &&
+    Number(orgInfo.longitude) !== undefined
+  ) {
     // is our toggle view state set to map? show us the map
 
     if (pageViewStore.toggleView === 'map') {
@@ -149,7 +163,7 @@ const mapState = state => {
   return {
     user: state.auth,
     org: state.singleOrg,
-    orgs: state.mapData
+    orgs: state.mapData,
   };
 };
 
