@@ -30,7 +30,6 @@ export const _setAvailability = (newAvailability) => {
 };
 
 const _getAvailability = (toSet) => {
-  console.log("the get availability action creator, will set: ", toSet);
   return {
     type: GET_AVAILABILITY,
     toSet,
@@ -42,7 +41,7 @@ export const setAvailability = (newAvailability) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const res = await Axios.put(
-      "http://192.168.1.162:8080/api/organizations/availability",
+      "https://foodpiles.herokuapp.com/api/organizations/availability",
       { newAvailability: newAvailability },
       {
         headers: {
@@ -55,12 +54,10 @@ export const setAvailability = (newAvailability) => {
 };
 
 export const getAvailability = () => {
-  console.log("hi");
   return async (dispatch) => {
-    console.log("the get availability thunk");
     const token = await AsyncStorage.getItem("token");
     const res = await Axios.get(
-      "http://192.168.1.162:8080/api/organizations/availability",
+      "https://foodpiles.herokuapp.com/api/organizations/availability",
       {
         headers: {
           authorization: token,
@@ -83,7 +80,6 @@ export default function homepageViewReducer(state = initialState, action) {
     case SET_AVAILABILITY:
       return { ...state, availability: action.newAvailability };
     case GET_AVAILABILITY:
-      console.log("from the reducer, get availability will be: ", action.toSet);
       return { ...state, availability: action.toSet };
     default:
       return state;
