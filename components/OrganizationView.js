@@ -24,6 +24,7 @@ export const OrganizationView = ({ route, navigation }) => {
   useEffect(() => {
     (async () => {
       await dispatch(fetchOrganization(orgId));
+      console.log('hey')
     })();
   }, []);
 

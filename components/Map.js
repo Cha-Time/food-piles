@@ -13,33 +13,38 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as geolib from 'geolib';
 import { connect, useDispatch, useSelector } from 'react-redux';
-import { fetchOrganizations } from '../store/MapData';
+import { fetchOrganizations, setOrganizations } from '../store/MapData';
 import { fetchOrganization } from '../store/SingleOrg';
 
 export const Map = props => {
   const pageViewStore = useSelector(state => state.homepageView);
   const orgInfo = useSelector((state) => state.singleOrg);
+  
 
   // dispatch time?
   const dispatch = useDispatch();
 
-  const [location, setLocation] = useState({})
+  const [location, setLocation] = useState({ latitude: Number(orgInfo.latitude), longitude: Number(orgInfo.longitude)})
   const [errorMsg, setErrorMsg] = useState(null);
   const [distance, setDistance] = useState(5);
 
   useEffect(() => {
     (async () => {
       await dispatch(fetchOrganization(props.user.organizationId));
-
-      //sets your current position
-      if (orgInfo) {
-        let location = { latitude: Number(props.org.latitude), longitude: Number(props.org.longitude) }
-        setLocation(location);
-      }
-
       await dispatch(fetchOrganizations(props.user.accType));
+      //sets your current position
+      // let location = { latitude: Number(props.org.latitude), longitude: Number(props.org.longitude) }
+      // setLocation(location);
+      console.log(location)
     })();
-  }, [location]);
+  }, []);
+
+  // useEffect(() => {
+  //   (async () => {
+      
+  //     setOrgs(props.orgs)
+  //   })();
+  // }, []);
 
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
@@ -49,8 +54,8 @@ export const Map = props => {
   const newDonors = useSelector(state => state.mapData);
   const nearbyDonors = newDonors.filter(donor => {
     const currentLocation = {
-      latitude: location.latitude || 0,
-      longitude: location.longitude || 0,
+      latitude: Number(orgInfo.latitude) || 0,
+      longitude: Number(orgInfo.longitude) || 0,
     };
 
     const donorLocation = {
@@ -93,8 +98,8 @@ export const Map = props => {
             geolib.getDistance(
               { latitude: donor.latitude, longitude: donor.longitude },
               {
-                latitude: location.latitude,
-                longitude: location.longitude,
+                latitude: Number(orgInfo.latitude),
+                longitude: Number(orgInfo.longitude),
               }
             ) / 1609.34
           ).toFixed(1)}
@@ -105,7 +110,7 @@ export const Map = props => {
   }
 
   // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
-  if (location.latitude === location.latitude && location.longitude === location.longitude && location.latitude !== undefined && location.longitude !== undefined) {
+  if (Number(orgInfo.latitude) === Number(orgInfo.latitude) && Number(orgInfo.longitude) === Number(orgInfo.longitude) && Number(orgInfo.latitude) !== undefined && Number(orgInfo.longitude) !== undefined) {
     // is our toggle view state set to map? show us the map
 
     if (pageViewStore.toggleView === 'map') {
@@ -116,16 +121,16 @@ export const Map = props => {
             provider={PROVIDER_GOOGLE}
             showsUserLocation
             initialRegion={{
-              latitude: location.latitude,
-              longitude: location.longitude,
+              latitude: Number(orgInfo.latitude),
+              longitude: Number(orgInfo.longitude),
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
           >
             <Marker
               coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
+                latitude: Number(orgInfo.latitude),
+                longitude: Number(orgInfo.longitude),
               }}
               onPress={() => handlePressToOrg(props.user.organizationId)}
               pinColor={'#000080'}
@@ -158,6 +163,7 @@ const mapState = state => {
   return {
     user: state.auth,
     org: state.singleOrg,
+    orgs: state.mapData
   };
 };
 
