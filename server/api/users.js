@@ -11,7 +11,8 @@ const {
 
 module.exports = router;
 
-/* put back middleware in: requireToken, isAdmin, */
+// Get all users -- ADMIN ONLY
+
 router.get("/", requireToken, isAdmin, async (req, res, next) => {
   try {
     const allUsers = await User.findAll({
@@ -22,6 +23,8 @@ router.get("/", requireToken, isAdmin, async (req, res, next) => {
     next(error);
   }
 });
+
+// Get information about a specific user -- you must be an admin or the currently logged in user
 
 router.get(
   "/:userId",
@@ -41,3 +44,18 @@ router.get(
     }
   }
 );
+
+// Update informatino about the currently logged in user
+router.put("/", requireToken, async (req, res, next) => {
+  try {
+    const updateFields = req.body.updateFields;
+    const targetUser = req.user.id;
+
+    const updatedUser = await User.update(updateFields, {
+      where: { id: Number(targetUser) },
+    });
+    res.json(updatedUser);
+  } catch (error) {
+    next(error);
+  }
+});

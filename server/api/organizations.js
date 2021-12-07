@@ -58,3 +58,18 @@ router.get("/:orgId", async (req, res, next) => {
     next(error);
   }
 });
+
+// Update informatino about the organization of currently logged in user
+router.put("/", requireToken, async (req, res, next) => {
+  try {
+    const updateFields = req.body.updateFields;
+    const targetOrg = req.user.organizationId;
+
+    const updatedOrg = await Organization.update(updateFields, {
+      where: { id: Number(targetOrg) },
+    });
+    res.json(updatedOrg);
+  } catch (error) {
+    next(error);
+  }
+});
