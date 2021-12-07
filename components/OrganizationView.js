@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { fetchOrganization } from "../store/SingleOrg";
+import { fetchForeignOrganization } from "../store/singleForeignOrg";
 import ChatView from "./ChatView";
 
 export const OrganizationView = ({ route, navigation }) => {
@@ -23,7 +23,7 @@ export const OrganizationView = ({ route, navigation }) => {
 
   useEffect(() => {
     (async () => {
-      await dispatch(fetchOrganization(orgId));
+      await dispatch(fetchForeignOrganization(orgId));
     })();
   }, []);
 
