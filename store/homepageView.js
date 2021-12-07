@@ -1,6 +1,12 @@
+import Axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 //Action Types
 const SET_HOME_VIEW = "SET_HOME_VIEW";
 const GET_HOME_VIEW = "GET_HOME_VIEW";
+
+const SET_AVAILABILITY = "SET_AVAILABILITY";
+const GET_AVAILABILITY = "GET_AVAILABILITY";
 
 //Action Creators
 export const setHomeView = (newView) => {
@@ -16,10 +22,54 @@ export const getHomeView = () => {
   };
 };
 
+export const _setAvailability = (newAvailability) => {
+  return {
+    type: SET_AVAILABILITY,
+    newAvailability,
+  };
+};
+
+const _getAvailability = (toSet) => {
+  return {
+    type: GET_AVAILABILITY,
+    toSet,
+  };
+};
+
 // Thunks
+export const setAvailability = (newAvailability) => {
+  return async (dispatch) => {
+    const token = await AsyncStorage.getItem("token");
+    const res = await Axios.put(
+      "https://foodpiles.herokuapp.com/api/organizations/availability",
+      { newAvailability: newAvailability },
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    dispatch(_setAvailability(newAvailability));
+  };
+};
+
+export const getAvailability = () => {
+  return async (dispatch) => {
+    const token = await AsyncStorage.getItem("token");
+    const res = await Axios.get(
+      "https://foodpiles.herokuapp.com/api/organizations/availability",
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
+    dispatch(_getAvailability(res.data));
+  };
+};
 
 //Reducer
-const initialState = { toggleView: "map" };
+const initialState = { toggleView: "map", availability: false };
 
 export default function homepageViewReducer(state = initialState, action) {
   switch (action.type) {
@@ -27,6 +77,10 @@ export default function homepageViewReducer(state = initialState, action) {
       return { ...state, toggleView: action.newView };
     case GET_HOME_VIEW:
       return state;
+    case SET_AVAILABILITY:
+      return { ...state, availability: action.newAvailability };
+    case GET_AVAILABILITY:
+      return { ...state, availability: action.toSet };
     default:
       return state;
   }
