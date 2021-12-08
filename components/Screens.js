@@ -122,7 +122,6 @@ const Screens = (props) => {
                             handleToggleAvailabilityStatus()
                           }
                           value={pageViewStore.availability}
-                          style={{  }}
                         />
                         <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Home</Text>
                         <Ionicons
@@ -131,7 +130,7 @@ const Screens = (props) => {
                               ? "list"
                               : "globe"
                           }
-                          size={25}
+                          size={30}
                           color="black"
                           onPress={() => handleToggleHomeViewClick()}
                         />
