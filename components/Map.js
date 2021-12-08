@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Image,
 } from "react-native";
 
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
@@ -91,15 +92,20 @@ export const Map = (props) => {
 
   function findList() {
     return sortedListArray.map((donor) => (
-      <View style={styles.listItem} key={donor.id}>
-        <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
-          {donor.name}
-        </Text>
-        <Text>
-          {donor.distance}
-          mi away
-        </Text>
-      </View>
+      <TouchableOpacity
+        onPress={() => handlePressToOrg(donor.id)}
+        style={styles.listItem}
+        key={donor.id}
+      >
+        <Image style={styles.orgIcon} source={{ uri: donor.imageUrl }} />
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{donor.name}</Text>
+          <Text style={styles.subTitle}>
+            {donor.distance + " "}
+            mi away
+          </Text>
+        </View>
+      </TouchableOpacity>
     ));
   }
 
@@ -176,11 +182,20 @@ export default connect(mapState)(Map);
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "rgba(219, 154, 155, 0.1)",
+    display: "flex",
     flex: 1,
     marginTop: 0,
   },
   title: {
     fontWeight: "bold",
+    fontSize: 20,
+    paddingBottom: "2%",
+  },
+  subTitle: {
+    fontSize: 14,
+    color: "gray",
+    letterSpacing: 1,
   },
   map: {
     flex: 1,
@@ -214,9 +229,14 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   listItem: {
+    display: "flex",
+    flexDirection: "row",
     padding: "5%",
-    borderColor: "gray",
-    borderWidth: 0.5,
+    borderBottomColor: "#D3D3D3",
+    width: "96%",
+    marginLeft: "2%",
+    borderBottomWidth: 0.5,
+    alignItems: "center",
   },
   markerText: {
     backgroundColor: "rgba(153, 153, 255, 0.2)",
@@ -225,5 +245,14 @@ const styles = StyleSheet.create({
     padding: "1%",
     marginLeft: 90,
     marginBottom: 1,
+  },
+  orgIcon: {
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+  },
+  textContainer: {
+    paddingLeft: "5%",
+    width: "90%",
   },
 });
