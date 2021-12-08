@@ -9,6 +9,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView
 } from "react-native";
 import { authenticate } from "../store/auth";
 import { connect, useDispatch, useSelector } from "react-redux";
@@ -47,51 +49,55 @@ export const Login = (props) => {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <ScrollView style={{ backgroundColor: '#ececec' }}>
       <View style={styles.container}>
-        <View style={styles.headerTextContainer}>
-          <Text style={styles.headerText}>Welcome</Text>
-          <Text style={styles.headerText}>Back</Text>
-        </View>
-        <View style={styles.formContainer}>
-          {error && error.response && (
-            <Text style={{ textAlign: "center", color: "red" }}>
-              {error.response.data}
-            </Text>
-          )}
-          <View style={styles.inputContainer}>
-            <Ionicons name="person-outline" size={20} color="#b8b8b8" />
-            <TextInput
-              placeholder="Username"
-              value={username}
-              onChangeText={setUsername}
-              style={styles.textInput}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Ionicons name="lock-closed-outline" size={20} color="#b8b8b8" />
-            <TextInput
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
-              style={styles.textInput}
-            />
-          </View>
-        </View>
-        <View style={styles.bottomButtonContainer}>
-          {LoginButton()}
-          <View style={styles.orContainer}>
-            <View style={styles.hr} />
-            <View>
-              <Text style={styles.orText}>or</Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={{ flex: 1 }}>
+            <View style={styles.headerTextContainer}>
+              <Text style={styles.headerText}>Welcome</Text>
+              <Text style={styles.headerText}>Back</Text>
             </View>
-            <View style={styles.hr} />
+            <View style={styles.formContainer}>
+              {error && error.response && (
+                <Text style={{ textAlign: "center", color: "red" }}>
+                  {error.response.data}
+                </Text>
+              )}
+              <View style={styles.inputContainer}>
+                <Ionicons name="person-outline" size={20} color="#b8b8b8" />
+                <TextInput
+                  placeholder="Username"
+                  value={username}
+                  onChangeText={setUsername}
+                  style={styles.textInput}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <Ionicons name="lock-closed-outline" size={20} color="#b8b8b8" />
+                <TextInput
+                  placeholder="Password"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={true}
+                  style={styles.textInput}
+                />
+              </View>
+            </View>
+            <View style={styles.bottomButtonContainer}>
+              {LoginButton()}
+              <View style={styles.orContainer}>
+                <View style={styles.hr} />
+                <View>
+                  <Text style={styles.orText}>or</Text>
+                </View>
+                <View style={styles.hr} />
+              </View>
+              {SignUpButton()}
+            </View>
           </View>
-          {SignUpButton()}
-        </View>
+        </TouchableWithoutFeedback>
       </View>
-    </TouchableWithoutFeedback>
+    </ScrollView>
   );
 };
 
@@ -102,11 +108,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#ececec",
     alignItems: "center",
-    textAlign: "center",
+    textAlign: "center"
   },
   textInput: {
     backgroundColor: "#ececec",
     width: "100%",
+    minHeight: 50,
     color: "black",
     borderBottomColor: "#f5565a",
     borderBottomWidth: 1,
@@ -115,8 +122,10 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: "100%",
+    minHeight: 90,
     alignItems: "center",
-    paddingBottom: "20%",
+    marginBottom: "20%",
+    paddingTop: '5%',
   },
   appButtonContainer: {
     display: "flex",
@@ -181,7 +190,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    paddingBottom: "5%",
+    paddingBottom: "5%"
   },
   headerTextContainer: {
     display: "flex",
@@ -189,8 +198,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
     alignItems: "flex-start",
-    paddingTop: "20%",
-    paddingBottom: "20%",
+    marginBottom: '15%'
   },
   headerText: {
     fontSize: 34,
