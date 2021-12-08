@@ -130,15 +130,14 @@ const Screens = (props) => {
                             }
                             value={pageViewStore.availability}
                           />
-                          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-                            Home - {pageViewStore.totalFilteredOrgs}{" "}
+                          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                            {" Nearby "}
                             {currentOrgInfo.accType === "charity"
-                              ? pageViewStore.totalFilteredOrgs === 1
-                                ? "Donor"
-                                : "Donors"
-                              : pageViewStore.totalFilteredOrgs === 1
-                              ? "Charity"
+                              ? "Donors"
                               : "Charities"}
+                            {" ("}
+                            {pageViewStore.totalFilteredOrgs}
+                            {")"}
                           </Text>
                           <Ionicons
                             name={
