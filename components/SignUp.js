@@ -9,6 +9,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { connect, useDispatch, useSelector } from "react-redux";
@@ -57,16 +58,15 @@ export const SignUp = (props) => {
 
   const radio = (value) => {
     return (
-      <TouchableOpacity
-        onPress={() => {
-          setUsertype(value);
-        }}
-      >
+      <TouchableOpacity style={styles.inputContainer} onPress={() => {
+        setUsertype(value);
+      }}>
         <Ionicons
           name={value == accType ? "ellipse" : "ellipse-outline"}
           size={20}
           color={value == accType ? "#f5565a" : "gray"}
         />
+        <Text style={styles.orgTypeText}>{`It is a ${value}.`}</Text>
       </TouchableOpacity>
     );
   };
@@ -101,6 +101,7 @@ export const SignUp = (props) => {
 
   if (part === "partOne") {
     return (
+      <ScrollView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <View style={styles.headerTextContainer}>
@@ -137,24 +138,19 @@ export const SignUp = (props) => {
           </View>
         </View>
       </TouchableWithoutFeedback>
+      </ScrollView>
     );
   } else if (part === "partTwo") {
     return (
       <View style={styles.container}>
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerText}>
-            Which organization type describes yours best?
+            Which best describes your organization?
           </Text>
         </View>
         <View style={styles.orgTypeContainer}>
-          <View style={styles.inputContainer}>
-            {radio("donor")}
-            <Text style={styles.orgTypeText}>It is a donor.</Text>
-          </View>
-          <View style={styles.inputContainer}>
-            {radio("charity")}
-            <Text style={styles.orgTypeText}>It is a charity.</Text>
-          </View>
+          {radio('donor')}
+          {radio('charity')}
         </View>
         <View style={styles.navbuttonsContainer}>
           {NavButton("partOne", "Back")}
@@ -164,6 +160,7 @@ export const SignUp = (props) => {
     );
   } else if (part === "partThree") {
     return (
+      <ScrollView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <View style={styles.headerTextContainer}>
@@ -226,7 +223,7 @@ export const SignUp = (props) => {
               style={[
                 styles.textInput,
                 {
-                  marginBottom: "5%",
+                  marginBottom: "3%",
                   minHeight: "15%",
                   textAlignVertical: "top",
                 },
@@ -239,6 +236,7 @@ export const SignUp = (props) => {
           </View>
         </View>
       </TouchableWithoutFeedback>
+      </ScrollView>
     );
   }
   // } else if (part === "partFour") {
@@ -312,7 +310,7 @@ const styles = StyleSheet.create({
   },
   nextButtonContainer: {
     display: "flex",
-    width: "18%",
+    width: "20%",
     alignItems: "center",
     borderBottomColor: "black",
     borderBottomWidth: 2,
@@ -320,7 +318,7 @@ const styles = StyleSheet.create({
   },
   submitButtonContainer: {
     display: "flex",
-    width: "25%",
+    width: "30%",
     alignItems: "center",
     borderBottomColor: "black",
     borderBottomWidth: 2,
