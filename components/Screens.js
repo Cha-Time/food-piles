@@ -31,9 +31,9 @@ import ChatView from './ChatView';
 import { getAvailability, setAvailability, setHomeView } from '../store/homepageView';
 import { addFavorite, fetchFavorites, removeFavorite } from '../store/Favorites';
 
-const Screens = (props) => {
-  const pageViewStore = useSelector((state) => state.homepageView);
-  const currentOrgInfo = useSelector((state) => state.singleForeignOrg);
+const Screens = props => {
+  const pageViewStore = useSelector(state => state.homepageView);
+  const currentOrgInfo = useSelector(state => state.singleForeignOrg);
 
   enableScreens();
 
@@ -78,11 +78,23 @@ const Screens = (props) => {
 
                       const handleToggleAvailabilityStatus = () => {
                         if (pageViewStore.availability === false) {
-                          Alert.alert('Your status is now Available');
+                          toast.show('Your status is now Available!', {
+                            type: 'normal',
+                            placement: 'bottom',
+                            duration: 4000,
+                            offset: 30,
+                            animationType: 'slide-in',
+                          });
                           dispatch(setAvailability(true));
                         } else {
                           dispatch(setAvailability(false));
-                          Alert.alert('Your status is now Unavailable');
+                          toast.show('Your status is now Unvailable!', {
+                            type: 'normal',
+                            placement: 'bottom',
+                            duration: 4000,
+                            offset: 30,
+                            animationType: 'slide-in',
+                          });
                         }
                       };
 
@@ -102,14 +114,12 @@ const Screens = (props) => {
                             onValueChange={() => handleToggleAvailabilityStatus()}
                             value={pageViewStore.availability}
                           />
-                          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                            {" Nearby "}
-                            {currentOrgInfo.accType === "charity"
-                              ? "Donors"
-                              : "Charities"}
-                            {" ("}
+                          <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+                            {' Nearby '}
+                            {currentOrgInfo.accType === 'charity' ? 'Donors' : 'Charities'}
+                            {' ('}
                             {pageViewStore.totalFilteredOrgs}
-                            {")"}
+                            {')'}
                           </Text>
                           <Ionicons
                             name={pageViewStore.toggleView === 'map' ? 'list' : 'globe'}
