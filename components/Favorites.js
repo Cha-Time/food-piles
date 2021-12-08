@@ -19,16 +19,17 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { fetchFavorites } from "../store/Favorites";
 
 export const Favorites = (props) => {
+  const [loaded, setLoaded] = useState(false);
   // dispatch time?
   const dispatch = useDispatch();
 
+  console.log(loaded);
   useEffect(() => {
     (async () => {
-
       await dispatch(fetchFavorites());
+      setLoaded(true);
     })();
   }, []);
-
   function handlePressToOrg(orgId) {
     props.navigation.navigate("OrgView", { orgId });
   }
@@ -62,9 +63,7 @@ export const Favorites = (props) => {
             )}
           </Text>
           <Text>
-
             <Ionicons name="heart" size={15} color="black" />
-
           </Text>
         </View>
       </View>
@@ -74,8 +73,17 @@ export const Favorites = (props) => {
   // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
 
   // is our toggle view state set to map? show us the map
-  if (sortedFavoritesArray.length > 0) {
-    return <ScrollView style={styles.container}>{findList()}</ScrollView>;
+  console.log(props.favorites);
+  if (loaded) {
+    if (sortedFavoritesArray.length > 0) {
+      return <ScrollView style={styles.container}>{findList()}</ScrollView>;
+    } else {
+      return (
+        <View>
+          <Text>Go make some friends!</Text>
+        </View>
+      );
+    }
   } else {
     return (
       <ScrollView style={styles.container}>
