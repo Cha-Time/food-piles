@@ -5,10 +5,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const SET_HOME_VIEW = "SET_HOME_VIEW";
 const GET_HOME_VIEW = "GET_HOME_VIEW";
 
+const SET_TOTAL_FILTERED_ORGS = "SET_TOTAL_FILTERED_ORGS";
+
 const SET_AVAILABILITY = "SET_AVAILABILITY";
 const GET_AVAILABILITY = "GET_AVAILABILITY";
 
 //Action Creators
+export const setTotalFilteredOrgs = (newCount) => {
+  return {
+    type: SET_TOTAL_FILTERED_ORGS,
+    newCount,
+  };
+};
+
 export const setHomeView = (newView) => {
   return {
     type: SET_HOME_VIEW,
@@ -69,10 +78,16 @@ export const getAvailability = () => {
 };
 
 //Reducer
-const initialState = { toggleView: "map", availability: false };
+const initialState = {
+  toggleView: "map",
+  availability: false,
+  totalFilteredOrgs: 0,
+};
 
 export default function homepageViewReducer(state = initialState, action) {
   switch (action.type) {
+    case SET_TOTAL_FILTERED_ORGS:
+      return { ...state, totalFilteredOrgs: action.newCount };
     case SET_HOME_VIEW:
       return { ...state, toggleView: action.newView };
     case GET_HOME_VIEW:

@@ -31,8 +31,9 @@ import ChatView from './ChatView';
 import { getAvailability, setAvailability, setHomeView } from '../store/homepageView';
 import { addFavorite, fetchFavorites, removeFavorite } from '../store/Favorites';
 
-const Screens = props => {
-  const pageViewStore = useSelector(state => state.homepageView);
+const Screens = (props) => {
+  const pageViewStore = useSelector((state) => state.homepageView);
+  const currentOrgInfo = useSelector((state) => state.singleForeignOrg);
 
   enableScreens();
 
@@ -61,7 +62,6 @@ const Screens = props => {
                     headerTitle: '',
                     headerRight: () => {
                       const dispatch = useDispatch();
-
                       useEffect(() => {
                         (async () => {
                           await dispatch(getAvailability());
@@ -102,7 +102,15 @@ const Screens = props => {
                             onValueChange={() => handleToggleAvailabilityStatus()}
                             value={pageViewStore.availability}
                           />
-                          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Home</Text>
+                          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                            {" Nearby "}
+                            {currentOrgInfo.accType === "charity"
+                              ? "Donors"
+                              : "Charities"}
+                            {" ("}
+                            {pageViewStore.totalFilteredOrgs}
+                            {")"}
+                          </Text>
                           <Ionicons
                             name={pageViewStore.toggleView === 'map' ? 'list' : 'globe'}
                             size={30}
@@ -125,8 +133,6 @@ const Screens = props => {
               return {
                 headerTitle: 'More Info',
                 headerRight: () => {
-                  const currentOrgInfo = useSelector(state => state.singleForeignOrg);
-
                   const dispatch = useDispatch();
 
                   useEffect(() => {

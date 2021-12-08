@@ -49,11 +49,11 @@ const MainContainer = ({ route, navigation }) => {
                 color={color}
                 style={styles.icon}
               />
-              {rn == profileName && pageViewStore.availability ? (
+              {rn == profileName ? (
                 <Ionicons
                   name="ellipse"
                   size={10}
-                  color="green"
+                  color={pageViewStore.availability ? "green" : "grey"}
                   style={styles.status}
                 />
               ) : (
