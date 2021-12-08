@@ -15,6 +15,7 @@ import * as geolib from "geolib";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { fetchOrganizations, setOrganizations } from "../store/MapData";
 import { fetchOrganization } from "../store/SingleOrg";
+import { setTotalFilteredOrgs } from "../store/homepageView";
 
 export const Map = (props) => {
   const pageViewStore = useSelector((state) => state.homepageView);
@@ -89,6 +90,9 @@ export const Map = (props) => {
     .sort(function (a, b) {
       return a.distance - b.distance;
     });
+  useEffect(() => {
+    dispatch(setTotalFilteredOrgs(sortedListArray.length));
+  }, []);
 
   function findList() {
     return sortedListArray.map((donor) => (
