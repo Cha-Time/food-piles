@@ -30,7 +30,7 @@ export const Map = (props) => {
       await dispatch(fetchOrganization(props.user.organizationId));
       await dispatch(fetchOrganizations(props.user.accType));
     })();
-  }, []);
+  }, [props.orgs]);
 
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
