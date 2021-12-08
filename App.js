@@ -2,12 +2,15 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import store from './store';
 import Screens from './components/Screens';
+import { ToastProvider } from 'react-native-toast-notifications';
 
 function App() {
   return (
-    <Provider store={store}>
+    <ToastProvider>
+      <Provider store={store}>
         <Screens />
-    </Provider>
+      </Provider>
+    </ToastProvider>
   );
 }
 
