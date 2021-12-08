@@ -83,7 +83,7 @@ const Screens = (props) => {
 
               return routeIsHome
                 ? {
-                    headerTitle: "Home",
+                    headerTitle: "",
                     headerRight: () => {
                       const dispatch = useDispatch();
 
@@ -112,7 +112,7 @@ const Screens = (props) => {
                       };
 
                       return (
-                        <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <Switch
                             trackColor={{ false: "#767577", true: "#81b0ff" }}
                             thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
@@ -121,7 +121,9 @@ const Screens = (props) => {
                               handleToggleAvailabilityStatus()
                             }
                             value={pageViewStore.availability}
+                            style={{ marginRight: 80 }}
                           />
+                          <Text style={{ marginRight: 120, fontWeight: 'bold', fontSize: 20 }}>Home</Text>
                           <Ionicons
                             name={
                               pageViewStore.toggleView === "map"
