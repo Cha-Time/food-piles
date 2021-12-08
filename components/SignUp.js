@@ -85,8 +85,8 @@ export const SignUp = (props) => {
           city,
           state,
           zipCode,
-          latitude: 38.8976763,
-          longitude: -77.0365298,
+          latitude: "38.8976763",
+          longitude: "-77.0365298",
         },
         "signup"
       )

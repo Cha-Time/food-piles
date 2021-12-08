@@ -9,16 +9,19 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { fetchOrganization } from "../store/SingleOrg";
 
 export const Welcome = (props) => {
+  const orgInfo = useSelector(state => state.singleOrg)
   const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
-      await dispatch(fetchOrganization(props.user.id));
+      await dispatch(fetchOrganization(props.user.organizationId));
     })();
-  }, [props.singleOrg]);
+  }, []);
+
+  console.log(props.organization)
 
   function moveOn() {
     setTimeout(() => {
@@ -35,7 +38,7 @@ export const Welcome = (props) => {
           Welcome Back,
         </Text>
         <Text style={{ textAlign: "center", fontSize: 30, fontWeight: "bold" }}>
-          {props.organization.name}
+          {orgInfo.name}
         </Text>
         {moveOn()}
       </View>
