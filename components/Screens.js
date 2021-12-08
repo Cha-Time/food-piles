@@ -43,6 +43,7 @@ import {
 
 const Screens = (props) => {
   const pageViewStore = useSelector((state) => state.homepageView);
+  const currentOrgInfo = useSelector((state) => state.singleForeignOrg);
 
   enableScreens();
 
@@ -87,7 +88,6 @@ const Screens = (props) => {
                     headerTitle: "",
                     headerRight: () => {
                       const dispatch = useDispatch();
-
                       useEffect(() => {
                         (async () => {
                           await dispatch(getAvailability());
@@ -130,8 +130,14 @@ const Screens = (props) => {
                             }
                             value={pageViewStore.availability}
                           />
-                          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-                            Home
+                          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                            {" Nearby "}
+                            {currentOrgInfo.accType === "charity"
+                              ? "Donors"
+                              : "Charities"}
+                            {" ("}
+                            {pageViewStore.totalFilteredOrgs}
+                            {")"}
                           </Text>
                           <Ionicons
                             name={
@@ -159,10 +165,6 @@ const Screens = (props) => {
               return {
                 headerTitle: "More Info",
                 headerRight: () => {
-                  const currentOrgInfo = useSelector(
-                    (state) => state.singleForeignOrg
-                  );
-
                   const dispatch = useDispatch();
 
                   useEffect(() => {
