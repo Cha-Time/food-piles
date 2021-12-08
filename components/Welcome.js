@@ -9,16 +9,16 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
+import { fetchOrganization } from "../store/SingleOrg";
 
 export const Welcome = (props) => {
-  const [name, setName] = useState(null);
-  const [phone, setPhone] = useState(null);
-  const [address, setAddress] = useState(null);
-  const [city, setCity] = useState(null);
-  const [state, setState] = useState(null);
-  const [zip, setZip] = useState(null);
-  const [description, setDescription] = useState(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    (async () => {
+      await dispatch(fetchOrganization(props.user.id));
+    })();
+  }, [props.singleOrg]);
 
   function moveOn() {
     setTimeout(() => {
@@ -29,8 +29,13 @@ export const Welcome = (props) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <Text style={{ textAlign: "center", fontSize: 20 }}>
-          {`Welcome, ${props.user.username}`}
+        <Text
+          style={{ textAlign: "center", fontSize: 35, paddingBottom: "5%" }}
+        >
+          Welcome Back,
+        </Text>
+        <Text style={{ textAlign: "center", fontSize: 30, fontWeight: "bold" }}>
+          {props.organization.name}
         </Text>
         {moveOn()}
       </View>
@@ -43,23 +48,24 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 50,
     flexDirection: "column",
-    backgroundColor: "#93c47d",
-    justifyContent: "space-between",
+    backgroundColor: "#ececec",
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-  },
-  textInput: {
-    backgroundColor: "whitesmoke",
-    color: "black",
-    width: "75%",
   },
 });
 
 const mapState = (state) => {
   return {
-    user: state.auth
-  }
-}
+    user: state.auth,
+    organization: state.singleOrg,
+  };
+};
 
-export default connect(mapState)(Welcome);
+const mapDispatch = (dispatch) => {
+  return {
+    fetchOrganization: (id) => dispatch(fetchOrganization(id)),
+  };
+};
+
+export default connect(mapState, mapDispatch)(Welcome);

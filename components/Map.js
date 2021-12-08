@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Platform,
   StyleSheet,
@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-} from 'react-native';
+} from "react-native";
 
-import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-import * as geolib from 'geolib';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { fetchOrganizations, setOrganizations } from '../store/MapData';
-import { fetchOrganization } from '../store/SingleOrg';
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
+import * as geolib from "geolib";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { fetchOrganizations, setOrganizations } from "../store/MapData";
+import { fetchOrganization } from "../store/SingleOrg";
 
-export const Map = props => {
-  const pageViewStore = useSelector(state => state.homepageView);
-  const orgInfo = useSelector(state => state.singleOrg);
+export const Map = (props) => {
+  const pageViewStore = useSelector((state) => state.homepageView);
+  const orgInfo = useSelector((state) => state.singleOrg);
 
   // dispatch time?
   const dispatch = useDispatch();
@@ -35,10 +35,10 @@ export const Map = props => {
   // get nearby donors - this is data used for both map AND list view. filters only by donors within search distance
   // now that we have the nearby donors, render them in map marker form -- we choose which to render further down
   function handlePressToOrg(orgId) {
-    props.navigation.navigate('OrgView', { orgId });
+    props.navigation.navigate("OrgView", { orgId });
   }
-  const newDonors = useSelector(state => state.mapData);
-  const nearbyDonors = newDonors.filter(donor => {
+  const newDonors = useSelector((state) => state.mapData);
+  const nearbyDonors = newDonors.filter((donor) => {
     const currentLocation = {
       latitude: Number(orgInfo.latitude) || 0,
       longitude: Number(orgInfo.longitude) || 0,
@@ -57,7 +57,7 @@ export const Map = props => {
   });
 
   function findMarkers() {
-    return nearbyDonors.map(donor => (
+    return nearbyDonors.map((donor) => (
       //creates map markers for nearby donors only
       <Marker
         key={donor.id}
@@ -73,7 +73,7 @@ export const Map = props => {
   // now that we have the nearby donors, render them also in list form -- we choose which to render further down
 
   let sortedListArray = nearbyDonors
-    .map(donor => {
+    .map((donor) => {
       donor.distance = (
         geolib.getDistance(
           { latitude: donor.latitude, longitude: donor.longitude },
@@ -90,7 +90,7 @@ export const Map = props => {
     });
 
   function findList() {
-    return sortedListArray.map(donor => (
+    return sortedListArray.map((donor) => (
       <View style={styles.listItem} key={donor.id}>
         <Text onPress={() => handlePressToOrg(donor.id)} style={styles.title}>
           {donor.name}
@@ -112,7 +112,7 @@ export const Map = props => {
   ) {
     // is our toggle view state set to map? show us the map
 
-    if (pageViewStore.toggleView === 'map') {
+    if (pageViewStore.toggleView === "map") {
       return (
         <View style={styles.container}>
           <MapView
@@ -131,15 +131,19 @@ export const Map = props => {
                 latitude: Number(orgInfo.latitude),
                 longitude: Number(orgInfo.longitude),
               }}
-              onPress={() => handlePressToOrg(props.user.organizationId)}
-              pinColor={'#000080'}
-            />
+              title={"Your location"}
+            >
+              <View style={styles.circle}>
+                <View style={styles.stroke} />
+                <View style={styles.core} />
+              </View>
+            </Marker>
             {findMarkers()}
           </MapView>
         </View>
       );
       // is our toggle view state set to list? show us the list instead
-    } else if (pageViewStore.toggleView === 'list') {
+    } else if (pageViewStore.toggleView === "list") {
       return <ScrollView style={styles.container}>{findList()}</ScrollView>;
     } else {
       return (
@@ -158,7 +162,7 @@ export const Map = props => {
   }
 };
 
-const mapState = state => {
+const mapState = (state) => {
   return {
     user: state.auth,
     org: state.singleOrg,
@@ -174,18 +178,42 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   title: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   map: {
     flex: 1,
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
+    position: "absolute",
+    height: "100%",
+    width: "100%",
     marginTop: 0,
   },
+  circle: {
+    width: 23,
+    height: 23,
+    borderRadius: 50,
+  },
+  stroke: {
+    backgroundColor: "#ffffff",
+    borderRadius: 50,
+    width: "100%",
+    height: "100%",
+    zIndex: 1,
+  },
+  core: {
+    backgroundColor: "#4285f4",
+    width: 20,
+    position: "absolute",
+    top: 1,
+    left: 1,
+    right: 1,
+    bottom: 1,
+    height: 20,
+    borderRadius: 50,
+    zIndex: 2,
+  },
   listItem: {
-    padding: '5%',
-    borderColor: 'gray',
+    padding: "5%",
+    borderColor: "gray",
     borderWidth: 0.5,
   },
 });
