@@ -34,14 +34,15 @@ export const Profile = (props) => {
     );
   } else if (page === 'Organization Info') {
     return (
-      <OrganizationInfo handleChangePage={handleChangePage} user={user} />
+      <OrganizationInfo handleChangePage={handleChangePage} orgInfo={props.orgInfo} />
     );
   }
 };
 
 const mapState = (state) => {
   return {
-    user: state.auth
+    user: state.auth,
+    orgInfo: state.singleOrg
   }
 }
 
