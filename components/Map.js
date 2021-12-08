@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     fontSize: 14,
-    color: "gray",
+    color: "#4f4e4e",
     letterSpacing: 1,
   },
   map: {
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     padding: "5%",
-    borderBottomColor: "#D3D3D3",
+    borderBottomColor: "gray",
     width: "96%",
     marginLeft: "2%",
     borderBottomWidth: 0.5,
@@ -253,6 +253,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     paddingLeft: "5%",
-    width: "60%",
+    width: "75%",
   },
 });
