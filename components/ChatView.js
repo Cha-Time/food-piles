@@ -23,11 +23,11 @@ const ChatView = (props) => {
   useEffect(() => {
     (async () => {
       await dispatch(fetchForeignOrganization(props.route.params.foreignId));
-      await props.fetchMessages(props.route.params.foreignId);
+      await dispatch(fetchMessages(props.route.params.foreignId));
     })();
   }, []);
 
-  console.log("shit");
+  console.log(Date.now());
 
   const foreignOrgInfo = useSelector((state) => state.singleForeignOrg);
   const messagesList = useSelector((state) => state.messages);
@@ -83,7 +83,7 @@ const ChatView = (props) => {
   }
 
   async function handleSend() {
-    await props.sendMessage(message, foreignOrgInfo.id);
+    await dispatch(sendMessage(message, foreignOrgInfo.id));
     setMessage(null);
   }
 
@@ -139,6 +139,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     paddingBottom: 20,
+    paddingLeft: 3,
+    paddingRight: 3,
     justifyContent: "space-between",
     flexDirection: "column",
   },
@@ -179,7 +181,6 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    fetchMessages: (receiverId) => dispatch(fetchMessages(receiverId)),
     sendMessage: (msg, recId) => dispatch(sendMessage(msg, recId)),
     clearMessages: () => dispatch(clearMessages()),
   };
