@@ -25095,6 +25095,13 @@ function allOrgs() {
       status = false;
     }
 
+    if (donor.photo) {
+      myImageURL = donor.photo.images.small.url;
+    } else {
+      myImageURL =
+        "https://d1rzxhvrtciqq1.cloudfront.net/images/people/images/dY5xNEt4Wr54ahbagq7ICb/medium/b808a3-schoberlawrenceheadshot.jpg";
+    }
+
     return {
       name: donor.name,
       address: donor.address_obj.street1,
@@ -25106,6 +25113,7 @@ function allOrgs() {
       latitude: donor.latitude,
       longitude: donor.longitude,
       availabilityStatus: status,
+      imageUrl: myImageURL,
     };
   });
 
@@ -25120,6 +25128,7 @@ function allOrgs() {
       accType: "charity",
       latitude: charity.latitude,
       longitude: charity.longitude,
+      availabilityStatus: true,
     };
   });
   return updatedCharities.concat(updatedDonors);

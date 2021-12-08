@@ -85,11 +85,6 @@ const Organization = db.define("organization", {
     type: Sequelize.TEXT,
     defaultValue:
       "https://d1rzxhvrtciqq1.cloudfront.net/images/people/images/dY5xNEt4Wr54ahbagq7ICb/medium/b808a3-schoberlawrenceheadshot.jpg",
-    allowNull: false,
-    validate: {
-      isUrl: true,
-      notEmpty: true,
-    },
   },
 });
 
