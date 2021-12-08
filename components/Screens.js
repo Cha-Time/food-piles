@@ -8,6 +8,7 @@ import {
   Text,
   View,
   Switch,
+  TouchableOpacity,
 } from "react-native";
 import { enableScreens } from "react-native-screens";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -83,62 +84,64 @@ const Screens = (props) => {
 
               return routeIsHome
                 ? {
-                    headerTitle: "Home",
-                    headerRight: () => {
-                      const dispatch = useDispatch();
+                  headerTitle: "",
+                  headerRight: () => {
+                    const dispatch = useDispatch();
 
-                      useEffect(() => {
-                        (async () => {
-                          await dispatch(getAvailability());
-                        })();
-                      }, []);
+                    useEffect(() => {
+                      (async () => {
+                        await dispatch(getAvailability());
+                      })();
+                    }, []);
 
-                      const handleToggleHomeViewClick = () => {
-                        if (pageViewStore.toggleView === "map") {
-                          dispatch(setHomeView("list"));
-                        } else if (pageViewStore.toggleView === "list") {
-                          dispatch(setHomeView("map"));
-                        }
-                      };
+                    const handleToggleHomeViewClick = () => {
+                      if (pageViewStore.toggleView === "map") {
+                        dispatch(setHomeView("list"));
+                      } else if (pageViewStore.toggleView === "list") {
+                        dispatch(setHomeView("map"));
+                      }
+                    };
 
-                      const handleToggleAvailabilityStatus = () => {
-                        if (pageViewStore.availability === false) {
-                          Alert.alert("Your status is now Available");
-                          dispatch(setAvailability(true));
-                        } else {
-                          dispatch(setAvailability(false));
-                          Alert.alert("Your status is now Unavailable");
-                        }
-                      };
+                    const handleToggleAvailabilityStatus = () => {
+                      if (pageViewStore.availability === false) {
+                        Alert.alert("Your status is now Available");
+                        dispatch(setAvailability(true));
+                      } else {
+                        dispatch(setAvailability(false));
+                        Alert.alert("Your status is now Unavailable");
+                      }
+                    };
 
-                      return (
-                        <View>
-                          <Switch
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
-                            ios_backgroundColor="gray"
-                            onValueChange={() =>
-                              handleToggleAvailabilityStatus()
-                            }
-                            value={pageViewStore.availability}
-                          />
-                          <Ionicons
-                            name={
-                              pageViewStore.toggleView === "map"
-                                ? "list"
-                                : "globe"
-                            }
-                            size={25}
-                            color="black"
-                            onPress={() => handleToggleHomeViewClick()}
-                          />
-                        </View>
-                      );
-                    },
-                  }
+                    return (
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Switch
+                          trackColor={{ false: "#767577", true: "#81b0ff" }}
+                          thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
+                          ios_backgroundColor="gray"
+                          onValueChange={() =>
+                            handleToggleAvailabilityStatus()
+                          }
+                          value={pageViewStore.availability}
+                          style={{ marginRight: 80 }}
+                        />
+                        <Text style={{ marginRight: 120, fontWeight: 'bold', fontSize: 20 }}>Home</Text>
+                        <Ionicons
+                          name={
+                            pageViewStore.toggleView === "map"
+                              ? "list"
+                              : "globe"
+                          }
+                          size={25}
+                          color="black"
+                          onPress={() => handleToggleHomeViewClick()}
+                        />
+                      </View>
+                    );
+                  },
+                }
                 : {
-                    headerTitle: routeTitle,
-                  };
+                  headerTitle: routeTitle,
+                };
             }}
           />
           <Stack.Screen
@@ -174,12 +177,14 @@ const Screens = (props) => {
                     }
                   };
                   return (
-                    <Ionicons
-                      name={isFavorited ? "heart" : "heart-outline"}
-                      size={25}
-                      color="red"
-                      onPress={() => handleToggleFavorite()}
-                    />
+                    <TouchableOpacity style={{ height: 40, width: 40, alignItems: 'center', justifyContent: 'center' }}>
+                      <Ionicons
+                        name={isFavorited ? "heart" : "heart-outline"}
+                        size={25}
+                        color="red"
+                        onPress={() => handleToggleFavorite()}
+                      />
+                    </TouchableOpacity>
                   );
                 },
               };
