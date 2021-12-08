@@ -113,7 +113,7 @@ const Screens = (props) => {
                     };
 
                     return (
-                      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%'  }}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%'  }}>
                         <Switch
                           trackColor={{ false: "#767577", true: "#81b0ff" }}
                           thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
@@ -122,9 +122,9 @@ const Screens = (props) => {
                             handleToggleAvailabilityStatus()
                           }
                           value={pageViewStore.availability}
-                          style={{ paddingLeft: '10%' }}
+                          style={{  }}
                         />
-                        <Text style={{  paddingRight: '10%', fontWeight: 'bold', fontSize: 20 }}>Home</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Home</Text>
                         <Ionicons
                           name={
                             pageViewStore.toggleView === "map"
