@@ -3,9 +3,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 ////// Action Types
 const SET_ORGANIZATION = "SET_ORGANIZATION";
+const UPDATE_ORGANIZATION = "UPDATE_ORGANIZATION";
 
 ////// Action Creators
 export const setOrganization = (organization) => ({
+  type: SET_ORGANIZATION,
+  organization,
+});
+
+export const _updateOrganization = (organization) => ({
   type: SET_ORGANIZATION,
   organization,
 });
@@ -21,10 +27,25 @@ export const fetchOrganization = (orgId) => {
   };
 };
 
+export const updateOrganization = (org) => {
+  return async (dispatch) => {
+    const token = await AsyncStorage.getItem("token");
+    const res = await Axios.put(
+      `https://foodpiles.herokuapp.com/api/organizations/`, {updateFields: org}, {
+        headers: {
+          authorization: token,
+        },
+      });
+    dispatch(_updateOrganization(res.data));
+  };
+};
+
 //////Reducer
 export default function (state = {}, action) {
   switch (action.type) {
     case SET_ORGANIZATION:
+      return action.organization;
+    case UPDATE_ORGANIZATION: 
       return action.organization;
     default:
       return state;

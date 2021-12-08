@@ -6,6 +6,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 ////// Import Components
 import AccountInfo from "./AccountInfo";
 import OrganizationInfo from "./OrganizationInfo";
+import StatusInfo from './StatusInfo'
 
 ////// Main
 export const Profile = (props) => {
@@ -35,6 +36,10 @@ export const Profile = (props) => {
   } else if (page === 'Organization Info') {
     return (
       <OrganizationInfo handleChangePage={handleChangePage} orgInfo={props.orgInfo} />
+    );
+  } else if (page === 'Status Info') {
+    return (
+      <StatusInfo handleChangePage={handleChangePage} orgInfo={props.orgInfo} />
     );
   }
 };

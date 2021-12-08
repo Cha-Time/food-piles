@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Button, Modal, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { useDispatch } from "react-redux";
+import { updateOrganization } from '../store/SingleOrg';
 
 export const OrganizationInfo = (props) => {
 
@@ -13,12 +15,33 @@ export const OrganizationInfo = (props) => {
     const [address, setAddress] = useState(null);
     const [description, setDescription] = useState(null);
 
-    function handleSubmit() {
+    const dispatch = useDispatch()
 
-        setUsernameModal(false)
-        setEmailModal(false)
+    async function handleSubmit(name, value) {
+        if (value !== null) {
+            const org = {}
+            org[name] = value
+            await dispatch(updateOrganization(org))
+
+            setNameModal(false)
+            setPhoneModal(false)
+            setAddressModal(false)
+            setDescriptionModal(false)
+        }
     }
 
+    function closeModal() {
+        setName(null)
+        setPhone(null)
+        setAddress(null)
+        setDescription(null)
+
+        setNameModal(false)
+        setPhoneModal(false)
+        setAddressModal(false)
+        setDescriptionModal(false)
+    }
+    
     return (
         <View style={{ justifyContent: 'space-between', height: '100%' }}>
             <View style={{ flex: 1, margin: '10%' }}>
@@ -71,10 +94,10 @@ export const OrganizationInfo = (props) => {
                             <Text style={{ fontSize: 15 }}>Enter new name:</Text>
                             <View style={{ borderWidth: 5, borderColor: 'grey', borderRadius: 5 }}>
                                 <TextInput placeholder={props.orgInfo.name} value={name} onChangeText={setName} style={[styles.textInput, { textAlign: 'center' }]} />
-                                <Button title='Save Changes' onPress={() => handleSubmit(name)} />
+                                <Button title='Save Changes' onPress={() => handleSubmit('name', name)} />
                             </View>
                         </View>
-                        <Button title='Cancel' onPress={() => setNameModal(false)} />
+                        <Button title='Cancel' onPress={() => closeModal()} />
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
@@ -91,10 +114,10 @@ export const OrganizationInfo = (props) => {
                             <Text style={{ fontSize: 15 }}>Enter new Phone:</Text>
                             <View style={{ borderWidth: 5, borderColor: 'grey', borderRadius: 5 }}>
                                 <TextInput placeholder={props.orgInfo.phoneNumber} value={phone} onChangeText={setPhone} style={[styles.textInput, { textAlign: 'center' }]} />
-                                <Button title='Save Changes' onPress={() => handleSubmit(phone)} />
+                                <Button title='Save Changes' onPress={() => handleSubmit('phoneNumber', phone)} />
                             </View>
                         </View>
-                        <Button title='Cancel' onPress={() => setPhoneModal(false)} />
+                        <Button title='Cancel' onPress={() => closeModal()} />
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
@@ -107,16 +130,16 @@ export const OrganizationInfo = (props) => {
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.modal}>
                         <Text style={{ fontSize: 30 }}>Edit Address</Text>
-                        <View style={{ width: '75%', height: '30%', justifyContent: 'space-between'}}>
+                        <View style={{ width: '75%', height: '30%', justifyContent: 'space-between' }}>
                             <View >
                                 <Text style={{ fontSize: 15 }}>Enter new Address:</Text>
                                 <View style={{ borderWidth: 5, borderColor: 'grey', borderRadius: 5 }}>
                                     <TextInput placeholder={props.orgInfo.address} value={address} onChangeText={setAddress} style={[styles.textInput, { textAlign: 'center' }]} />
-                                    <Button title='Save Changes' onPress={() => handleSubmit(address)} />
+                                    <Button title='Save Changes' onPress={() => handleSubmit('address', address)} />
                                 </View>
                             </View>
                         </View>
-                        <Button title='Cancel' onPress={() => setAddressModal(false)} />
+                        <Button title='Cancel' onPress={() => closeModal()} />
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
@@ -129,16 +152,16 @@ export const OrganizationInfo = (props) => {
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.modal}>
                         <Text style={{ fontSize: 30 }}>Edit Address</Text>
-                        <View style={{ width: '75%', height: '30%', justifyContent: 'space-between'}}>
+                        <View style={{ width: '75%', height: '30%', justifyContent: 'space-between' }}>
                             <View >
                                 <Text style={{ fontSize: 15 }}>Enter new Description:</Text>
                                 <View style={{ borderWidth: 5, borderColor: 'grey', borderRadius: 5 }}>
                                     <TextInput placeholder={props.orgInfo.description} value={address} onChangeText={setDescription} style={[styles.textInput, { textAlign: 'center' }]} />
-                                    <Button title='Save Changes' onPress={() => handleSubmit(address)} />
+                                    <Button title='Save Changes' onPress={() => handleSubmit('description', description)} />
                                 </View>
                             </View>
                         </View>
-                        <Button title='Cancel' onPress={() => setDescriptionModal(false)} />
+                        <Button title='Cancel' onPress={() => closeModal()} />
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>

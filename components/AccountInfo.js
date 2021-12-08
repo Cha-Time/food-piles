@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Modal, TextInput, StyleSheet, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { connect, useDispatch } from "react-redux";
+import { updateUser, } from '../store/SingleUser';
+import { me } from '../store/auth';
 
 export const AccountInfo = (props) => {
 
@@ -11,10 +14,34 @@ export const AccountInfo = (props) => {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
 
-    function handleSubmit() {
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        (async () => {
+          await dispatch(me());
+        })();
+      }, [props.user]);
+
+    async function handleSubmit(name, value) {
+        if (value !== null) {
+            const org = {}
+            org[name] = value
+            await dispatch(updateUser(org))
+
+            setUsernameModal(false)
+            setEmailModal(false)
+            setPasswordModal(false)
+        }
+    }
+
+    function closeModal() {
+        setUsername(null)
+        setEmail(null)
+        setPassword(null)
 
         setUsernameModal(false)
         setEmailModal(false)
+        setPasswordModal(false)
     }
 
     return (
@@ -61,10 +88,10 @@ export const AccountInfo = (props) => {
                             <Text style={{ fontSize: 15 }}>Enter new Username:</Text>
                             <View style={{ borderWidth: 5, borderColor: 'grey', borderRadius: 5 }}>
                                 <TextInput placeholder={props.user.username} value={username} onChangeText={setUsername} style={[styles.textInput, { textAlign: 'center' }]} />
-                                <Button title='Save Changes' onPress={() => handleSubmit(username)} />
+                                <Button title='Save Changes' onPress={() => handleSubmit('username', username)} />
                             </View>
                         </View>
-                        <Button title='Cancel' onPress={() => setUsernameModal(false)} />
+                        <Button title='Cancel' onPress={() => closeModal()} />
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
@@ -81,10 +108,10 @@ export const AccountInfo = (props) => {
                             <Text style={{ fontSize: 15 }}>Enter new Email:</Text>
                             <View style={{ borderWidth: 5, borderColor: 'grey', borderRadius: 5 }}>
                                 <TextInput placeholder={props.user.email} value={email} onChangeText={setEmail} style={[styles.textInput, { textAlign: 'center' }]} />
-                                <Button title='Save Changes' onPress={() => handleSubmit(email)} />
+                                <Button title='Save Changes' onPress={() => handleSubmit('email', email)} />
                             </View>
                         </View>
-                        <Button title='Cancel' onPress={() => setEmailModal(false)} />
+                        <Button title='Cancel' onPress={() => closeModal()} />
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
@@ -97,7 +124,7 @@ export const AccountInfo = (props) => {
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.modal}>
                         <Text style={{ fontSize: 30 }}>Edit Password</Text>
-                        <View style={{ width: '75%', height: '30%', justifyContent: 'space-between'}}>
+                        <View style={{ width: '75%', height: '30%', justifyContent: 'space-between' }}>
                             <View >
                                 <Text style={{ fontSize: 15 }}>Enter current Password:</Text>
                                 <View style={{ borderWidth: 5, borderColor: 'grey', borderRadius: 5 }}>
@@ -110,9 +137,9 @@ export const AccountInfo = (props) => {
                                     <TextInput placeholder='**********' value={password} onChangeText={setPassword} style={[styles.textInput, { textAlign: 'center' }]} />
                                 </View>
                             </View>
-                            <Button title='Submit' onPress={() => handleSubmit(password)} />
+                            <Button title='Submit' onPress={() => handleSubmit('password', password)} />
                         </View>
-                        <Button title='Cancel' onPress={() => setPasswordModal(false)} />
+                        <Button title='Cancel' onPress={() => closeModal()} />
                     </View>
                 </TouchableWithoutFeedback>
             </Modal>
@@ -148,4 +175,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default AccountInfo
+const mapState = (state) => {
+    return {
+        user: state.auth
+    }
+}
+
+export default connect(mapState)(AccountInfo)
