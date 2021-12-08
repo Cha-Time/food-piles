@@ -73,7 +73,7 @@ export const Favorites = (props) => {
             onPress={() => removeThisFavorite(org.id)}
           >
             <Text>
-              <Ionicons name="heart" size={19} color="black" />
+              <Ionicons name="close-circle" size={19} color="black" />
             </Text>
           </TouchableOpacity>
         </View>
