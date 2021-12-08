@@ -1,8 +1,9 @@
 import * as React from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useSelector } from "react-redux";
 
 //Screens
 import Map from "./Map";
@@ -20,6 +21,7 @@ const favoriteName = "Favorites";
 const Tab = createBottomTabNavigator();
 
 const MainContainer = ({ route, navigation }) => {
+  const pageViewStore = useSelector((state) => state.homepageView);
   return (
     <Tab.Navigator
       initialRouteName={homeName}
@@ -39,7 +41,26 @@ const MainContainer = ({ route, navigation }) => {
           } else if (rn == chatName) {
             iconName = focused ? "chatbubbles" : "chatbubbles-outline";
           }
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return (
+            <View>
+              <Ionicons
+                name={iconName}
+                size={size}
+                color={color}
+                style={styles.icon}
+              />
+              {rn == profileName && pageViewStore.availability ? (
+                <Ionicons
+                  name="ellipse"
+                  size={10}
+                  color="green"
+                  style={styles.status}
+                />
+              ) : (
+                <View></View>
+              )}
+            </View>
+          );
         },
       })}
     >
@@ -53,3 +74,11 @@ const MainContainer = ({ route, navigation }) => {
 };
 
 export default MainContainer;
+
+const styles = StyleSheet.create({
+  status: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+  },
+});
