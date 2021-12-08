@@ -115,11 +115,10 @@ const Screens = (props) => {
                       return (
                         <View
                           style={{
-                            paddingLeft: "19%",
                             flexDirection: "row",
                             alignItems: "center",
-                            justifyContent: "space-around",
-                            width: "130%",
+                            justifyContent: "space-between",
+                            width: "95%",
                           }}
                         >
                           <Switch
@@ -131,12 +130,7 @@ const Screens = (props) => {
                             }
                             value={pageViewStore.availability}
                           />
-                          <Text
-                            style={{
-                              fontWeight: "bold",
-                              fontSize: 20,
-                            }}
-                          >
+                          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
                             Home
                           </Text>
                           <Ionicons
@@ -145,7 +139,7 @@ const Screens = (props) => {
                                 ? "list"
                                 : "globe"
                             }
-                            size={25}
+                            size={30}
                             color="black"
                             onPress={() => handleToggleHomeViewClick()}
                           />
