@@ -253,6 +253,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     paddingLeft: "5%",
-    width: "90%",
+    width: "60%",
   },
 });
