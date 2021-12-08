@@ -92,7 +92,7 @@ export const Map = (props) => {
     });
   useEffect(() => {
     dispatch(setTotalFilteredOrgs(sortedListArray.length));
-  }, []);
+  }, [sortedListArray]);
 
   function findList() {
     return sortedListArray.map((donor) => (
