@@ -6,20 +6,12 @@ import {
   StyleSheet,
   FlatList,
   ScrollView,
-  Modal,
-  Button,
-  TextInput,
 } from "react-native";
-import ChatView from "./ChatView";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { fetchChats, setChats } from "../store/chats";
-import { fetchForeignOrganization } from "../store/singleForeignOrg";
+
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChats } from "../store/chats";
 
 export const Chat = (props) => {
-  const [visible, setVisible] = useState(false);
-
-  const orgInfo = useSelector((state) => state.singleOrg);
-
   const dispatch = useDispatch();
   let timeAgo = require("node-time-ago");
 
@@ -27,33 +19,26 @@ export const Chat = (props) => {
     (async () => {
       await dispatch(fetchChats());
     })();
-  }, [props.chats]);
+  }, []);
 
-  function toggleVisibility(status) {
-    setVisible(status);
-  }
+  const chats = useSelector((state) => state.chats);
 
-  async function handleOnPress(orgId, orgInfo) {
+  function handleOnPress(orgId) {
     props.navigation.navigate("ChatView", {
       foreignId: orgId,
-      org: orgInfo,
     });
-    /* visibleStatus={visible}
-          org={props.org}
-          receiverId={props.org.id}
-          toggleVisibility={toggleVisibility} */
   }
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={props.chats}
+        data={chats}
         renderItem={({ item }) => (
           <ScrollView>
             <TouchableOpacity
               style={styles.listItem}
               onPress={() => {
-                handleOnPress(item.id, orgInfo);
+                handleOnPress(item.id);
               }}
             >
               <View style={styles.listItemView}>
@@ -95,16 +80,6 @@ export const Chat = (props) => {
           </ScrollView>
         )}
       />
-      {/* {visible === true ? (
-        <ChatView
-          visibleStatus={visible}
-          org={props.org}
-          receiverId={props.org.id}
-          toggleVisibility={toggleVisibility}
-        />
-      ) : (
-        <View></View>
-      )} */}
     </View>
   );
 };
@@ -132,20 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return {
-    messages: state.messages,
-    user: state.auth,
-    chats: state.chats,
-    org: state.singleForeignOrg,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchChats: () => dispatch(fetchChats()),
-    fetchOrganization: (id) => dispatch(fetchForeignOrganization(id)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default Chat;

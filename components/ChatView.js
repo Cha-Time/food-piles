@@ -23,12 +23,16 @@ const ChatView = (props) => {
   useEffect(() => {
     (async () => {
       await dispatch(fetchForeignOrganization(props.route.params.foreignId));
+      await props.fetchMessages(props.route.params.foreignId);
     })();
   }, []);
 
-  const foreignOrgInfo = useSelector((state) => state.singleForeignOrg);
+  console.log("shit");
 
-  useEffect(() => {
+  const foreignOrgInfo = useSelector((state) => state.singleForeignOrg);
+  const messagesList = useSelector((state) => state.messages);
+
+  /*   useEffect(() => {
     let isMounted = true;
     const func = async () => {
       await props.fetchMessages(foreignOrgInfo.id);
@@ -40,10 +44,10 @@ const ChatView = (props) => {
     return () => {
       isMounted = false;
     };
-  }, [allMessages]);
+  }, [allMessages]); */
 
   function displayMessages() {
-    return allMessages.map((message) =>
+    return messagesList.map((message) =>
       message.receiverId === foreignOrgInfo.id ? (
         <Text
           key={message.id}
@@ -91,27 +95,6 @@ const ChatView = (props) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <View style={styles.container}>
-        <View
-          style={{
-            backgroundColor: "lightblue",
-            flexDirection: "row",
-            minHeight: 50,
-            maxHeight: 50,
-            alignItems: "center",
-            overflow: "hidden",
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => {
-              handleClose();
-            }}
-          >
-            <Text style={{ fontSize: 35, paddingLeft: 10 }}>{"<"}</Text>
-          </TouchableOpacity>
-          <Text numberOfLines={1} style={{ fontSize: 30, paddingLeft: 10 }}>
-            {foreignOrgInfo.name}
-          </Text>
-        </View>
         <ScrollView>{displayMessages()}</ScrollView>
         <View
           style={{
@@ -154,7 +137,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#93c47d",
     flex: 1,
-    marginTop: 150,
+    paddingTop: 20,
+    paddingBottom: 20,
     justifyContent: "space-between",
     flexDirection: "column",
   },
