@@ -88,7 +88,7 @@ const Screens = props => {
                           dispatch(setAvailability(true));
                         } else {
                           dispatch(setAvailability(false));
-                          toast.show('Your status is now Unvailable!', {
+                          toast.show('Your status is now Unavailable!', {
                             type: 'normal',
                             placement: 'bottom',
                             duration: 4000,
