@@ -34,6 +34,7 @@ import { addFavorite, fetchFavorites, removeFavorite } from '../store/Favorites'
 const Screens = props => {
   const pageViewStore = useSelector(state => state.homepageView);
   const currentOrgInfo = useSelector(state => state.singleForeignOrg);
+  const [aval, setAval] = useState(pageViewStore.availability)
 
   enableScreens();
 
@@ -77,7 +78,7 @@ const Screens = props => {
                       };
 
                       const handleToggleAvailabilityStatus = () => {
-                        if (pageViewStore.availability === false) {
+                        if (aval === false) {
                           toast.show('Your status is now Available', {
                             type: 'normal',
                             placement: 'bottom',
@@ -86,8 +87,9 @@ const Screens = props => {
                             animationType: 'slide-in',
                           });
                           dispatch(setAvailability(true));
+                          setAval(true)
                         } else {
-                          dispatch(setAvailability(false));
+                          
                           toast.show('Your status is now Unavailable', {
                             type: 'normal',
                             placement: 'bottom',
@@ -95,6 +97,8 @@ const Screens = props => {
                             offset: 30,
                             animationType: 'slide-in',
                           });
+                          dispatch(setAvailability(false));
+                          setAval(false)
                         }
                       };
 
@@ -112,7 +116,7 @@ const Screens = props => {
                             thumbColor={true ? '#f5dd4b' : '#f4f3f4'}
                             ios_backgroundColor="gray"
                             onValueChange={() => handleToggleAvailabilityStatus()}
-                            value={pageViewStore.availability}
+                            value={aval}
                           />
                           <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
                             {' Nearby '}
