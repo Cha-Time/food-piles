@@ -43,6 +43,7 @@ import {
 
 const Screens = (props) => {
   const pageViewStore = useSelector((state) => state.homepageView);
+  const currentOrgInfo = useSelector((state) => state.singleForeignOrg);
 
   enableScreens();
 
@@ -159,10 +160,6 @@ const Screens = (props) => {
               return {
                 headerTitle: "More Info",
                 headerRight: () => {
-                  const currentOrgInfo = useSelector(
-                    (state) => state.singleForeignOrg
-                  );
-
                   const dispatch = useDispatch();
 
                   useEffect(() => {
@@ -208,7 +205,7 @@ const Screens = (props) => {
           <Stack.Screen
             name="ChatView"
             component={ChatView}
-            options={{ headerShown: true }}
+            options={{ headerShown: true, headerTitle: currentOrgInfo.name }}
           />
         </Stack.Navigator>
       )}
