@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Image,
+  TouchableOpacityComponent,
 } from "react-native";
 
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
@@ -16,7 +18,7 @@ import * as geolib from "geolib";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { connect, useDispatch, useSelector } from "react-redux";
-import { fetchFavorites } from "../store/Favorites";
+import { fetchFavorites, removeFavorite } from "../store/Favorites";
 
 export const Favorites = (props) => {
   const [loaded, setLoaded] = useState(false);
@@ -33,39 +35,49 @@ export const Favorites = (props) => {
     props.navigation.navigate("OrgView", { orgId });
   }
 
-  function handleToggleFavorite() {}
-
   let sortedFavoritesArray = props.favorites
     .map((org) => org)
     .sort(function (a, b) {
       return a.favorites.distance - b.favorites.distance;
     });
 
+  const removeThisFavorite = (id) => {
+    dispatch(removeFavorite(id));
+  };
+
   function findList() {
     return sortedFavoritesArray.map((org) => (
-      <View style={styles.listItem} key={org.id}>
-        <View>
-          <Text onPress={() => handlePressToOrg(org.id)} style={styles.title}>
-            {org.name}
-          </Text>
+      <TouchableOpacity
+        style={styles.listItem}
+        onPress={() => handlePressToOrg(org.id)}
+        key={org.id}
+      >
+        <Image style={styles.orgIcon} source={{ uri: org.imageUrl }} />
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{org.name}</Text>
           <Text>
-            {org.favorites.distance}
+            {org.favorites.distance + " "}
             mi away
           </Text>
         </View>
-        <View>
+        <View style={styles.iconContainer}>
           <Text>
             {org.availabilityStatus ? (
-              <Ionicons name="ellipse" size={15} color="green" />
+              <Ionicons name="ellipse" size={19} color="green" />
             ) : (
-              <Ionicons name="ellipse" size={15} color="grey" />
+              <Ionicons name="ellipse" size={19} color="grey" />
             )}
           </Text>
-          <Text>
-            <Ionicons name="heart" size={15} color="black" />
-          </Text>
+          <TouchableOpacity
+            style={styles.favoritePressable}
+            onPress={() => removeThisFavorite(org.id)}
+          >
+            <Text>
+              <Ionicons name="close-circle" size={19} color="black" />
+            </Text>
+          </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     ));
   }
   if (loaded) {
@@ -98,11 +110,20 @@ export default connect(mapState)(Favorites);
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: "rgba(219, 154, 155, 0.1)",
+    display: "flex",
     flex: 1,
     marginTop: 0,
   },
   title: {
     fontWeight: "bold",
+    fontSize: 20,
+    paddingBottom: "2%",
+  },
+  subTitle: {
+    fontSize: 14,
+    color: "#4f4e4e",
+    letterSpacing: 1,
   },
   map: {
     flex: 1,
@@ -112,12 +133,31 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   listItem: {
-    padding: "5%",
-    borderColor: "gray",
-    borderWidth: 0.5,
     display: "flex",
-    flex: 1,
     flexDirection: "row",
+    padding: "5%",
+    borderBottomColor: "gray",
+    width: "96%",
+    marginLeft: "2%",
+    borderBottomWidth: 0.5,
+    alignItems: "center",
+  },
+  orgIcon: {
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+  },
+  textContainer: {
+    paddingLeft: "5%",
+    width: "75%",
+  },
+  iconContainer: {
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "space-between",
+    height: 70,
+  },
+  favoritePressable: {
+    padding: "5%",
   },
 });
