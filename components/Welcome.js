@@ -21,8 +21,6 @@ export const Welcome = (props) => {
     })();
   }, []);
 
-  console.log(props.organization)
-
   function moveOn() {
     setTimeout(() => {
       props.navigation.reset({ index: 0, routes: [{ name: "Home" }] });
@@ -35,7 +33,7 @@ export const Welcome = (props) => {
         <Text
           style={{ textAlign: "center", fontSize: 35, paddingBottom: "5%" }}
         >
-          Welcome Back,
+          Welcome,
         </Text>
         <Text style={{ textAlign: "center", fontSize: 30, fontWeight: "bold" }}>
           {orgInfo.name}
@@ -61,7 +59,7 @@ const styles = StyleSheet.create({
 const mapState = (state) => {
   return {
     user: state.auth,
-    organization: state.singleOrg,
+    // organization: state.singleOrg,
   };
 };
 

@@ -37,6 +37,16 @@ export const SignUp = (props) => {
   const [zipCode, setZip] = useState(null);
   const [description, setDescription] = useState(null);
 
+  useEffect(() => {
+    return () => {
+      if (isLoggedIn) {
+        props.navigation.navigate("Welcome");
+      } else {
+        setPart("partOne");
+      }
+    }
+  }, []);
+
   const { error, isLoggedIn } = props;
 
   const NavButton = (part, direction) => (
@@ -85,8 +95,8 @@ export const SignUp = (props) => {
           city,
           state,
           zipCode,
-          latitude: "38.8976763",
-          longitude: "-77.0365298",
+          latitude: "40.624870",
+          longitude: "-73.966184 ",
         },
         "signup"
       )
@@ -101,7 +111,7 @@ export const SignUp = (props) => {
 
   if (part === "partOne") {
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: "#ececec" }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <View style={styles.headerTextContainer}>
@@ -160,7 +170,7 @@ export const SignUp = (props) => {
     );
   } else if (part === "partThree") {
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: "#ececec" }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
           <View style={styles.headerTextContainer}>
