@@ -28,6 +28,7 @@ export const OrganizationView = ({ route, navigation }) => {
   }, []);
 
   function dialCall(digits) {
+    console.log(orgInfo.availabilityStatus);
     let phoneNumber = "";
 
     if (Platform.OS === "android") {
@@ -44,14 +45,19 @@ export const OrganizationView = ({ route, navigation }) => {
   function toggleVisibility(status) {
     setVisible(status);
   }
-
+  let availability = "";
+  if (orgInfo.availabilityStatus) {
+    availability = "Currently Available";
+  } else {
+    availability = "Currently Unavailable";
+  }
   return (
     <View style={styles.container}>
       <View style={styles.top}>
         <View style={{ flex: 1 }}>
           <Text style={styles.title}>{orgInfo.name}</Text>
           <View style={styles.addressContainer}>
-            <Text>{orgInfo.address}</Text>
+            <Text>Address: {orgInfo.address}</Text>
             <Text>
               {orgInfo.city}, {orgInfo.state}
             </Text>
@@ -60,7 +66,9 @@ export const OrganizationView = ({ route, navigation }) => {
               onPress={() => dialCall(orgInfo.phoneNumber)}
               activeOpacity={0.7}
             >
-              <Text style={styles.phoneLink}>{orgInfo.phoneNumber}</Text>
+              <Text style={styles.phoneLink}>
+                Phone Number:{orgInfo.phoneNumber}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -71,18 +79,22 @@ export const OrganizationView = ({ route, navigation }) => {
           }}
         />
       </View>
-      <Text>{orgInfo.description}</Text>
+      <Text>Description: {orgInfo.description}</Text>
+      <Text style={styles.subtitle}>
+        {availability + ": "}
+        {orgInfo.availableTime ? (
+          <Text>until {orgInfo.availableTime}</Text>
+        ) : (
+          <Text>
+            {
+              "Please inquire with the organization directly for more specific details regarding their hours of operation for "
+            }
+          </Text>
+        )}
+        today
+      </Text>
       {orgInfo.accType === "donor" ? (
         <View>
-          <Text style={styles.subtitle}>
-            Available{" "}
-            {orgInfo.availableTime ? (
-              <Text>until {orgInfo.availableTime}</Text>
-            ) : (
-              <Text></Text>
-            )}
-            today:
-          </Text>
           <Text style={styles.subText}>
             {orgInfo.availableFood ? (
               <Text>{orgInfo.availableFood}</Text>
@@ -93,7 +105,7 @@ export const OrganizationView = ({ route, navigation }) => {
               </Text>
             )}
           </Text>
-          <Text style={styles.subtitle}>Potential Allgergens:</Text>
+          <Text style={styles.subtitle}>Potential Allergens:</Text>
           <Text style={styles.subText}>
             {orgInfo.allergens ? (
               <Text>{orgInfo.allergens}</Text>
@@ -149,7 +161,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   subtitle: {
-    fontWeight: "bold",
     fontSize: 15,
     marginTop: 20,
     marginBottom: 20,
