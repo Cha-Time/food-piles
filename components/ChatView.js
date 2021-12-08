@@ -23,11 +23,11 @@ const ChatView = (props) => {
   function displayMessages() {
     return allMessages.map((message) => (
       message.receiverId === props.receiverId ?
-        <Text key={message.id} style={{ backgroundColor: 'whitesmoke', borderRadius: 25, borderBottomRightRadius: 0, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-end' }}>
+        <Text key={message.id} style={{ backgroundColor: 'white', borderRadius: 25, borderBottomRightRadius: 0, borderWidth: 2, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-end' }}>
           {message.messageText}
         </Text>
         :
-        <Text key={message.id} style={{ backgroundColor: 'lightblue', borderRadius: 25, borderBottomLeftRadius: 0, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-start' }}>
+        <Text key={message.id} style={{ backgroundColor: '#f5565a', borderRadius: 25, borderBottomLeftRadius: 0, borderWidth: 2, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-start' }}>
           {message.messageText}
         </Text>
     ))
@@ -49,7 +49,7 @@ const ChatView = (props) => {
       <Modal animationType="fade" transparent={false} visible={props.visible}>
 
         <View style={styles.container}>
-          <View style={{ backgroundColor: 'lightblue', flexDirection: 'row', minHeight: 50, maxHeight: 50, alignItems: 'center', overflow: 'hidden' }}>
+          <View style={{ backgroundColor: 'darkgrey', flexDirection: 'row', minHeight: 50, maxHeight: 50, alignItems: 'center', overflow: 'hidden' }}>
             <TouchableOpacity onPress={() => { handleClose() }}>
               <Text style={{ fontSize: 35, paddingLeft: 10 }}>
                 {'<'}
@@ -62,7 +62,7 @@ const ChatView = (props) => {
           <ScrollView>
             {displayMessages()}
           </ScrollView>
-          <View style={{ flexDirection: 'row', backgroundColor: '#93c47d', alignItems: 'center', minHeight: 20, maxHeight: 50 }}>
+          <View style={{ flexDirection: 'row', backgroundColor: '#ececec', alignItems: 'center', minHeight: 20, maxHeight: 50 }}>
             <TextInput style={styles.input} onChangeText={setMessage} value={message} />
             <TouchableOpacity onPress={() => { handleSend() }} style={{ backgroundColor: 'lightblue', width: '15%', minHeight: '50%', alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: 'black', borderRadius: 25 }}>
               <Text style={{ textAlign: 'center' }}>
@@ -79,7 +79,7 @@ const ChatView = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#93c47d',
+    backgroundColor: '#ececec',
     flex: 1,
     marginTop: 5,
     justifyContent: 'space-between',
