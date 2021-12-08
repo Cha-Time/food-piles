@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
     width: "96%",
     borderBottomWidth: 0.5,
     alignItems: "center",
+    marginLeft: "2%",
   },
   listItemView: {
     display: "flex",
