@@ -71,19 +71,40 @@ export const OrganizationView = ({ route, navigation }) => {
           }}
         />
       </View>
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-      </Text>
-      <Text style={styles.subtitle}>Available until 9pm today:</Text>
-      <Text style={styles.subText}>
-        Please inquire with the organization for more details for today's
-        offerings.
-      </Text>
-      <Text style={styles.subtitle}>Potential Allgergens:</Text>
-      <Text style={styles.subText}>Nuts</Text>
+      <Text>{orgInfo.description}</Text>
+      {orgInfo.accType === "donor" ? (
+        <View>
+          <Text style={styles.subtitle}>
+            Available{" "}
+            {orgInfo.availableTime ? (
+              <Text>until {orgInfo.availableTime}</Text>
+            ) : (
+              <Text></Text>
+            )}
+            today:
+          </Text>
+          <Text style={styles.subText}>
+            {orgInfo.availableFood ? (
+              <Text>{orgInfo.availableFood}</Text>
+            ) : (
+              <Text>
+                Please inquire with the organization for more details for
+                today's offerings.
+              </Text>
+            )}
+          </Text>
+          <Text style={styles.subtitle}>Potential Allgergens:</Text>
+          <Text style={styles.subText}>
+            {orgInfo.allergens ? (
+              <Text>{orgInfo.allergens}</Text>
+            ) : (
+              <Text>N/A</Text>
+            )}
+          </Text>
+        </View>
+      ) : (
+        <View></View>
+      )}
       <Button title="Message" onPress={() => setVisible(true)} />
 
       {visible === true ? (
