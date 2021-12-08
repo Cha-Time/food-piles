@@ -113,7 +113,7 @@ const Screens = (props) => {
                     };
 
                     return (
-                      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%'  }}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '95%'  }}>
                         <Switch
                           trackColor={{ false: "#767577", true: "#81b0ff" }}
                           thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
