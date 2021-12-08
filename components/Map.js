@@ -131,11 +131,13 @@ export const Map = (props) => {
                 latitude: Number(orgInfo.latitude),
                 longitude: Number(orgInfo.longitude),
               }}
-              title={"Your location"}
             >
-              <View style={styles.circle}>
-                <View style={styles.stroke} />
-                <View style={styles.core} />
+              <View style={{ alignItems: "center" }}>
+                <Text style={styles.markerText}>Your Location</Text>
+                <View style={styles.circle}>
+                  <View style={styles.stroke} />
+                  <View style={styles.core} />
+                </View>
               </View>
             </Marker>
             {findMarkers()}
@@ -215,5 +217,13 @@ const styles = StyleSheet.create({
     padding: "5%",
     borderColor: "gray",
     borderWidth: 0.5,
+  },
+  markerText: {
+    backgroundColor: "rgba(153, 153, 255, 0.2)",
+    color: "black",
+    fontWeight: "bold",
+    padding: "1%",
+    marginLeft: 90,
+    marginBottom: 1,
   },
 });
