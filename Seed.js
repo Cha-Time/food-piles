@@ -25157,6 +25157,13 @@ function allOrgs() {
       charityImageURL = "https://f.ipv7.sh/mvphaz.png";
     }
 
+    let charityPhoneNumber = "";
+    if (charity.data.phonenumber) {
+      charityPhoneNumber = charity.data.phonenumber;
+    } else {
+      charityPhoneNumber = "9999999999";
+    }
+
     let charityDescription = "";
     if (charity.description) {
       charityDescription = charity.description;
@@ -25170,7 +25177,7 @@ function allOrgs() {
       city: charity.sublabel.split(",")[1],
       state: "NY",
       zipCode: 10000,
-      phoneNumber: charity.data.phonenumber,
+      phoneNumber: charityPhoneNumber,
       accType: "charity",
       latitude: charity.latitude,
       longitude: charity.longitude,
