@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Modal, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Modal, TextInput, Button, StyleSheet, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { clearMessages, fetchMessages, sendMessage } from '../store/messages';
 
 const ChatView = (props) => {
-
-
 
   const [message, setMessage] = useState(null)
   const [allMessages, setAllMessages] = useState([])
@@ -14,24 +12,24 @@ const ChatView = (props) => {
     let isMounted = true
     const func = async () => {
       await props.fetchMessages(props.receiverId)
-      if(isMounted) {
+      if (isMounted) {
         setAllMessages(props.messages)
-      } 
+      }
     };
     func()
-    return () => {isMounted = false}
+    return () => { isMounted = false }
   }, [allMessages]);
 
   function displayMessages() {
     return allMessages.map((message) => (
       message.receiverId === props.receiverId ?
-      <Text key={message.id} style={{ backgroundColor: 'whitesmoke', borderRadius: 25, borderBottomRightRadius: 0, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-end' }}>
-        {message.messageText}
-      </Text>
-      :
-      <Text key={message.id} style={{ backgroundColor: 'lightblue', borderRadius: 25, borderBottomLeftRadius: 0, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-start' }}>
-        {message.messageText}
-      </Text>
+        <Text key={message.id} style={{ backgroundColor: 'whitesmoke', borderRadius: 25, borderBottomRightRadius: 0, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-end' }}>
+          {message.messageText}
+        </Text>
+        :
+        <Text key={message.id} style={{ backgroundColor: 'lightblue', borderRadius: 25, borderBottomLeftRadius: 0, margin: 5, padding: 10, maxWidth: '50%', alignSelf: 'flex-start' }}>
+          {message.messageText}
+        </Text>
     ))
   }
 
@@ -47,8 +45,9 @@ const ChatView = (props) => {
   }
 
   return (
-    <View>
+    <KeyboardAvoidingView style={styles.container} behavior='padding'>
       <Modal animationType="fade" transparent={false} visible={props.visible}>
+
         <View style={styles.container}>
           <View style={{ backgroundColor: 'lightblue', flexDirection: 'row', minHeight: 50, maxHeight: 50, alignItems: 'center', overflow: 'hidden' }}>
             <TouchableOpacity onPress={() => { handleClose() }}>
@@ -56,24 +55,25 @@ const ChatView = (props) => {
                 {'<'}
               </Text>
             </TouchableOpacity>
-            <Text numberOfLines={1} style={{ fontSize: 30, paddingLeft: 10  }}>
+            <Text numberOfLines={1} style={{ fontSize: 30, paddingLeft: 10 }}>
               {props.org.name}
             </Text>
           </View>
-          <View>
+          <ScrollView>
             {displayMessages()}
-          </View>
+          </ScrollView>
           <View style={{ flexDirection: 'row', backgroundColor: '#93c47d', alignItems: 'center', minHeight: 20, maxHeight: 50 }}>
             <TextInput style={styles.input} onChangeText={setMessage} value={message} />
-            <TouchableOpacity onPress={() => { handleSend() }} style={{ backgroundColor: 'lightblue', width: '15%', minHeight: '50%', alignItems: 'center', justifyContent:'center', borderWidth: 2, borderColor: 'black', borderRadius: 25 }}>
+            <TouchableOpacity onPress={() => { handleSend() }} style={{ backgroundColor: 'lightblue', width: '15%', minHeight: '50%', alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: 'black', borderRadius: 25 }}>
               <Text style={{ textAlign: 'center' }}>
                 SEND
               </Text>
             </TouchableOpacity>
           </View>
         </View>
+
       </Modal>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
 
   },
   messageReceiver: {
-    
+
   }
 });
 
