@@ -23,7 +23,6 @@ export const Favorites = (props) => {
   // dispatch time?
   const dispatch = useDispatch();
 
-  console.log(loaded);
   useEffect(() => {
     (async () => {
       await dispatch(fetchFavorites());
@@ -69,11 +68,6 @@ export const Favorites = (props) => {
       </View>
     ));
   }
-
-  // do we have our user's location from phone? render out the donors either in map or list form as requested by the user
-
-  // is our toggle view state set to map? show us the map
-  console.log(props.favorites);
   if (loaded) {
     if (sortedFavoritesArray.length > 0) {
       return <ScrollView style={styles.container}>{findList()}</ScrollView>;
@@ -91,7 +85,6 @@ export const Favorites = (props) => {
       </ScrollView>
     );
   }
-  // no location from phone yet? just show loading....
 };
 
 const mapState = (state) => {
