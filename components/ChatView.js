@@ -38,13 +38,14 @@ const ChatView = (props) => {
         <Text
           key={message.id}
           style={{
-            backgroundColor: "whitesmoke",
+            backgroundColor: "white",
             borderRadius: 25,
             borderBottomRightRadius: 0,
             margin: 5,
             padding: 10,
             maxWidth: "50%",
             alignSelf: "flex-end",
+            borderWidth: 2,
           }}
         >
           {message.messageText}
@@ -53,13 +54,14 @@ const ChatView = (props) => {
         <Text
           key={message.id}
           style={{
-            backgroundColor: "lightblue",
+            backgroundColor: "#f5565a",
             borderRadius: 25,
             borderBottomLeftRadius: 0,
             margin: 5,
             padding: 10,
             maxWidth: "50%",
             alignSelf: "flex-start",
+            borderWidth: 2,
           }}
         >
           {message.messageText}
@@ -84,7 +86,7 @@ const ChatView = (props) => {
         <View
           style={{
             flexDirection: "row",
-            backgroundColor: "#93c47d",
+            backgroundColor: "#ececec",
             alignItems: "center",
             minHeight: 20,
             maxHeight: 50,
@@ -120,41 +122,41 @@ const ChatView = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#93c47d",
+    backgroundColor: '#93c47d',
+    backgroundColor: '#ececec',
     flex: 1,
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 3,
-    paddingRight: 3,
-    justifyContent: "space-between",
-    flexDirection: "column",
+    marginTop: 5,
+    justifyContent: 'space-between',
+    flexDirection: 'column'
   },
   listItem: {
     padding: 15,
-    backgroundColor: "#f8f8f8",
+    backgroundColor: '#f8f8f8',
     borderBottomWidth: 2,
-    borderColor: "#eee",
+    borderColor: '#eee',
   },
   listItemView: {},
   listText: {
     fontSize: 40,
   },
   btn: {
-    alignSelf: "flex-start",
-    width: "20%",
+    alignSelf: 'flex-start',
+    width: '20%'
   },
   input: {
-    backgroundColor: "whitesmoke",
-    borderColor: "black",
+    backgroundColor: 'whitesmoke',
+    borderColor: 'black',
     borderWidth: 2,
     borderRadius: 25,
     paddingLeft: 10,
     margin: 10,
-    minHeight: "30%",
-    width: "75%",
+    minHeight: '30%',
+    width: '75%'
   },
-  messageUser: {},
-  messageReceiver: {},
+  messageUser: {
+  },
+  messageReceiver: {
+  }
 });
 
 export default ChatView;

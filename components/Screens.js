@@ -45,8 +45,9 @@ import {
 const Screens = (props) => {
   const pageViewStore = useSelector((state) => state.homepageView);
   const currentOrgInfo = useSelector((state) => state.singleForeignOrg);
+  const [aval, setAval] = useState(pageViewStore.availability)
   const dispatch = useDispatch();
-  dispatch(getAvailability());
+  
 
   enableScreens();
 
@@ -106,7 +107,7 @@ const Screens = (props) => {
                       };
 
                       const handleToggleAvailabilityStatus = () => {
-                        if (pageViewStore.availability === false) {
+                        if (aval === false) {
                           toast.show("Your status is now Available", {
                             type: "normal",
                             placement: "bottom",
@@ -115,6 +116,7 @@ const Screens = (props) => {
                             animationType: "slide-in",
                           });
                           dispatch(setAvailability(true));
+                          setAval(true)
                         } else {
                           toast.show("Your status is now Unavailable", {
                             type: "normal",
@@ -124,6 +126,7 @@ const Screens = (props) => {
                             animationType: "slide-in",
                           });
                           dispatch(setAvailability(false));
+                          setAval(false)
                         }
                       };
 
@@ -143,7 +146,7 @@ const Screens = (props) => {
                             onValueChange={() =>
                               handleToggleAvailabilityStatus()
                             }
-                            value={pageViewStore.availability}
+                            value={aval}
                           />
                           <Text style={{ fontWeight: "bold", fontSize: 15 }}>
                             {" Nearby "}

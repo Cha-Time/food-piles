@@ -3,12 +3,12 @@ import {
   View,
   Text,
   Button,
-  Modal,
   TextInput,
   StyleSheet,
   Keyboard,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  ScrollView
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, useDispatch } from "react-redux";
@@ -16,9 +16,6 @@ import { updateUser } from "../store/SingleUser";
 import { me } from "../store/auth";
 
 export const AccountInfo = (props) => {
-  const [usernameModal, setUsernameModal] = useState(false);
-  const [emailModal, setEmailModal] = useState(false);
-  const [passwordModal, setPasswordModal] = useState(false);
 
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
@@ -42,24 +39,20 @@ export const AccountInfo = (props) => {
       const org = {};
       org[name] = value;
       await dispatch(updateUser(org));
-
-      setUsernameModal(false);
-      setEmailModal(false);
-      setPasswordModal(false);
       setEmailInput(false);
       setPasswordInput(false);
       setUsernameInput(false);
+      setUsername(null)
+      setEmail(null)
+      setPassword(null)
     }
   }
 
-  function closeModal() {
-    setUsername(null);
-    setEmail(null);
-    setPassword(null);
-
-    setUsernameModal(false);
-    setEmailModal(false);
-    setPasswordModal(false);
+  function handleBack() {
+    setUsername(null)
+    setEmail(null)
+    setPassword(null)
+    props.handleChangePage("hub")
   }
 
   const editButton = (onPress) => (
@@ -87,193 +80,81 @@ export const AccountInfo = (props) => {
   );
 
   return (
-    <View style={{ justifyContent: "space-between", height: "100%" }}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Account Info</Text>
-        <View style={styles.allInputs}>
-          <View style={styles.inputContainer}>
-            <View style={styles.coupledTextContainer}>
-              <Text style={styles.inputCategory}>Username:</Text>
-              {usernameInput ? (
-                <TextInput
-                  placeholder="Username"
-                  value={username}
-                  onChangeText={setUsername}
-                  style={styles.textInput}
-                />
-              ) : (
-                <Text style={styles.inputValue}>{props.user.username}</Text>
-              )}
+    <ScrollView style={{ backgroundColor: 'rgba(219, 154, 155, 0.1)' }}>
+      <View style={{ justifyContent: "space-between", height: "100%" }}>
+
+        <View style={styles.container}>
+          <Text style={styles.title}>Account Info</Text>
+          <View style={styles.allInputs}>
+            <View style={styles.inputContainer}>
+              <View style={styles.coupledTextContainer}>
+                <Text style={styles.inputCategory}>Username:</Text>
+                {usernameInput ? (
+                  <TextInput
+                    placeholder="Username"
+                    value={username}
+                    onChangeText={setUsername}
+                    style={styles.textInput}
+                  />
+                ) : (
+                  <Text style={styles.inputValue}>{props.user.username}</Text>
+                )}
+              </View>
+              {usernameInput
+                ? submitButton(() => handleSubmit("username", username))
+                : editButton(() => setUsernameInput(true))}
             </View>
-            {usernameInput
-              ? submitButton(() => handleSubmit("username", username))
-              : editButton(() => setUsernameInput(true))}
-          </View>
-          <View style={styles.inputContainer}>
-            <View style={styles.coupledTextContainer}>
-              <Text style={styles.inputCategory}>Password:</Text>
-              {passwordInput ? (
-                <TextInput
-                  placeholder="Password"
-                  value={password}
-                  onChangeText={setPassword}
-                  style={styles.textInput}
-                />
-              ) : (
-                <Text style={styles.inputValue}>*********</Text>
-              )}
+            <View style={styles.inputContainer}>
+              <View style={styles.coupledTextContainer}>
+                <Text style={styles.inputCategory}>Password:</Text>
+                {passwordInput ? (
+                  <TextInput
+                    placeholder="Password"
+                    value={password}
+                    onChangeText={setPassword}
+                    style={styles.textInput}
+                  />
+                ) : (
+                  <Text style={styles.inputValue}>*********</Text>
+                )}
+              </View>
+              {passwordInput
+                ? submitButton(() => handleSubmit("password", password))
+                : editButton(() => setPasswordInput(true))}
             </View>
-            {passwordInput
-              ? submitButton(() => handleSubmit("password", password))
-              : editButton(() => setPasswordInput(true))}
-          </View>
-          <View style={styles.inputContainer}>
-            <View style={styles.coupledTextContainer}>
-              <Text style={styles.inputCategory}>E-mail:</Text>
-              {emailInput ? (
-                <TextInput
-                  placeholder="E-mail"
-                  value={email}
-                  onChangeText={setEmail}
-                  style={styles.textInput}
-                />
-              ) : (
-                <Text style={styles.inputValue}>{props.user.email}</Text>
-              )}
+            <View style={styles.inputContainer}>
+              <View style={styles.coupledTextContainer}>
+                <Text style={styles.inputCategory}>E-mail:</Text>
+                {emailInput ? (
+                  <TextInput
+                    placeholder="E-mail"
+                    value={email}
+                    onChangeText={setEmail}
+                    style={styles.textInput}
+                  />
+                ) : (
+                  <Text style={styles.inputValue}>{props.user.email}</Text>
+                )}
+              </View>
+              {emailInput
+                ? submitButton(() => handleSubmit("email", email))
+                : editButton(() => setEmailInput(true))}
             </View>
-            {emailInput
-              ? submitButton(() => handleSubmit("email", email))
-              : editButton(() => setEmailInput(true))}
           </View>
+          {backButton(() => handleBack())}
         </View>
-        {backButton(() => props.handleChangePage("hub"))}
       </View>
-
-      {/* <Modal animationType="fade" transparent={false} visible={usernameModal}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.modal}>
-            <Text style={{ fontSize: 30 }}>Edit Username</Text>
-            <View style={{ width: "75%" }}>
-              <Text style={{ fontSize: 15 }}>Enter new Username:</Text>
-              <View
-                style={{ borderWidth: 5, borderColor: "grey", borderRadius: 5 }}
-              >
-                <TextInput
-                  placeholder={props.user.username}
-                  value={username}
-                  onChangeText={setUsername}
-                  style={[styles.textInput, { textAlign: "center" }]}
-                />
-                <Button
-                  title="Save Changes"
-                  onPress={() => handleSubmit("username", username)}
-                />
-              </View>
-            </View>
-            <Button title="Cancel" onPress={() => closeModal()} />
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-
-      <Modal animationType="fade" transparent={false} visible={emailModal}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.modal}>
-            <Text style={{ fontSize: 30 }}>Edit Email</Text>
-            <View style={{ width: "75%" }}>
-              <Text style={{ fontSize: 15 }}>Enter new Email:</Text>
-              <View
-                style={{ borderWidth: 5, borderColor: "grey", borderRadius: 5 }}
-              >
-                <TextInput
-                  placeholder={props.user.email}
-                  value={email}
-                  onChangeText={setEmail}
-                  style={[styles.textInput, { textAlign: "center" }]}
-                />
-                <Button
-                  title="Save Changes"
-                  onPress={() => handleSubmit("email", email)}
-                />
-              </View>
-            </View>
-            <Button title="Cancel" onPress={() => closeModal()} />
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
-
-      <Modal animationType="fade" transparent={false} visible={passwordModal}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.modal}>
-            <Text style={{ fontSize: 30 }}>Edit Password</Text>
-            <View
-              style={{
-                width: "75%",
-                height: "30%",
-                justifyContent: "space-between",
-              }}
-            >
-              <View>
-                <Text style={{ fontSize: 15 }}>Enter current Password:</Text>
-                <View
-                  style={{
-                    borderWidth: 5,
-                    borderColor: "grey",
-                    borderRadius: 5,
-                  }}
-                >
-                  <TextInput
-                    placeholder="**********"
-                    value={password}
-                    onChangeText={setPassword}
-                    style={[styles.textInput, { textAlign: "center" }]}
-                  />
-                </View>
-              </View>
-              <View>
-                <Text style={{ fontSize: 15 }}>Enter new Password:</Text>
-                <View
-                  style={{
-                    borderWidth: 5,
-                    borderColor: "grey",
-                    borderRadius: 5,
-                  }}
-                >
-                  <TextInput
-                    placeholder="**********"
-                    value={password}
-                    onChangeText={setPassword}
-                    style={[styles.textInput, { textAlign: "center" }]}
-                  />
-                </View>
-              </View>
-              <Button
-                title="Submit"
-                onPress={() => handleSubmit("password", password)}
-              />
-            </View>
-            <Button title="Cancel" onPress={() => closeModal()} />
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal> */}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(219, 154, 155, 0.1)",
     display: "flex",
     justifyContent: "flex-start",
     flexDirection: "column",
     padding: "10%",
-  },
-  modal: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "whitesmoke",
-    padding: 20,
-    justifyContent: "space-between",
   },
   text: {
     color: "#3f2949",

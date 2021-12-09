@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(219, 154, 155, 0.1)",
     padding: "5%",
-    paddingTop: "20%",
+    paddingTop: "10%",
   },
   smiley: {
     height: 100,
