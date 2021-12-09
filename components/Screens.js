@@ -82,8 +82,8 @@ const Screens = (props) => {
             name="Home"
             component={MainContainer}
             options={({ route }) => {
-              let routeTitle = getFocusedRouteNameFromRoute(route) || "Home";
-              let routeIsHome = routeTitle === "Home";
+              let routeTitle = getFocusedRouteNameFromRoute(route) || "Browse";
+              let routeIsHome = routeTitle === "Browse";
 
               return routeIsHome
                 ? {
