@@ -24,6 +24,11 @@ export const AccountInfo = (props) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
 
+  //dynamic rendering of input fields
+  const [usernameInput, setUsernameInput] = useState(false);
+  const [passwordInput, setPasswordInput] = useState(false);
+  const [emailInput, setEmailInput] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -41,6 +46,9 @@ export const AccountInfo = (props) => {
       setUsernameModal(false);
       setEmailModal(false);
       setPasswordModal(false);
+      setEmailInput(false);
+      setPasswordInput(false);
+      setUsernameInput(false);
     }
   }
 
@@ -62,6 +70,16 @@ export const AccountInfo = (props) => {
     </TouchableOpacity>
   );
 
+  const submitButton = (onPress) => {
+    return (
+      <TouchableOpacity onPress={onPress} style={styles.editButton}>
+        <Text>
+          <Ionicons name="checkbox" size={30} color="gray" />{" "}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
   const backButton = (onPress) => (
     <TouchableOpacity onPress={onPress} style={styles.backButtonContainer}>
       <Text style={styles.backButtonText}>Back</Text>
@@ -76,29 +94,62 @@ export const AccountInfo = (props) => {
           <View style={styles.inputContainer}>
             <View style={styles.coupledTextContainer}>
               <Text style={styles.inputCategory}>Username:</Text>
-              <Text style={styles.inputValue}>{props.user.username}</Text>
+              {usernameInput ? (
+                <TextInput
+                  placeholder="Username"
+                  value={username}
+                  onChangeText={setUsername}
+                  style={styles.textInput}
+                />
+              ) : (
+                <Text style={styles.inputValue}>{props.user.username}</Text>
+              )}
             </View>
-            {editButton(() => setUsernameModal(true))}
+            {usernameInput
+              ? submitButton(() => handleSubmit("username", username))
+              : editButton(() => setUsernameInput(true))}
           </View>
           <View style={styles.inputContainer}>
             <View style={styles.coupledTextContainer}>
               <Text style={styles.inputCategory}>Password:</Text>
-              <Text style={styles.inputValue}>**********</Text>
+              {passwordInput ? (
+                <TextInput
+                  placeholder="Password"
+                  value={password}
+                  onChangeText={setPassword}
+                  style={styles.textInput}
+                />
+              ) : (
+                <Text style={styles.inputValue}>*********</Text>
+              )}
             </View>
-            {editButton(() => setPasswordModal(true))}
+            {passwordInput
+              ? submitButton(() => handleSubmit("password", password))
+              : editButton(() => setPasswordInput(true))}
           </View>
           <View style={styles.inputContainer}>
             <View style={styles.coupledTextContainer}>
               <Text style={styles.inputCategory}>E-mail:</Text>
-              <Text style={styles.inputValue}>{props.user.email}</Text>
+              {emailInput ? (
+                <TextInput
+                  placeholder="E-mail"
+                  value={email}
+                  onChangeText={setEmail}
+                  style={styles.textInput}
+                />
+              ) : (
+                <Text style={styles.inputValue}>{props.user.email}</Text>
+              )}
             </View>
-            {editButton(() => setEmailModal(true))}
+            {emailInput
+              ? submitButton(() => handleSubmit("email", email))
+              : editButton(() => setEmailInput(true))}
           </View>
         </View>
         {backButton(() => props.handleChangePage("hub"))}
       </View>
 
-      <Modal animationType="fade" transparent={false} visible={usernameModal}>
+      {/* <Modal animationType="fade" transparent={false} visible={usernameModal}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.modal}>
             <Text style={{ fontSize: 30 }}>Edit Username</Text>
@@ -203,7 +254,7 @@ export const AccountInfo = (props) => {
             <Button title="Cancel" onPress={() => closeModal()} />
           </View>
         </TouchableWithoutFeedback>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
@@ -232,16 +283,12 @@ const styles = StyleSheet.create({
     fontSize: 30,
     paddingBottom: "5%",
   },
-  textInput: {
-    backgroundColor: "whitesmoke",
-    color: "black",
-  },
   inputContainer: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: "22%",
+    height: "20%",
     borderBottomColor: "gray",
     borderBottomWidth: 1,
   },
@@ -266,9 +313,15 @@ const styles = StyleSheet.create({
     borderBottomColor: "black",
     borderBottomWidth: 2,
     marginRight: "3%",
+    marginBottom: "30%",
   },
   backButtonText: {
     fontSize: 22,
+    color: "black",
+  },
+  textInput: {
+    width: "55%",
+    minHeight: 50,
     color: "black",
   },
 });
