@@ -13,7 +13,7 @@ import Favorites from "./Favorites";
 import List from "./List";
 
 //Screen names
-const homeName = "Home";
+const homeName = "Browse";
 const chatName = "Chat";
 const profileName = "Profile";
 const favoriteName = "Favorites";
@@ -68,7 +68,7 @@ const MainContainer = ({ route, navigation }) => {
       })}
     >
       {/*These are all of the tabs on the homepage navbar */}
-      <Tab.Screen name={"Home"} component={Map} />
+      <Tab.Screen name="Browse" component={Map} />
       <Tab.Screen name="Favorites" component={Favorites} />
       <Tab.Screen name="Chat" component={Chat} />
       <Tab.Screen name="Profile" component={Profile} />
