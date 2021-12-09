@@ -88,6 +88,7 @@ export const Chat = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'rgba(219, 154, 155, 0.1)'
   },
   listItem: {
     padding: 15,
