@@ -11,11 +11,14 @@ export const setChats = (chats) => ({ type: SET_CHATS, chats });
 export const fetchChats = () => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
-    const { data: chats } = await Axios.get(`https://foodpiles.herokuapp.com/api/messages/all-chats`, {
-      headers: {
-        authorization: token,
-      },
-    });
+    const { data: chats } = await Axios.get(
+      `https://foodpiles.herokuapp.com/api/messages/all-chats`,
+      {
+        headers: {
+          authorization: token,
+        },
+      }
+    );
     dispatch(setChats(chats));
   };
 };
@@ -24,17 +27,23 @@ export const fetchChats = () => {
 export default function (state = [], action) {
   switch (action.type) {
     case SET_CHATS:
-        let chats = []
+      let chats = [];
       for (let key in action.chats) {
-        let date = new Date(`${action.chats[key][1]}`)
-        chats.push({id: key, msg: action.chats[key][0], msgTime: date, orgName: action.chats[key][2]})
+        let date = new Date(`${action.chats[key][1]}`);
+        chats.push({
+          id: key,
+          msg: action.chats[key][0],
+          msgTime: date,
+          orgName: action.chats[key][2],
+        });
       }
-      
-      const sortedChats = chats.map(chat => chat)
-      .sort(function (a, b) { 
-        return b.msgTime.valueOf() - a.msgTime.valueOf()
-      })
-      return sortedChats
+
+      const sortedChats = chats
+        .map((chat) => chat)
+        .sort(function (a, b) {
+          return b.msgTime.valueOf() - a.msgTime.valueOf();
+        });
+      return sortedChats;
     default:
       return state;
   }
