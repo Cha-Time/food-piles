@@ -27,7 +27,6 @@ export const OrganizationView = ({ route, navigation }) => {
   }, []);
 
   function dialCall(digits) {
-    console.log(orgInfo.availabilityStatus);
     let phoneNumber = "";
 
     if (Platform.OS === "android") {
@@ -38,7 +37,6 @@ export const OrganizationView = ({ route, navigation }) => {
 
     Linking.openURL(phoneNumber);
   }
-
 
   const [visible, setVisible] = useState(false);
 

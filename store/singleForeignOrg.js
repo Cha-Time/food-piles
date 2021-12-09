@@ -27,7 +27,6 @@ export const fetchForeignOrganization = (orgId) => {
 };
 
 export const clearForeignOrganization = () => {
-  console.log("clear foreign org");
   return async (dispatch) => {
     dispatch(_clearForeignOrganization());
   };
