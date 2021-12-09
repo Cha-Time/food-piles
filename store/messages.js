@@ -49,7 +49,6 @@ export const sendMessage = (messageText, receiverId) => {
 };
 
 export const clearMessages = () => {
-  console.log("clear messages");
   return async (dispatch) => {
     dispatch(_clearMessages());
   };

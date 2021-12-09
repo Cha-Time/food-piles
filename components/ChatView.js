@@ -32,8 +32,6 @@ const ChatView = (props) => {
     })();
   }, [messagesList]);
 
-  console.log(Date.now());
-
   function displayMessages() {
     return messagesList.map((message) =>
       message.receiverId === foreignOrgInfo.id ? (
