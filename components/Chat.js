@@ -15,13 +15,14 @@ export const Chat = (props) => {
   const dispatch = useDispatch();
   let timeAgo = require("node-time-ago");
 
+  const messages = useSelector((state) => state.messages);
+  const chats = useSelector((state) => state.chats);
+
   useEffect(() => {
     (async () => {
       await dispatch(fetchChats());
     })();
-  }, []);
-
-  const chats = useSelector((state) => state.chats);
+  }, [messages, chats.length]);
 
   console.log(Date.now());
 

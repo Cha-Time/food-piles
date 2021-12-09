@@ -12,7 +12,10 @@ import {
 } from "react-native";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { clearMessages, fetchMessages, sendMessage } from "../store/messages";
-import { fetchForeignOrganization } from "../store/singleForeignOrg";
+import {
+  fetchForeignOrganization,
+  clearForeignOrganization,
+} from "../store/singleForeignOrg";
 
 const ChatView = (props) => {
   const [message, setMessage] = useState(null);
@@ -20,15 +23,26 @@ const ChatView = (props) => {
 
   const dispatch = useDispatch();
 
+  const foreignOrgInfo = useSelector((state) => state.singleForeignOrg);
+  const messagesList = useSelector((state) => state.messages);
+
   useEffect(() => {
     (async () => {
       await dispatch(fetchForeignOrganization(props.route.params.foreignId));
       await dispatch(fetchMessages(props.route.params.foreignId));
     })();
-  }, []);
+  }, [messagesList]);
 
-  const foreignOrgInfo = useSelector((state) => state.singleForeignOrg);
-  const messagesList = useSelector((state) => state.messages);
+  /*   useEffect(() => {
+    async () => {
+      await dispatch(fetchForeignOrganization(props.route.params.foreignId));
+      await dispatch(fetchMessages(props.route.params.foreignId));
+    };
+    return () => {
+      dispatch(clearMessages());
+      dispatch(clearForeignOrganization());
+    };
+  }, [messagesList]); */
 
   console.log(Date.now());
 
@@ -85,11 +99,6 @@ const ChatView = (props) => {
   async function handleSend() {
     await dispatch(sendMessage(message, foreignOrgInfo.id));
     setMessage(null);
-  }
-
-  async function handleClose() {
-    setAllMessages([]);
-    props.clearMessages();
   }
 
   return (
@@ -190,4 +199,4 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(mapState, mapDispatch)(ChatView);
+export default ChatView;
