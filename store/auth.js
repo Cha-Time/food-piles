@@ -1,6 +1,8 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import constants from 'expo-constants'
 
+const DOMAIN = constants.manifest.extra.domain
 const TOKEN = "token";
 
 /**
@@ -19,7 +21,7 @@ const setAuth = (auth) => ({ type: SET_AUTH, auth });
 export const me = () => async (dispatch) => {
   const token = await AsyncStorage.getItem(TOKEN);
   if (token) {
-    const res = await axios.get("https://foodpiles.herokuapp.com/auth/me", {
+    const res = await axios.get(`${DOMAIN}auth/me`, {
       headers: {
         authorization: token,
       },
@@ -31,7 +33,7 @@ export const me = () => async (dispatch) => {
 export const authenticate = (input, method) => async (dispatch) => {
   try {
     const res = await axios.post(
-      `https://foodpiles.herokuapp.com/auth/${method}`,
+      `${DOMAIN}auth/${method}`,
       input
     );
     await AsyncStorage.setItem(TOKEN, res.data.token);

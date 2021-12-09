@@ -1,5 +1,8 @@
 import Axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import constants from 'expo-constants'
+
+const DOMAIN = constants.manifest.extra.domain
 
 ////// Action Types
 const SET_FOREIGN_ORGANIZATION = "SET_FOREIGN_ORGANIZATION";
@@ -20,7 +23,7 @@ export const fetchForeignOrganization = (orgId) => {
   return async (dispatch) => {
     // const token = await AsyncStorage.getItem("token");
     const res = await Axios.get(
-      `https://foodpiles.herokuapp.com/api/organizations/${orgId}`
+      `${DOMAIN}api/organizations/${orgId}`
     );
     dispatch(setForeignOrganization(res.data));
   };

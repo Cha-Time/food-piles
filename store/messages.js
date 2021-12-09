@@ -1,5 +1,8 @@
 import Axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import constants from 'expo-constants'
+
+const DOMAIN = constants.manifest.extra.domain
 
 const GET_MESSAGES = "GET_MESSAGES";
 const SEND_MESSAGE = "SEND_MESSAGE";
@@ -18,7 +21,7 @@ export const fetchMessages = (receiverId) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const { data: messages } = await Axios.get(
-      `https://foodpiles.herokuapp.com/api/messages/chat/${receiverId}`,
+      `${DOMAIN}api/messages/chat/${receiverId}`,
       {
         headers: {
           authorization: token,
@@ -33,7 +36,7 @@ export const sendMessage = (messageText, receiverId) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const { data: sent } = await Axios.post(
-      "https://foodpiles.herokuapp.com/api/messages",
+      `${DOMAIN}api/messages`,
       {
         messageText,
         receiverId,

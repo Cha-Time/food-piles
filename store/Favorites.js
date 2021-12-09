@@ -1,5 +1,8 @@
 import Axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import constants from 'expo-constants'
+
+const DOMAIN = constants.manifest.extra.domain
 
 ////// Action Types
 const SET_FAVORITES = "SET_FAVORITES";
@@ -25,7 +28,7 @@ export const fetchFavorites = () => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const res = await Axios.get(
-      "https://foodpiles.herokuapp.com/api/favorites",
+      `${DOMAIN}api/favorites`,
       {
         headers: {
           authorization: token,
@@ -40,7 +43,7 @@ export const addFavorite = (orgId) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const res = await Axios.post(
-      "https://foodpiles.herokuapp.com/api/favorites",
+      `${DOMAIN}api/favorites`,
       {
         orgId,
       },
@@ -58,7 +61,7 @@ export const removeFavorite = (orgId) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const res = await Axios.delete(
-      "https://foodpiles.herokuapp.com/api/favorites",
+      `${DOMAIN}api/favorites`,
       {
         data: { orgId },
         headers: {

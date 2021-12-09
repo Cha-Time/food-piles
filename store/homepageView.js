@@ -1,5 +1,8 @@
 import Axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import constants from 'expo-constants'
+
+const DOMAIN = constants.manifest.extra.domain
 
 //Action Types
 const SET_HOME_VIEW = "SET_HOME_VIEW";
@@ -50,7 +53,7 @@ export const setAvailability = (newAvailability) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const res = await Axios.put(
-      "https://foodpiles.herokuapp.com/api/organizations/availability",
+      `${DOMAIN}api/organizations/availability`,
       { newAvailability: newAvailability },
       {
         headers: {
@@ -66,7 +69,7 @@ export const getAvailability = () => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const res = await Axios.get(
-      "https://foodpiles.herokuapp.com/api/organizations/availability",
+      `${DOMAIN}api/organizations/availability`,
       {
         headers: {
           authorization: token,
