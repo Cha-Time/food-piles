@@ -27,10 +27,10 @@ const ChatView = (props) => {
     })();
   }, []);
 
-  console.log(Date.now());
-
   const foreignOrgInfo = useSelector((state) => state.singleForeignOrg);
   const messagesList = useSelector((state) => state.messages);
+
+  console.log(props.route.params.foreignId);
 
   /*   useEffect(() => {
     let isMounted = true;
