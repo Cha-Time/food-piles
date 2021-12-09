@@ -1,4 +1,7 @@
 import Axios from "axios";
+import constants from 'expo-constants'
+
+const DOMAIN = constants.manifest.extra.domain
 
 ////// Action Types
 const SET_ORGANIZATIONS = "SET_ORGANIZATIONS";
@@ -29,14 +32,14 @@ export const fetchOrganizations = (accType) => {
   if (accType == "donor") {
     return async (dispatch) => {
       const res = await Axios.get(
-        "https://foodpiles.herokuapp.com/api/charities"
+        `${DOMAIN}api/charities`
       );
       dispatch(setOrganizations(res.data));
     };
   }
   if (accType == "charity") {
     return async (dispatch) => {
-      const res = await Axios.get("https://foodpiles.herokuapp.com/api/donors");
+      const res = await Axios.get(`${DOMAIN}api/donors`);
       dispatch(setOrganizations(res.data));
     };
   }
@@ -45,7 +48,7 @@ export const fetchOrganizations = (accType) => {
 export const createOrganization = (org) => {
   return async (dispatch) => {
     const res = await Axios.post(
-      "https://foodpiles.herokuapp.com/api/organizations",
+      `${DOMAIN}api/organizations`,
       org
     );
     dispatch(_createOrg(res.data));
@@ -55,7 +58,7 @@ export const createOrganization = (org) => {
 export const removeOrganization = (orgId) => {
   return async (dispatch) => {
     const res = await Axios.delete(
-      `https://foodpiles.herokuapp.com/api/organizations/${orgId}`
+      `${DOMAIN}api/organizations/${orgId}`
     );
     dispatch(_removeOrg(res.data));
   };
@@ -64,7 +67,7 @@ export const removeOrganization = (orgId) => {
 export const updateOrganization = (org) => {
   return async (dispatch) => {
     const res = await Axios.put(
-      `https://foodpiles.herokuapp.com/api/organizations/${org.id}`,
+      `${DOMAIN}api/organizations/${org.id}`,
       org
     );
     dispatch(_updateOrg(res.data));

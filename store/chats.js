@@ -1,5 +1,8 @@
 import Axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import constants from 'expo-constants'
+
+const DOMAIN = constants.manifest.extra.domain
 
 ////// Action Types
 const SET_CHATS = "SET_CHATS";
@@ -12,7 +15,7 @@ export const fetchChats = () => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const { data: chats } = await Axios.get(
-      `https://foodpiles.herokuapp.com/api/messages/all-chats`,
+      `${DOMAIN}api/messages/all-chats`,
       {
         headers: {
           authorization: token,

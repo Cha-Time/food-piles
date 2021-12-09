@@ -1,5 +1,8 @@
 import Axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import constants from 'expo-constants'
+
+const DOMAIN = constants.manifest.extra.domain
 
 ////// Action Types
 const SET_ORGANIZATION = "SET_ORGANIZATION";
@@ -21,7 +24,7 @@ export const fetchOrganization = (orgId) => {
   return async (dispatch) => {
     // const token = await AsyncStorage.getItem("token");
     const res = await Axios.get(
-      `https://foodpiles.herokuapp.com/api/organizations/${orgId}`
+      `${DOMAIN}api/organizations/${orgId}`
     );
     dispatch(setOrganization(res.data));
   };
@@ -31,7 +34,7 @@ export const updateOrganization = (org) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
     const res = await Axios.put(
-      `https://foodpiles.herokuapp.com/api/organizations/`, {updateFields: org}, {
+      `${DOMAIN}api/organizations/`, {updateFields: org}, {
         headers: {
           authorization: token,
         },

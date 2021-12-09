@@ -1,5 +1,8 @@
 import Axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import constants from 'expo-constants'
+
+const DOMAIN = constants.manifest.extra.domain
 
 ////// Action Types
 const SET_USER = "SET_USER";
@@ -13,7 +16,7 @@ export const _updateUser = (user) => ({ type: UPDATE_USER, user });
 export const fetchUser = (userId) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
-    const { data: user } = await Axios.get(`https://foodpiles.herokuapp.com/api/users/${userId}`, {
+    const { data: user } = await Axios.get(`${DOMAIN}api/users/${userId}`, {
       headers: {
         authorization: token,
       },
@@ -25,7 +28,7 @@ export const fetchUser = (userId) => {
 export const updateUser = (updatedUser) => {
   return async (dispatch) => {
     const token = await AsyncStorage.getItem("token");
-    const { data: user } = await Axios.put(`https://foodpiles.herokuapp.com/api/users/`, {updateFields: updatedUser}, {
+    const { data: user } = await Axios.put(`${DOMAIN}api/users/`, {updateFields: updatedUser}, {
       headers: {
         authorization: token,
       },
