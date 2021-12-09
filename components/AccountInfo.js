@@ -7,6 +7,7 @@ import {
   TextInput,
   StyleSheet,
   Keyboard,
+  TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -53,6 +54,20 @@ export const AccountInfo = (props) => {
     setPasswordModal(false);
   }
 
+  const editButton = (onPress) => (
+    <TouchableOpacity onPress={onPress} style={styles.editButton}>
+      <Text>
+        <Ionicons name="create" size={30} color="gray" />{" "}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  const backButton = (onPress) => (
+    <TouchableOpacity onPress={onPress} style={styles.backButtonContainer}>
+      <Text style={styles.backButtonText}>Back</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={{ justifyContent: "space-between", height: "100%" }}>
       <View style={styles.container}>
@@ -63,50 +78,25 @@ export const AccountInfo = (props) => {
               <Text style={styles.inputCategory}>Username:</Text>
               <Text style={styles.inputValue}>{props.user.username}</Text>
             </View>
-            <Text>
-              <Ionicons name="create" size={30} color="gray" />{" "}
-            </Text>
-            {/* <Button
-              title="Edit Username"
-              name="back"
-              onPress={() => setUsernameModal(true)}
-            ></Button> */}
+            {editButton(() => setUsernameModal(true))}
           </View>
           <View style={styles.inputContainer}>
             <View style={styles.coupledTextContainer}>
               <Text style={styles.inputCategory}>Password:</Text>
               <Text style={styles.inputValue}>**********</Text>
             </View>
-            <Text>
-              <Ionicons name="create" size={30} color="gray" />{" "}
-            </Text>
-            {/* <Button
-              title="Change Password"
-              name="back"
-              onPress={() => setPasswordModal(true)}
-            ></Button> */}
+            {editButton(() => setPasswordModal(true))}
           </View>
           <View style={styles.inputContainer}>
             <View style={styles.coupledTextContainer}>
               <Text style={styles.inputCategory}>E-mail:</Text>
               <Text style={styles.inputValue}>{props.user.email}</Text>
             </View>
-            <Text>
-              <Ionicons name="create" size={30} color="gray" />{" "}
-            </Text>
-            {/* <Button
-              title="Edit Email"
-              name="back"
-              onPress={() => setEmailModal(true)}
-            ></Button> */}
+            {editButton(() => setEmailModal(true))}
           </View>
         </View>
+        {backButton(() => props.handleChangePage("hub"))}
       </View>
-      {/* <Button
-        title="< Back"
-        name="back"
-        onPress={() => props.handleChangePage("hub")}
-      ></Button> */}
 
       <Modal animationType="fade" transparent={false} visible={usernameModal}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -240,10 +230,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    paddingBottom: "10%",
-    textAlign: "center",
-    textDecorationLine: "underline",
-    fontWeight: "bold",
+    paddingBottom: "5%",
   },
   textInput: {
     backgroundColor: "whitesmoke",
@@ -254,7 +241,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: "15%",
+    height: "22%",
+    borderBottomColor: "gray",
+    borderBottomWidth: 1,
   },
   coupledTextContainer: {
     display: "flex",
@@ -269,6 +258,18 @@ const styles = StyleSheet.create({
   allInputs: {
     height: "50%",
     paddingTop: "5%",
+  },
+  backButtonContainer: {
+    display: "flex",
+    width: "20%",
+    alignItems: "center",
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
+    marginRight: "3%",
+  },
+  backButtonText: {
+    fontSize: 22,
+    color: "black",
   },
 });
 
