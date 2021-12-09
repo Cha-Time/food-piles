@@ -24,8 +24,6 @@ export const Chat = (props) => {
     })();
   }, [messages, chats.length]);
 
-  console.log(Date.now());
-
   function handleOnPress(orgId) {
     props.navigation.navigate("ChatView", {
       foreignId: orgId,
@@ -97,15 +95,35 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: "#eee",
   },
-  listItemView: {},
-  btn: {
-    marginRight: 315,
+  listItemView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "80%",
   },
   input: {
     borderColor: "black",
     borderWidth: 1,
     padding: 10,
     margin: 10,
+  },
+  textContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  title: {
+    fontSize: 20,
+    width: "70%",
+    fontWeight: "bold",
+    color: "#353839",
+  },
+  subTitle: {
+    paddingTop: "3%",
+    fontSize: 14,
+    width: "70%",
+    color: "#4f4e4e",
   },
 });
 

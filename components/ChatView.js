@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from "react-native";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearMessages, fetchMessages, sendMessage } from "../store/messages";
 import {
   fetchForeignOrganization,

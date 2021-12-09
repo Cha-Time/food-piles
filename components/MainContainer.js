@@ -25,15 +25,18 @@ const MainContainer = ({ route, navigation }) => {
   return (
     <Tab.Navigator
       initialRouteName={homeName}
+      tabBarOptions={{
+        activeTintColor: "#e64951",
+      }}
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused, size }) => {
           let iconName;
           let rn = route.name;
           {
             /*This assigns icons to each page on the tab. The icon is filled in or outlined depending on if its selected */
           }
           if (rn === homeName) {
-            iconName = focused ? "home" : "home-outline";
+            iconName = focused ? "map" : "map-outline";
           } else if (rn == profileName) {
             iconName = focused ? "person" : "person-outline";
           } else if (rn == favoriteName) {
@@ -46,14 +49,14 @@ const MainContainer = ({ route, navigation }) => {
               <Ionicons
                 name={iconName}
                 size={size}
-                color={color}
+                color={"#fa7376"}
                 style={styles.icon}
               />
-              {rn == profileName && pageViewStore.availability ? (
+              {rn == profileName ? (
                 <Ionicons
                   name="ellipse"
                   size={10}
-                  color="green"
+                  color={pageViewStore.availability ? "green" : "grey"}
                   style={styles.status}
                 />
               ) : (

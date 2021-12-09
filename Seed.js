@@ -23681,10 +23681,13 @@ function allOrgs() {
     },
     {
       id: "1299c823-aea1-ea11-a812-000d3a111c98",
-      label: "BATTALION OF PRAYER CHURCH",
-      sublabel: "661 LINDEN BOULEVARD, BROOKLYN, NY, 11203",
+      label: "Batallion of Prayer Church",
+      sublabel: "661 Linden Boulevard, Brooklyn, NY, 11203",
       latitude: "40.6539010000",
       longitude: "-73.9338890000",
+      description:
+        "Our mission is to transform the community by helping its members to grow in faith, fellowship, character, commitment, ministry, and missions.",
+      imageUrl: "https://f.ipv7.sh/bcqmjl.png",
       data: {
         addressid: "c0d83837-aea1-ea11-a812-000d3a111c98",
         addressname: "661 LINDEN BOULEVARD, BROOKLYN, NY, 11203",
@@ -23711,8 +23714,11 @@ function allOrgs() {
     },
     {
       id: "606be5d2-65b1-ea11-a812-000d3a111c98",
-      label: "THE TABLE AT THE FAMILY SUPPORT CENTER AT NYU LANGONE",
-      sublabel: "6025 6 AVENUE, BROOKLYN, NY, 11220",
+      label: "The Table At The Family Support Center At NYU Langone",
+      sublabel: "6025 6th Avenue, Brooklyn, NY, 11220",
+      imageUrl: "https://f.ipv7.sh/apzrmk.png",
+      description:
+        "Family Health Centers at NYU Langone’s Community-Based Programs provide social, educational, and emotional support for families, children, and older adults. From nutrition programs for women who are pregnant to adult day care programs for older adults, our Community-Based Programs aim to meet the needs of the entire family.",
       latitude: "40.6377000000",
       longitude: "-74.0140200000",
       data: {
@@ -23726,10 +23732,12 @@ function allOrgs() {
     },
     {
       id: "7cdb6818-b4b7-ea11-a812-000d3a111c98",
-      label: "TREASURES IN EARTHEN JARS FOOD PANTRY",
-      sublabel: "4124 AVENUE H, BROOKLYN, NY, 11210",
+      label: "Treasures In Earthen Jars Food Pantry",
+      sublabel: "4124 Avenue H, Brooklyn, NY, 11210",
       latitude: "40.6321990000",
       longitude: "-73.9362810000",
+      description: "",
+      imageUrl: "https://f.ipv7.sh/dkwurn.png",
       data: {
         addressid: "beb9b359-90eb-ea11-a817-000d3a99b87d",
         addressname: "4124 AVENUE H, BROOKLYN, NY, 11210",
@@ -23818,9 +23826,12 @@ function allOrgs() {
     {
       id: "8d09e50a-c7d6-e811-a974-000d3a14431b",
       label: "Admirable Church Food Provider",
-      sublabel: "1910 FLATBUSH AVENUE, BROOKLYN",
+      sublabel: "1910 Flatbush Avenue, Brooklyn",
       latitude: "40.6231036900",
       longitude: "-73.9377414900",
+      imageUrl: "https://f.ipv7.sh/wfocg.png",
+      description:
+        "Public services have their weight in daily lives. Food Distribution Center — Admirable Church is one of these establishments. This company is rated 4 by NiceLocal users and can be found in New York City city near the Flatbush Avenue–Brooklyn College station by the official address: Brooklyn, NY 11210, 1910 Flatbush Ave.",
       data: {
         addressid: "e969929f-c8d6-e811-a975-000d3a144347",
         addressname: "1910 FLATBUSH AVENUE, BROOKLYN",
@@ -24073,9 +24084,12 @@ function allOrgs() {
     {
       id: "c509e50a-c7d6-e811-a974-000d3a14431b",
       label: "Bethanie French Seventh Day Adventist Church Food Provider",
-      sublabel: "2059 BEDFORD AVENUE, BROOKLYN",
+      sublabel: "2059 Bedford Avenue, Brooklyn",
       latitude: "40.6544932100",
       longitude: "-73.9558150600",
+      imageUrl: "https://f.ipv7.sh/oepll.png",
+      description:
+        "Welcome to Bethanie French SDA Church in Brooklyn, NY. Our mission is to build meaningful connections that foster overall community growth. We are supportive of our local Caribbean community and all others. If you're interested in our mission or our services, please join us!",
       data: {
         addressid: "1d6a929f-c8d6-e811-a975-000d3a144347",
         addressname: "2059 BEDFORD AVENUE, BROOKLYN",
@@ -24450,9 +24464,12 @@ function allOrgs() {
     {
       id: "070ae50a-c7d6-e811-a974-000d3a14431b",
       label: "Calvary Pentecostal Church Food Provider",
-      sublabel: "151 WOODRUFF AVENUE, BROOKLYN",
+      sublabel: "151 Woodruff Avenue, Brooklyn",
       latitude: "40.6545719900",
       longitude: "-73.9611525200",
+      imageUrl: "https://f.ipv7.sh/ezuwri.png",
+      description:
+        "Calvary was founded in 1970 at 1627 Broadway, Brooklyn, New York under the leadership of Reverend Wharton Nicholson. Among the thirty two persons in attendance at the first service, twenty five were invited guests from affiliated churches. In September 1978 with a congregation of almost 200 members, the church relocated to 151 Woodruff Avenue. We now serve as a food pantry for the community, and are open to all!",
       data: {
         addressid: "5d6a929f-c8d6-e811-a975-000d3a144347",
         addressname: "151 WOODRUFF AVENUE, BROOKLYN",
@@ -24510,9 +24527,12 @@ function allOrgs() {
     {
       id: "0f0ae50a-c7d6-e811-a974-000d3a14431b",
       label: "Center for Family Life Food Provider",
-      sublabel: "443 39 STREET, BROOKLYN",
+      sublabel: "443 39th Street, Brooklyn",
       latitude: "40.6520697200",
       longitude: "-74.0047787200",
+      description:
+        "Our mission is to promote positive outcomes for children and adults in Sunset Park through the provision of a comprehensive range of neighborhood-based family and social services. Our center offers access to resources that families need to thrive, including family counseling and neighborhood-based foster care, cultural, educational, and recreational programs at neighborhood public schools, adult and youth employment programs, and an emergency storefront for food and advocacy.",
+      imageuUrl: "https://f.ipv7.sh/xvlohh.png",
       data: {
         addressid: "656a929f-c8d6-e811-a975-000d3a144347",
         addressname: "443 39 STREET, BROOKLYN",
@@ -24543,6 +24563,9 @@ function allOrgs() {
       sublabel: "11 MCKEEVER PLACE, BROOKLYN",
       latitude: "40.6650614700",
       longitude: "-73.9581005600",
+      description:
+        "Provides social, education and vocational alternative services to families and youth. Also has a Youth Information Center and a Free Food Market.",
+      imageUrl: "https://f.ipv7.sh/hfkwy.png",
       data: {
         addressid: "696a929f-c8d6-e811-a975-000d3a144347",
         addressname: "11 MCKEEVER PLACE, BROOKLYN",
@@ -24585,9 +24608,12 @@ function allOrgs() {
     {
       id: "1c0ae50a-c7d6-e811-a974-000d3a14431b",
       label: "Christ Apostolic Church Goke Food Provider",
-      sublabel: "622 CORTELYOU ROAD, BROOKLYN",
+      sublabel: "622 Cortelyou Road, Brooklyn",
       latitude: "40.6384028800",
       longitude: "-73.9720505700",
+      imageUrl: "https://f.ipv7.sh/tawayc.png",
+      description:
+        "Named after the late Rev. Dr. Abraham Adegoke Iyanda Oyedeji, the Goke Food Pantry opened its doors to serve the Kensington community of Brooklyn on June 8th, 2013. Operating out of Christ Apostolic Church, located at 622 Cortelyou Road, GFP was initially funded and staffed by members of the church. Since then, GFP has expanded to include volunteers from the community and has partnered with outside organizations to provide food to those in need.",
       data: {
         addressid: "716a929f-c8d6-e811-a975-000d3a144347",
         addressname: "622 CORTELYOU ROAD, BROOKLYN",
@@ -24705,7 +24731,10 @@ function allOrgs() {
     {
       id: "2f0ae50a-c7d6-e811-a974-000d3a14431b",
       label: "Church of God Brooklyn Food Provider",
-      sublabel: "627 REMSEN AVENUE, BROOKLYN",
+      sublabel: "627 Remsen Avenue, Brooklyn",
+      imageUrl: "https://f.ipv7.sh/ckpotx.png",
+      description:
+        "Since 1996, Church of God (Eglise de Dieu) in Brooklyn, New York has served thousands of people through our Food Pantry program. Week in and week out, our hardworking volunteers coordinate and distribute boxes of food to individuals of all backgrounds.Our program partners include Food Bank NYC, City Harvest, and the United Way of New York City.",
       latitude: "40.6517169300",
       longitude: "-73.9183153100",
       data: {
@@ -24738,6 +24767,9 @@ function allOrgs() {
       sublabel: "1615 NOSTRAND AVENUE, BROOKLYN",
       latitude: "40.6466704200",
       longitude: "-73.9488112900",
+      imageUrl: "https://f.ipv7.sh/kipgze.png",
+      description:
+        "We value Fellowship and Hospitality because it gives us the opportunity to develop friendship, grow together spiritually, by creating a sincere, caring and welcoming atmosphere for everyone that walk through our doors. ",
       data: {
         addressid: "876a929f-c8d6-e811-a975-000d3a144347",
         addressname: "1615 NOSTRAND AVENUE, BROOKLYN",
@@ -25095,11 +25127,11 @@ function allOrgs() {
       status = false;
     }
 
+    let donorImageURL = "";
     if (donor.photo) {
-      myImageURL = donor.photo.images.small.url;
+      donorImageURL = donor.photo.images.small.url;
     } else {
-      myImageURL =
-        "https://d1rzxhvrtciqq1.cloudfront.net/images/people/images/dY5xNEt4Wr54ahbagq7ICb/medium/b808a3-schoberlawrenceheadshot.jpg";
+      donorImageURL = "https://f.ipv7.sh/xajavy.png";
     }
 
     return {
@@ -25113,22 +25145,45 @@ function allOrgs() {
       latitude: donor.latitude,
       longitude: donor.longitude,
       availabilityStatus: status,
-      imageUrl: myImageURL,
+      imageUrl: donorImageURL,
     };
   });
 
   const updatedCharities = charities.map((charity) => {
+    let charityImageURL = "";
+    if (charity.imageUrl) {
+      charityImageURL = charity.imageUrl;
+    } else {
+      charityImageURL = "https://f.ipv7.sh/mvphaz.png";
+    }
+
+    let charityPhoneNumber = "";
+    if (charity.data.phonenumber) {
+      charityPhoneNumber = charity.data.phonenumber;
+    } else {
+      charityPhoneNumber = "9999999999";
+    }
+
+    let charityDescription = "";
+    if (charity.description) {
+      charityDescription = charity.description;
+    } else {
+      charityDescription = "";
+    }
+
     return {
       name: charity.label,
       address: charity.sublabel.split(",")[0],
       city: charity.sublabel.split(",")[1],
       state: "NY",
       zipCode: 10000,
-      phoneNumber: "+1 777-777-7777",
+      phoneNumber: charityPhoneNumber,
       accType: "charity",
       latitude: charity.latitude,
       longitude: charity.longitude,
       availabilityStatus: true,
+      imageUrl: charityImageURL,
+      description: charityDescription,
     };
   });
   return updatedCharities.concat(updatedDonors);

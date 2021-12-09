@@ -27,6 +27,7 @@ export const OrganizationView = ({ route, navigation }) => {
   }, []);
 
   function dialCall(digits) {
+    console.log(orgInfo.availabilityStatus);
     let phoneNumber = "";
 
     if (Platform.OS === "android") {
@@ -38,22 +39,61 @@ export const OrganizationView = ({ route, navigation }) => {
     Linking.openURL(phoneNumber);
   }
 
+
+  const [visible, setVisible] = useState(false);
+
+  function toggleVisibility(status) {
+    setVisible(status);
+  }
+  let availability = "";
+  if (orgInfo.availabilityStatus) {
+    availability = "Currently Available";
+  } else {
+    availability = "Currently Unavailable";
+  }
+
+  const MessageButton = () => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate("ChatView", { foreignId: orgId })}
+      style={styles.messageButtonContainer}
+    >
+      <Text style={styles.messageButtonText}>Start Chatting!</Text>
+    </TouchableOpacity>
+  );
+
+  let phoneNumber = "";
+  if (orgInfo.phoneNumber) {
+    phoneNumber =
+      "(" +
+      orgInfo.phoneNumber.slice(0, 3) +
+      ")-" +
+      orgInfo.phoneNumber.slice(3, 6) +
+      "-" +
+      orgInfo.phoneNumber.slice(6);
+  }
+  let city = "";
+  if (orgInfo.city) {
+    city = orgInfo.city.slice(1);
+  }
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <View style={{ flex: 1 }}>
+        <View style={styles.topTextContainer}>
           <Text style={styles.title}>{orgInfo.name}</Text>
-          <View style={styles.addressContainer}>
-            <Text>{orgInfo.address}</Text>
-            <Text>
-              {orgInfo.city}, {orgInfo.state}
+          <View style={styles.fieldContainer}>
+            <Text style={styles.headerText}>Address</Text>
+            <Text style={styles.subtitleText}>{orgInfo.address}</Text>
+            <Text style={styles.subtitleText}>
+              {city}, {orgInfo.state}
             </Text>
-
+          </View>
+          <View style={styles.fieldContainer}>
+            <Text style={styles.headerText}>Phone</Text>
             <TouchableOpacity
               onPress={() => dialCall(orgInfo.phoneNumber)}
               activeOpacity={0.7}
             >
-              <Text style={styles.phoneLink}>{orgInfo.phoneNumber}</Text>
+              <Text style={styles.phoneLink}>{phoneNumber}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -64,44 +104,62 @@ export const OrganizationView = ({ route, navigation }) => {
           }}
         />
       </View>
-      <Text>{orgInfo.description}</Text>
-      {orgInfo.accType === "donor" ? (
-        <View>
-          <Text style={styles.subtitle}>
-            Available{" "}
-            {orgInfo.availableTime ? (
-              <Text>until {orgInfo.availableTime}</Text>
-            ) : (
-              <Text></Text>
-            )}
-            today:
-          </Text>
-          <Text style={styles.subText}>
-            {orgInfo.availableFood ? (
-              <Text>{orgInfo.availableFood}</Text>
-            ) : (
-              <Text>
-                Please inquire with the organization for more details for
-                today's offerings.
-              </Text>
-            )}
-          </Text>
-          <Text style={styles.subtitle}>Potential Allgergens:</Text>
-          <Text style={styles.subText}>
-            {orgInfo.allergens ? (
-              <Text>{orgInfo.allergens}</Text>
-            ) : (
-              <Text>N/A</Text>
-            )}
-          </Text>
+      <View style={styles.bottom}>
+        <View style={styles.fieldContainer}>
+          <Text style={styles.headerText}>{"Description"}</Text>
+          <Text style={styles.subtitleText}>{orgInfo.description}</Text>
         </View>
+
+        <View style={styles.fieldContainer}>
+          <Text style={styles.headerText}>{"Status: " + availability}</Text>
+          {orgInfo.availableTime ? (
+            <Text style={styles.subtitleText}>
+              until {orgInfo.availableTime}
+            </Text>
+          ) : (
+            <Text style={styles.subtitleText}>
+              {
+                "Please inquire with the organization directly for more specific details regarding their hours of operation "
+              }
+            </Text>
+          )}
+        </View>
+        {orgInfo.accType === "donor" ? (
+          <View>
+            <Text style={styles.subText}>
+              {orgInfo.availableFood ? (
+                <Text>{orgInfo.availableFood}</Text>
+              ) : (
+                <Text>
+                  Please inquire with the organization for more details for
+                  today's offerings.
+                </Text>
+              )}
+            </Text>
+            <Text style={styles.subtitle}>Potential Allergens:</Text>
+            <Text style={styles.subText}>
+              {orgInfo.allergens ? (
+                <Text>{orgInfo.allergens}</Text>
+              ) : (
+                <Text>N/A</Text>
+              )}
+            </Text>
+          </View>
+        ) : (
+          <View></View>
+        )}
+      </View>
+      <View style={styles.buttonContainer}>{MessageButton()}</View>
+      {visible === true ? (
+        <ChatView
+          visibleStatus={visible}
+          toggleVisibility={toggleVisibility}
+          org={orgInfo}
+          receiverId={orgInfo.id}
+        />
       ) : (
         <View></View>
       )}
-      <Button
-        title="Message"
-        onPress={() => navigation.navigate("ChatView", { foreignId: orgId })}
-      />
     </View>
   );
 };
@@ -111,39 +169,38 @@ export default OrganizationView;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 15,
-    marginTop: 20,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    padding: "5%",
+    backgroundColor: "rgba(219, 154, 155, 0.1)",
   },
   top: {
     display: "flex",
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    maxHeight: 140,
   },
-  second: {
-    display: "flex",
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    maxHeight: 100,
+  topTextContainer: {
+    width: "60%",
   },
   title: {
     fontWeight: "bold",
     fontSize: 20,
     marginBottom: 15,
   },
-  subtitle: {
-    fontWeight: "bold",
+  subtitleText: {
     fontSize: 15,
-    marginTop: 20,
-    marginBottom: 20,
+    lineHeight: 25,
+  },
+  headerText: {
+    fontWeight: "bold",
   },
   subText: {
     marginLeft: 20,
   },
-  favorite: {},
-  addressContainer: {},
+  fieldContainer: {
+    paddingTop: "5%",
+  },
   map: {
     flex: 1,
     position: "absolute",
@@ -159,5 +216,21 @@ const styles = StyleSheet.create({
   phoneLink: {
     textDecorationLine: "underline",
     color: "blue",
+  },
+  messageButtonContainer: {
+    backgroundColor: "#ececec",
+    borderColor: "#f5565a",
+    borderWidth: 1,
+    borderRadius: 30,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  messageButtonText: {
+    fontSize: 18,
+    color: "#f5565a",
+    alignSelf: "center",
+  },
+  buttonContainer: {
+    paddingTop: "8%",
   },
 });

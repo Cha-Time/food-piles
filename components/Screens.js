@@ -18,6 +18,7 @@ import {
 } from "@react-navigation/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, useDispatch, useSelector } from "react-redux";
+import { useToast } from "react-native-toast-notifications";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,11 +45,12 @@ import {
 const Screens = (props) => {
   const pageViewStore = useSelector((state) => state.homepageView);
   const currentOrgInfo = useSelector((state) => state.singleForeignOrg);
+  const [aval, setAval] = useState(pageViewStore.availability);
 
   enableScreens();
 
   const { isLoggedIn } = props;
-
+  const toast = useToast();
   return (
     <NavigationContainer>
       {!isLoggedIn ? (
@@ -88,7 +90,6 @@ const Screens = (props) => {
                     headerTitle: "",
                     headerRight: () => {
                       const dispatch = useDispatch();
-
                       useEffect(() => {
                         (async () => {
                           await dispatch(getAvailability());
@@ -104,12 +105,26 @@ const Screens = (props) => {
                       };
 
                       const handleToggleAvailabilityStatus = () => {
-                        if (pageViewStore.availability === false) {
-                          Alert.alert("Your status is now Available");
+                        if (aval === false) {
+                          toast.show("Your status is now Available", {
+                            type: "normal",
+                            placement: "bottom",
+                            duration: 4000,
+                            offset: 30,
+                            animationType: "slide-in",
+                          });
                           dispatch(setAvailability(true));
+                          setAval(true);
                         } else {
+                          toast.show("Your status is now Unavailable", {
+                            type: "normal",
+                            placement: "bottom",
+                            duration: 4000,
+                            offset: 30,
+                            animationType: "slide-in",
+                          });
                           dispatch(setAvailability(false));
-                          Alert.alert("Your status is now Unavailable");
+                          setAval(false);
                         }
                       };
 
@@ -123,16 +138,22 @@ const Screens = (props) => {
                           }}
                         >
                           <Switch
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={true ? "#f5dd4b" : "#f4f3f4"}
+                            trackColor={{ false: "#d4d4d4", true: "#f7babb" }}
+                            thumbColor={"#f55b5e"}
                             ios_backgroundColor="gray"
                             onValueChange={() =>
                               handleToggleAvailabilityStatus()
                             }
-                            value={pageViewStore.availability}
+                            value={aval}
                           />
-                          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-                            Home
+                          <Text style={{ fontWeight: "bold", fontSize: 15 }}>
+                            {" Nearby "}
+                            {currentOrgInfo.accType === "charity"
+                              ? "Donors"
+                              : "Charities"}
+                            {" ("}
+                            {pageViewStore.totalFilteredOrgs}
+                            {")"}
                           </Text>
                           <Ionicons
                             name={
@@ -177,7 +198,21 @@ const Screens = (props) => {
                   const handleToggleFavorite = () => {
                     if (isFavorited) {
                       dispatch(removeFavorite(currentOrgInfo.id));
+                      toast.show("Removed from Favorites!", {
+                        type: "normal",
+                        placement: "bottom",
+                        duration: 4000,
+                        offset: 30,
+                        animationType: "slide-in",
+                      });
                     } else {
+                      toast.show("Added to Favorites!", {
+                        type: "normal",
+                        placement: "bottom",
+                        duration: 4000,
+                        offset: 30,
+                        animationType: "slide-in",
+                      });
                       dispatch(addFavorite(currentOrgInfo.id));
                     }
                   };
