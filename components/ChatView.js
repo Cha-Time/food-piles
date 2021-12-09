@@ -30,7 +30,7 @@ const ChatView = (props) => {
   const foreignOrgInfo = useSelector((state) => state.singleForeignOrg);
   const messagesList = useSelector((state) => state.messages);
 
-  console.log(props.route.params.foreignId);
+  console.log(Date.now());
 
   /*   useEffect(() => {
     let isMounted = true;
@@ -93,7 +93,11 @@ const ChatView = (props) => {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
       <View style={styles.container}>
         <ScrollView>{displayMessages()}</ScrollView>
         <View

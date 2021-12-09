@@ -23,6 +23,8 @@ export const Chat = (props) => {
 
   const chats = useSelector((state) => state.chats);
 
+  console.log(Date.now());
+
   function handleOnPress(orgId) {
     props.navigation.navigate("ChatView", {
       foreignId: orgId,
