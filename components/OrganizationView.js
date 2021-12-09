@@ -14,7 +14,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { fetchForeignOrganization } from "../store/singleForeignOrg";
-import ChatView from "./ChatView";
 
 export const OrganizationView = ({ route, navigation }) => {
   const orgId = Number(route.params.orgId);
@@ -40,6 +39,7 @@ export const OrganizationView = ({ route, navigation }) => {
     Linking.openURL(phoneNumber);
   }
 
+
   const [visible, setVisible] = useState(false);
 
   function toggleVisibility(status) {
@@ -54,7 +54,7 @@ export const OrganizationView = ({ route, navigation }) => {
 
   const MessageButton = () => (
     <TouchableOpacity
-      onPress={() => setVisible(true)}
+      onPress={() => navigation.navigate("ChatView", { foreignId: orgId })}
       style={styles.messageButtonContainer}
     >
       <Text style={styles.messageButtonText}>Start Chatting!</Text>
@@ -66,9 +66,9 @@ export const OrganizationView = ({ route, navigation }) => {
     phoneNumber =
       "(" +
       orgInfo.phoneNumber.slice(0, 3) +
-      ") - " +
+      ")-" +
       orgInfo.phoneNumber.slice(3, 6) +
-      " - " +
+      "-" +
       orgInfo.phoneNumber.slice(6);
   }
   let city = "";
@@ -109,6 +109,7 @@ export const OrganizationView = ({ route, navigation }) => {
           <Text style={styles.headerText}>{"Description"}</Text>
           <Text style={styles.subtitleText}>{orgInfo.description}</Text>
         </View>
+
         <View style={styles.fieldContainer}>
           <Text style={styles.headerText}>{"Status: " + availability}</Text>
           {orgInfo.availableTime ? (

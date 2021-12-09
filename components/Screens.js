@@ -240,7 +240,7 @@ const Screens = (props) => {
           <Stack.Screen
             name="ChatView"
             component={ChatView}
-            options={{ headerShown: true }}
+            options={{ headerShown: true, headerTitle: currentOrgInfo.name }}
           />
         </Stack.Navigator>
       )}

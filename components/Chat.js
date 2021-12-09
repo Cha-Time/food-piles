@@ -6,42 +6,34 @@ import {
   StyleSheet,
   FlatList,
   ScrollView,
-  Modal,
-  Button,
-  TextInput,
 } from "react-native";
-import ChatView from "./ChatView";
-import { connect, useDispatch, useSelector } from "react-redux";
-import { fetchChats, setChats } from "../store/chats";
-import { fetchForeignOrganization } from "../store/singleForeignOrg";
+
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChats } from "../store/chats";
 
 export const Chat = (props) => {
-  const [visible, setVisible] = useState(false);
-
-  const orgInfo = useSelector((state) => state.singleOrg);
-
   const dispatch = useDispatch();
   let timeAgo = require("node-time-ago");
+
+  const messages = useSelector((state) => state.messages);
+  const chats = useSelector((state) => state.chats);
 
   useEffect(() => {
     (async () => {
       await dispatch(fetchChats());
     })();
-  }, [props.chats]);
+  }, [messages, chats.length]);
 
-  function toggleVisibility(status) {
-    setVisible(status);
-  }
-
-  async function handleOnPress(orgId) {
-    await props.fetchOrganization(Number(orgId));
-    setVisible(true);
+  function handleOnPress(orgId) {
+    props.navigation.navigate("ChatView", {
+      foreignId: orgId,
+    });
   }
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={props.chats}
+        data={chats}
         renderItem={({ item }) => (
           <ScrollView>
             <TouchableOpacity
@@ -51,46 +43,44 @@ export const Chat = (props) => {
               }}
             >
               <View style={styles.listItemView}>
-                <View style={styles.textContainer}>
-                  <Text numberOfLines={1} style={styles.title}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text
+                    numberOfLines={1}
+                    style={{ fontSize: 20, maxWidth: "50%" }}
+                  >
                     {item.orgName}
                   </Text>
-                  <Text numberOfLines={1} style={styles.subTitle}>
-                    {item.msg}
+                  <Text numberOfLines={1} style={{ fontSize: 15 }}>
+                    {`${
+                      (Date.now() - new Date(item.msgTime).valueOf()) /
+                        1000 /
+                        60 /
+                        60 /
+                        24 >
+                      1
+                        ? new Date(item.msgTime).toDateString()
+                        : (Date.now() - new Date(item.msgTime).valueOf()) /
+                            1000 /
+                            60 <
+                          1
+                        ? "just now"
+                        : timeAgo(item.msgTime)
+                    }`}
                   </Text>
                 </View>
-                <Text numberOfLines={1} style={{ fontSize: 12 }}>
-                  {`${
-                    (Date.now() - new Date(item.msgTime).valueOf()) /
-                      1000 /
-                      60 /
-                      60 /
-                      24 >
-                    1
-                      ? new Date(item.msgTime).toDateString()
-                      : (Date.now() - new Date(item.msgTime).valueOf()) /
-                          1000 /
-                          60 <
-                        1
-                      ? "just now"
-                      : timeAgo(item.msgTime)
-                  }`}
+                <Text numberOfLines={1} style={{ fontSize: 10 }}>
+                  {item.msg}
                 </Text>
               </View>
             </TouchableOpacity>
           </ScrollView>
         )}
       />
-      {visible === true ? (
-        <ChatView
-          visibleStatus={visible}
-          org={props.org}
-          receiverId={props.org.id}
-          toggleVisibility={toggleVisibility}
-        />
-      ) : (
-        <View></View>
-      )}
     </View>
   );
 };
@@ -98,17 +88,12 @@ export const Chat = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(219, 154, 155, 0.1)",
   },
   listItem: {
-    display: "flex",
-    flexDirection: "row",
-    padding: "5%",
-    borderBottomColor: "gray",
-    width: "96%",
-    borderBottomWidth: 0.5,
-    alignItems: "center",
-    marginLeft: "2%",
+    padding: 15,
+    backgroundColor: "#f8f8f8",
+    borderBottomWidth: 2,
+    borderColor: "#eee",
   },
   listItemView: {
     display: "flex",
@@ -142,20 +127,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return {
-    messages: state.messages,
-    user: state.auth,
-    chats: state.chats,
-    org: state.singleForeignOrg,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchChats: () => dispatch(fetchChats()),
-    fetchOrganization: (id) => dispatch(fetchForeignOrganization(id)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default Chat;

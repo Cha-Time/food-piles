@@ -10,37 +10,39 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from "react-native";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearMessages, fetchMessages, sendMessage } from "../store/messages";
+import {
+  fetchForeignOrganization,
+  clearForeignOrganization,
+} from "../store/singleForeignOrg";
 
 const ChatView = (props) => {
   const [message, setMessage] = useState(null);
-  const [allMessages, setAllMessages] = useState([]);
+
+  const dispatch = useDispatch();
+
+  const foreignOrgInfo = useSelector((state) => state.singleForeignOrg);
+  const messagesList = useSelector((state) => state.messages);
 
   useEffect(() => {
-    let isMounted = true;
-    const func = async () => {
-      await props.fetchMessages(props.receiverId);
-      if (isMounted) {
-        setAllMessages(props.messages);
-      }
-    };
-    func();
-    return () => {
-      isMounted = false;
-    };
-  }, [allMessages]);
+    (async () => {
+      await dispatch(fetchForeignOrganization(props.route.params.foreignId));
+      await dispatch(fetchMessages(props.route.params.foreignId));
+    })();
+  }, [messagesList]);
+
+  console.log(Date.now());
 
   function displayMessages() {
-    return allMessages.map((message) =>
-      message.receiverId === props.receiverId ? (
+    return messagesList.map((message) =>
+      message.receiverId === foreignOrgInfo.id ? (
         <Text
           key={message.id}
           style={{
-            backgroundColor: "white",
+            backgroundColor: "whitesmoke",
             borderRadius: 25,
             borderBottomRightRadius: 0,
-            borderWidth: 2,
             margin: 5,
             padding: 10,
             maxWidth: "50%",
@@ -53,10 +55,9 @@ const ChatView = (props) => {
         <Text
           key={message.id}
           style={{
-            backgroundColor: "#f5565a",
+            backgroundColor: "lightblue",
             borderRadius: 25,
             borderBottomLeftRadius: 0,
-            borderWidth: 2,
             margin: 5,
             padding: 10,
             maxWidth: "50%",
@@ -70,85 +71,63 @@ const ChatView = (props) => {
   }
 
   async function handleSend() {
-    await props.sendMessage(message, props.receiverId);
+    await dispatch(sendMessage(message, foreignOrgInfo.id));
     setMessage(null);
   }
 
-  async function handleClose() {
-    setAllMessages([]);
-    props.clearMessages();
-    props.toggleVisibility(false);
-  }
-
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <Modal animationType="fade" transparent={false} visible={props.visible}>
-        <View style={styles.container}>
-          <View
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+    >
+      <View style={styles.container}>
+        <ScrollView>{displayMessages()}</ScrollView>
+        <View
+          style={{
+            flexDirection: "row",
+            backgroundColor: "#93c47d",
+            alignItems: "center",
+            minHeight: 20,
+            maxHeight: 50,
+          }}
+        >
+          <TextInput
+            style={styles.input}
+            onChangeText={setMessage}
+            value={message}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              handleSend();
+            }}
             style={{
-              backgroundColor: "darkgrey",
-              flexDirection: "row",
-              minHeight: 50,
-              maxHeight: 50,
+              backgroundColor: "lightblue",
+              width: "15%",
+              minHeight: "50%",
               alignItems: "center",
-              overflow: "hidden",
+              justifyContent: "center",
+              borderWidth: 2,
+              borderColor: "black",
+              borderRadius: 25,
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                handleClose();
-              }}
-            >
-              <Text style={{ fontSize: 35, paddingLeft: 10 }}>{"<"}</Text>
-            </TouchableOpacity>
-            <Text numberOfLines={1} style={{ fontSize: 30, paddingLeft: 10 }}>
-              {props.org.name}
-            </Text>
-          </View>
-          <ScrollView>{displayMessages()}</ScrollView>
-          <View
-            style={{
-              flexDirection: "row",
-              backgroundColor: "#ececec",
-              alignItems: "center",
-              minHeight: 20,
-              maxHeight: 50,
-            }}
-          >
-            <TextInput
-              style={styles.input}
-              onChangeText={setMessage}
-              value={message}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                handleSend();
-              }}
-              style={{
-                backgroundColor: "lightblue",
-                width: "15%",
-                minHeight: "50%",
-                alignItems: "center",
-                justifyContent: "center",
-                borderWidth: 2,
-                borderColor: "black",
-                borderRadius: 25,
-              }}
-            >
-              <Text style={{ textAlign: "center" }}>SEND</Text>
-            </TouchableOpacity>
-          </View>
+            <Text style={{ textAlign: "center" }}>SEND</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
+      </View>
     </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#ececec",
+    backgroundColor: "#93c47d",
     flex: 1,
-    marginTop: 50,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 3,
+    paddingRight: 3,
     justifyContent: "space-between",
     flexDirection: "column",
   },
@@ -180,19 +159,4 @@ const styles = StyleSheet.create({
   messageReceiver: {},
 });
 
-const mapState = (state) => {
-  return {
-    messages: state.messages,
-    user: state.auth,
-  };
-};
-
-const mapDispatch = (dispatch) => {
-  return {
-    fetchMessages: (receiverId) => dispatch(fetchMessages(receiverId)),
-    sendMessage: (msg, recId) => dispatch(sendMessage(msg, recId)),
-    clearMessages: () => dispatch(clearMessages()),
-  };
-};
-
-export default connect(mapState, mapDispatch)(ChatView);
+export default ChatView;
