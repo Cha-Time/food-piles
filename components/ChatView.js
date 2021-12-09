@@ -19,7 +19,6 @@ import {
 
 const ChatView = (props) => {
   const [message, setMessage] = useState(null);
-  const [allMessages, setAllMessages] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -33,32 +32,7 @@ const ChatView = (props) => {
     })();
   }, [messagesList]);
 
-  /*   useEffect(() => {
-    async () => {
-      await dispatch(fetchForeignOrganization(props.route.params.foreignId));
-      await dispatch(fetchMessages(props.route.params.foreignId));
-    };
-    return () => {
-      dispatch(clearMessages());
-      dispatch(clearForeignOrganization());
-    };
-  }, [messagesList]); */
-
   console.log(Date.now());
-
-  /*   useEffect(() => {
-    let isMounted = true;
-    const func = async () => {
-      await props.fetchMessages(foreignOrgInfo.id);
-      if (isMounted) {
-        setAllMessages(props.messages);
-      }
-    };
-    func();
-    return () => {
-      isMounted = false;
-    };
-  }, [allMessages]); */
 
   function displayMessages() {
     return messagesList.map((message) =>
@@ -184,19 +158,5 @@ const styles = StyleSheet.create({
   messageUser: {},
   messageReceiver: {},
 });
-
-const mapState = (state) => {
-  return {
-    messages: state.messages,
-    user: state.auth,
-  };
-};
-
-const mapDispatch = (dispatch) => {
-  return {
-    sendMessage: (msg, recId) => dispatch(sendMessage(msg, recId)),
-    clearMessages: () => dispatch(clearMessages()),
-  };
-};
 
 export default ChatView;
