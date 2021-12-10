@@ -68,14 +68,6 @@ export const Favorites = (props) => {
               <Ionicons name="ellipse" size={19} color="grey" />
             )}
           </Text>
-          <TouchableOpacity
-            style={styles.favoritePressable}
-            onPress={() => removeThisFavorite(org.id)}
-          >
-            <Text>
-              <Ionicons name="close-circle" size={19} color="black" />
-            </Text>
-          </TouchableOpacity>
         </View>
       </TouchableOpacity>
     ));
